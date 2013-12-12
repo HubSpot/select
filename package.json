@@ -1,9 +1,8 @@
 {
-  "name": "tether",
+  "name": "select",
   "version": "0.1.0",
-  "description": "",
+  "description": "Styleable select elements built on Tether",
   "authors": [
-    "Zack Bloom <zbloom@hubspot.com>",
     "Adam Schwartz <adam.flynn.schwartz@gmail.com>"
   ],
   "license": "MIT",
