@@ -12,6 +12,10 @@ Select is a javascript and CSS library for creating styleable select elements.
 
 Simply call:
 
+```coffeescript
+new Select { el }
+```
+
 ### Methods
 
 Coming soon...
