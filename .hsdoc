@@ -1,0 +1,5 @@
+title: "select"
+description: "Styleable select elements built on Tether."
+source: "select.coffee"
+examples: "**/*.md"
+assets: "{*.js,*.coffee,css/*.css,docs/css/*.css,docs/js/*,js,docs/welcome/*,examples/*}"
