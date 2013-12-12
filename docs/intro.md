@@ -32,7 +32,7 @@ Coming soon...
 You can pass these when constructing `Select`.
 
 - `el`: The original `<select>` element to convert
-- `autoAlign` (Default `false`): When `true`, aligns the options chooser the way a real `<select>` is aligned. When `false`, aligns the options chooser like a canonical dropdown menu.
+- `selectStyle` (Default `false`): When `true`, aligns the options chooser the way a real `<select>` is aligned. When `false`, aligns the options chooser like a canonical dropdown menu.
 
 ### Themes
 

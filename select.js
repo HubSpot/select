@@ -164,7 +164,7 @@
       this.dropSelect.$drop.on('dropopen', function() {
         var $selectedOption, offset, _ref;
         $selectedOption = _this.dropSelect.$drop.find('[data-selected="true"]');
-        if (((_ref = _this.options) != null ? _ref.autoAlign : void 0) === true) {
+        if (((_ref = _this.options) != null ? _ref.selectStyle : void 0) === true) {
           offset = _this.dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight());
           _this.dropSelect.tether.offset.top = -offset;
         }

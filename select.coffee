@@ -130,7 +130,7 @@ class Select
 
         @dropSelect.$drop.on 'dropopen', =>
             $selectedOption = @dropSelect.$drop.find('[data-selected="true"]')
-            if @options?.autoAlign is true
+            if @options?.selectStyle is true
                 offset = @dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
                 @dropSelect.tether.offset.top = - offset
             @highlightOption $selectedOption[0]
