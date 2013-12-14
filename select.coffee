@@ -14,7 +14,7 @@ strIsRepeatedCharacter = (str) ->
     return true
 
 getFocusedSelect = ->
-    $focusedTarget = $('.drop-select-target-focused:first')
+    $focusedTarget = $('.select-target-focused:first')
     return $focusedTarget?.length and $focusedTarget.data('select')
 
 searchText = ''
@@ -73,7 +73,12 @@ $(window).on 'keydown', (e) ->
 
 class Select
 
+    @defaults:
+        selectLikeAlignment: 'auto'
+        className: 'select-theme-default'
+
     constructor: (@options) ->
+        @options = $.extend {}, Select.defaults, @options
         @$select = $ @options.el
 
         @setupTarget()
@@ -82,12 +87,12 @@ class Select
         @setupDrop()
         @renderDrop()
 
-        @setupSelectEvents()
+        @setupSelect()
 
     setupTarget: ->
         $options = @$select.find('option')
 
-        @$target = $ '''<a href="javascript:;" class="drop-select-target drop-select-theme-default"></a>'''
+        @$target = $ """<a href="javascript:;" class="select-target #{ @options.className }"></a>"""
 
         @$target.data 'select', @
 
@@ -98,14 +103,14 @@ class Select
                 @$target.blur()
 
         @$target.on 'focus', =>
-            @$target.addClass('drop-select-target-focused')
+            @$target.addClass('select-target-focused')
 
         @$target.on 'blur', (e) =>
             if @dropSelect.isOpened()
                 if e.relatedTarget and not $(e.relatedTarget).parents('.drop:first').is(@dropSelect.$drop)
                     @dropSelect.close()
             else
-                @$target.removeClass('drop-select-target-focused')
+                @$target.removeClass('select-target-focused')
 
         @$select.after(@$target).hide()
 
@@ -116,38 +121,48 @@ class Select
     setupDrop: ->
         @dropSelect = new DropSelect
             target: @$target[0]
-            className: 'drop-select-theme-default'
+            className: @options.className
             attach: 'bottom left'
             constrainToWindow: true
             constrainToScrollParent: false
             openOn: 'click'
 
-        @dropSelect.$drop.on 'click', '.drop-select-option', (e) =>
+        @dropSelect.$drop.on 'click', '.select-option', (e) =>
             @selectOption e.target
 
-        @dropSelect.$drop.on 'mousemove', '.drop-select-option', (e) =>
+        @dropSelect.$drop.on 'mousemove', '.select-option', (e) =>
             @highlightOption e.target
 
         @dropSelect.$drop.on 'dropopen', =>
             $selectedOption = @dropSelect.$drop.find('[data-selected="true"]')
-            if @options?.selectStyle is true
-                offset = @dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
-                @dropSelect.tether.offset.top = - offset
+            $content = @dropSelect.$drop.find('.drop-content')
+
+            positionSelectStyle = =>
+                if @dropSelect.$drop.hasClass('tether-abutted-left tether-abutted-bottom')
+                    offset = @dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
+                    @dropSelect.$drop.css top: "+=#{ offset }"
+
             @highlightOption $selectedOption[0]
+            @scrollDropContentToOption $selectedOption[0]
+
+            if @options.selectLikeAlignment is 'always' or (@options.selectLikeAlignment is 'auto' and $content[0].scrollHeight <= $content[0].clientHeight)
+                setTimeout positionSelectStyle
 
         @dropSelect.$drop.on 'dropclose', =>
-            @$target.removeClass('drop-select-target-focused')
+            @$target.removeClass('select-target-focused')
 
     renderDrop: ->
-        $dropSelectOptions = $ '<ul class="drop-select-options"></ul>'
+        $dropSelectOptions = $ '<ul class="select-options"></ul>'
 
         @$select.find('option').each ->
             $option = $ @
-            $dropSelectOptions.append """<li data-selected="#{ $option.is(':selected') }" class="drop-select-option" data-value="#{ @value }">#{ $option.text() }</li>"""
+            $dropSelectOptions.append """<li data-selected="#{ $option.is(':selected') }" class="select-option" data-value="#{ @value }">#{ $option.text() }</li>"""
 
         @dropSelect.$drop.find('.drop-content').html $dropSelectOptions[0]
 
-    setupSelectEvents: ->
+    setupSelect: ->
+        @$select.data 'select', @
+
         @$select.on 'change', =>
             @renderDrop()
             @renderTarget()
@@ -179,8 +194,8 @@ class Select
     highlightOptionByText: (text) ->
         return unless @dropSelect.isOpened()
 
-        options = @dropSelect.$drop.find('.drop-select-option').toArray()
-        currentHighlightedIndex = @dropSelect.$drop.find('.drop-select-option-highlight').index()
+        options = @dropSelect.$drop.find('.select-option').toArray()
+        currentHighlightedIndex = @dropSelect.$drop.find('.select-option-highlight').index()
         return unless currentHighlightedIndex?
 
         isRepeatedCharacter = strIsRepeatedCharacter text
@@ -204,14 +219,14 @@ class Select
             i += 1
 
     highlightOption: (option) ->
-        @dropSelect.$drop.find('.drop-select-option-highlight').removeClass('drop-select-option-highlight')
-        $(option).addClass('drop-select-option-highlight')
+        @dropSelect.$drop.find('.select-option-highlight').removeClass('select-option-highlight')
+        $(option).addClass('select-option-highlight')
 
     moveHighlight: (directionKeyCode) ->
-        $currentHighlight = @dropSelect.$drop.find('.drop-select-option-highlight')
+        $currentHighlight = @dropSelect.$drop.find('.select-option-highlight')
 
         if not $currentHighlight.length
-            return @highlightOption @dropSelect.$drop.find('.drop-select-option:first')
+            return @highlightOption @dropSelect.$drop.find('.select-option:first')
 
         $newHighlight = if directionKeyCode is UP then $currentHighlight.prev() else $currentHighlight.next()
         return unless $newHighlight.length
@@ -227,7 +242,7 @@ class Select
             $content.scrollTop $option.offset().top - ($content.offset().top - $content.scrollTop())
 
     selectHighlightedOption: ->
-        @selectOption @dropSelect.$drop.find('.drop-select-option-highlight')[0]
+        @selectOption @dropSelect.$drop.find('.select-option-highlight')[0]
 
     selectOption: (option) ->
         @$select.val($(option).data('value')).change()

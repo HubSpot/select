@@ -46,7 +46,7 @@ DOWN = <span class="number">40</span>
     <span class="keyword">return</span> <span class="literal">true</span>
 
 <span class="function"><span class="title">getFocusedSelect</span></span> = -&gt;
-    $focusedTarget = $(<span class="string">'.drop-select-target-focused:first'</span>)
+    $focusedTarget = $(<span class="string">'.select-target-focused:first'</span>)
     <span class="keyword">return</span> $focusedTarget?.length <span class="keyword">and</span> $focusedTarget.data(<span class="string">'select'</span>)
 
 searchText = <span class="string">''</span>
@@ -105,7 +105,12 @@ $(window).<span class="literal">on</span> <span class="string">'keydown'</span>,
 
 <span class="class"><span class="keyword">class</span> <span class="title">Select</span></span>
 
+    <span class="property">@defaults</span>:
+        selectLikeAlignment: <span class="string">'auto'</span>
+        className: <span class="string">'select-theme-default'</span>
+
     constructor: (<span class="property">@options</span>) -&gt;
+        <span class="property">@options</span> = $.extend {}, Select.defaults, <span class="property">@options</span>
         <span class="property">@$select</span> = $ <span class="property">@options</span>.el
 
         <span class="property">@setupTarget</span>()
@@ -114,12 +119,12 @@ $(window).<span class="literal">on</span> <span class="string">'keydown'</span>,
         <span class="property">@setupDrop</span>()
         <span class="property">@renderDrop</span>()
 
-        <span class="property">@setupSelectEvents</span>()
+        <span class="property">@setupSelect</span>()
 
     setupTarget: -&gt;
         $options = <span class="property">@$select</span>.find(<span class="string">'option'</span>)
 
-        <span class="property">@$target</span> = $ <span class="string">''</span><span class="string">'&lt;a href="javascript:;" class="drop-select-target drop-select-theme-default"&gt;&lt;/a&gt;'</span><span class="string">''</span>
+        <span class="property">@$target</span> = $ <span class="string">"""&lt;a href="javascript:;" class="select-target <span class="subst">#{ @options.className }</span>"&gt;&lt;/a&gt;"""</span>
 
         <span class="property">@$target</span>.data <span class="string">'select'</span>, @
 
@@ -130,14 +135,14 @@ $(window).<span class="literal">on</span> <span class="string">'keydown'</span>,
                 <span class="property">@$target</span>.blur()
 
         <span class="property">@$target</span>.<span class="literal">on</span> <span class="string">'focus'</span>, =&gt;
-            <span class="property">@$target</span>.addClass(<span class="string">'drop-select-target-focused'</span>)
+            <span class="property">@$target</span>.addClass(<span class="string">'select-target-focused'</span>)
 
         <span class="property">@$target</span>.<span class="literal">on</span> <span class="string">'blur'</span>, (e) =&gt;
             <span class="keyword">if</span> <span class="property">@dropSelect</span>.isOpened()
                 <span class="keyword">if</span> e.relatedTarget <span class="keyword">and</span> <span class="keyword">not</span> $(e.relatedTarget).parents(<span class="string">'.drop:first'</span>).<span class="keyword">is</span>(<span class="property">@dropSelect</span>.$drop)
                     <span class="property">@dropSelect</span>.close()
             <span class="keyword">else</span>
-                <span class="property">@$target</span>.removeClass(<span class="string">'drop-select-target-focused'</span>)
+                <span class="property">@$target</span>.removeClass(<span class="string">'select-target-focused'</span>)
 
         <span class="property">@$select</span>.after(<span class="property">@$target</span>).hide()
 
@@ -148,38 +153,48 @@ $(window).<span class="literal">on</span> <span class="string">'keydown'</span>,
     setupDrop: -&gt;
         <span class="property">@dropSelect</span> = <span class="keyword">new</span> DropSelect
             target: <span class="property">@$target</span>[<span class="number">0</span>]
-            className: <span class="string">'drop-select-theme-default'</span>
+            className: <span class="property">@options</span>.className
             attach: <span class="string">'bottom left'</span>
             constrainToWindow: <span class="literal">true</span>
             constrainToScrollParent: <span class="literal">false</span>
             openOn: <span class="string">'click'</span>
 
-        <span class="property">@dropSelect</span>.$drop.<span class="literal">on</span> <span class="string">'click'</span>, <span class="string">'.drop-select-option'</span>, (e) =&gt;
+        <span class="property">@dropSelect</span>.$drop.<span class="literal">on</span> <span class="string">'click'</span>, <span class="string">'.select-option'</span>, (e) =&gt;
             <span class="property">@selectOption</span> e.target
 
-        <span class="property">@dropSelect</span>.$drop.<span class="literal">on</span> <span class="string">'mousemove'</span>, <span class="string">'.drop-select-option'</span>, (e) =&gt;
+        <span class="property">@dropSelect</span>.$drop.<span class="literal">on</span> <span class="string">'mousemove'</span>, <span class="string">'.select-option'</span>, (e) =&gt;
             <span class="property">@highlightOption</span> e.target
 
         <span class="property">@dropSelect</span>.$drop.<span class="literal">on</span> <span class="string">'dropopen'</span>, =&gt;
             $selectedOption = <span class="property">@dropSelect</span>.$drop.find(<span class="string">'[data-selected="true"]'</span>)
-            <span class="keyword">if</span> <span class="property">@options</span>?.selectStyle <span class="keyword">is</span> <span class="literal">true</span>
-                offset = <span class="property">@dropSelect</span>.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
-                <span class="property">@dropSelect</span>.tether.offset.top = - offset
+            $content = <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.drop-content'</span>)
+
+            <span class="function"><span class="title">positionSelectStyle</span></span> = =&gt;
+                <span class="keyword">if</span> <span class="property">@dropSelect</span>.$drop.hasClass(<span class="string">'tether-abutted-left tether-abutted-bottom'</span>)
+                    offset = <span class="property">@dropSelect</span>.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
+                    <span class="property">@dropSelect</span>.$drop.css top: <span class="string">"+=<span class="subst">#{ offset }</span>"</span>
+
             <span class="property">@highlightOption</span> $selectedOption[<span class="number">0</span>]
+            <span class="property">@scrollDropContentToOption</span> $selectedOption[<span class="number">0</span>]
+
+            <span class="keyword">if</span> <span class="property">@options</span>.selectLikeAlignment <span class="keyword">is</span> <span class="string">'always'</span> <span class="keyword">or</span> (<span class="property">@options</span>.selectLikeAlignment <span class="keyword">is</span> <span class="string">'auto'</span> <span class="keyword">and</span> $content[<span class="number">0</span>].scrollHeight &lt;= $content[<span class="number">0</span>].clientHeight)
+                setTimeout positionSelectStyle
 
         <span class="property">@dropSelect</span>.$drop.<span class="literal">on</span> <span class="string">'dropclose'</span>, =&gt;
-            <span class="property">@$target</span>.removeClass(<span class="string">'drop-select-target-focused'</span>)
+            <span class="property">@$target</span>.removeClass(<span class="string">'select-target-focused'</span>)
 
     renderDrop: -&gt;
-        $dropSelectOptions = $ <span class="string">'&lt;ul class="drop-select-options"&gt;&lt;/ul&gt;'</span>
+        $dropSelectOptions = $ <span class="string">'&lt;ul class="select-options"&gt;&lt;/ul&gt;'</span>
 
         <span class="property">@$select</span>.find(<span class="string">'option'</span>).each -&gt;
             $option = $ @
-            $dropSelectOptions.append <span class="string">"""&lt;li data-selected="<span class="subst">#{ $option.<span class="keyword">is</span>(':selected') }</span>" class="drop-select-option" data-value="<span class="subst">#{ @value }</span>"&gt;<span class="subst">#{ $option.text() }</span>&lt;/li&gt;"""</span>
+            $dropSelectOptions.append <span class="string">"""&lt;li data-selected="<span class="subst">#{ $option.<span class="keyword">is</span>(':selected') }</span>" class="select-option" data-value="<span class="subst">#{ @value }</span>"&gt;<span class="subst">#{ $option.text() }</span>&lt;/li&gt;"""</span>
 
         <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.drop-content'</span>).html $dropSelectOptions[<span class="number">0</span>]
 
-    setupSelectEvents: -&gt;
+    setupSelect: -&gt;
+        <span class="property">@$select</span>.data <span class="string">'select'</span>, @
+
         <span class="property">@$select</span>.<span class="literal">on</span> <span class="string">'change'</span>, =&gt;
             <span class="property">@renderDrop</span>()
             <span class="property">@renderTarget</span>()
@@ -211,8 +226,8 @@ $(window).<span class="literal">on</span> <span class="string">'keydown'</span>,
     highlightOptionByText: (text) -&gt;
         <span class="keyword">return</span> <span class="keyword">unless</span> <span class="property">@dropSelect</span>.isOpened()
 
-        options = <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.drop-select-option'</span>).toArray()
-        currentHighlightedIndex = <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.drop-select-option-highlight'</span>).index()
+        options = <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.select-option'</span>).toArray()
+        currentHighlightedIndex = <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.select-option-highlight'</span>).index()
         <span class="keyword">return</span> <span class="keyword">unless</span> currentHighlightedIndex?
 
         isRepeatedCharacter = strIsRepeatedCharacter text
@@ -236,14 +251,14 @@ $(window).<span class="literal">on</span> <span class="string">'keydown'</span>,
             i += <span class="number">1</span>
 
     highlightOption: (option) -&gt;
-        <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.drop-select-option-highlight'</span>).removeClass(<span class="string">'drop-select-option-highlight'</span>)
-        $(option).addClass(<span class="string">'drop-select-option-highlight'</span>)
+        <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.select-option-highlight'</span>).removeClass(<span class="string">'select-option-highlight'</span>)
+        $(option).addClass(<span class="string">'select-option-highlight'</span>)
 
     moveHighlight: (directionKeyCode) -&gt;
-        $currentHighlight = <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.drop-select-option-highlight'</span>)
+        $currentHighlight = <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.select-option-highlight'</span>)
 
         <span class="keyword">if</span> <span class="keyword">not</span> $currentHighlight.length
-            <span class="keyword">return</span> <span class="property">@highlightOption</span> <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.drop-select-option:first'</span>)
+            <span class="keyword">return</span> <span class="property">@highlightOption</span> <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.select-option:first'</span>)
 
         $newHighlight = <span class="keyword">if</span> directionKeyCode <span class="keyword">is</span> UP <span class="keyword">then</span> $currentHighlight.prev() <span class="keyword">else</span> $currentHighlight.next()
         <span class="keyword">return</span> <span class="keyword">unless</span> $newHighlight.length
@@ -259,7 +274,7 @@ $(window).<span class="literal">on</span> <span class="string">'keydown'</span>,
             $content.scrollTop $option.offset().top - ($content.offset().top - $content.scrollTop())
 
     selectHighlightedOption: -&gt;
-        <span class="property">@selectOption</span> <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.drop-select-option-highlight'</span>)[<span class="number">0</span>]
+        <span class="property">@selectOption</span> <span class="property">@dropSelect</span>.$drop.find(<span class="string">'.select-option-highlight'</span>)[<span class="number">0</span>]
 
     selectOption: (option) -&gt;
         <span class="property">@$select</span>.val($(option).data(<span class="string">'value'</span>)).change()

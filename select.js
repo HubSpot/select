@@ -31,7 +31,7 @@
 
   getFocusedSelect = function() {
     var $focusedTarget;
-    $focusedTarget = $('.drop-select-target-focused:first');
+    $focusedTarget = $('.select-target-focused:first');
     return ($focusedTarget != null ? $focusedTarget.length : void 0) && $focusedTarget.data('select');
   };
 
@@ -102,21 +102,27 @@
   });
 
   Select = (function() {
+    Select.defaults = {
+      selectLikeAlignment: 'auto',
+      className: 'select-theme-default'
+    };
+
     function Select(options) {
       this.options = options;
+      this.options = $.extend({}, Select.defaults, this.options);
       this.$select = $(this.options.el);
       this.setupTarget();
       this.renderTarget();
       this.setupDrop();
       this.renderDrop();
-      this.setupSelectEvents();
+      this.setupSelect();
     }
 
     Select.prototype.setupTarget = function() {
       var $options,
         _this = this;
       $options = this.$select.find('option');
-      this.$target = $('<a href="javascript:;" class="drop-select-target drop-select-theme-default"></a>');
+      this.$target = $("<a href=\"javascript:;\" class=\"select-target " + this.options.className + "\"></a>");
       this.$target.data('select', this);
       this.$target.on('click', function() {
         if (!_this.dropSelect.isOpened()) {
@@ -126,7 +132,7 @@
         }
       });
       this.$target.on('focus', function() {
-        return _this.$target.addClass('drop-select-target-focused');
+        return _this.$target.addClass('select-target-focused');
       });
       this.$target.on('blur', function(e) {
         if (_this.dropSelect.isOpened()) {
@@ -134,7 +140,7 @@
             return _this.dropSelect.close();
           }
         } else {
-          return _this.$target.removeClass('drop-select-target-focused');
+          return _this.$target.removeClass('select-target-focused');
         }
       });
       return this.$select.after(this.$target).hide();
@@ -149,45 +155,56 @@
       var _this = this;
       this.dropSelect = new DropSelect({
         target: this.$target[0],
-        className: 'drop-select-theme-default',
+        className: this.options.className,
         attach: 'bottom left',
         constrainToWindow: true,
         constrainToScrollParent: false,
         openOn: 'click'
       });
-      this.dropSelect.$drop.on('click', '.drop-select-option', function(e) {
+      this.dropSelect.$drop.on('click', '.select-option', function(e) {
         return _this.selectOption(e.target);
       });
-      this.dropSelect.$drop.on('mousemove', '.drop-select-option', function(e) {
+      this.dropSelect.$drop.on('mousemove', '.select-option', function(e) {
         return _this.highlightOption(e.target);
       });
       this.dropSelect.$drop.on('dropopen', function() {
-        var $selectedOption, offset, _ref;
+        var $content, $selectedOption, positionSelectStyle;
         $selectedOption = _this.dropSelect.$drop.find('[data-selected="true"]');
-        if (((_ref = _this.options) != null ? _ref.selectStyle : void 0) === true) {
-          offset = _this.dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight());
-          _this.dropSelect.tether.offset.top = -offset;
+        $content = _this.dropSelect.$drop.find('.drop-content');
+        positionSelectStyle = function() {
+          var offset;
+          if (_this.dropSelect.$drop.hasClass('tether-abutted-left tether-abutted-bottom')) {
+            offset = _this.dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight());
+            return _this.dropSelect.$drop.css({
+              top: "+=" + offset
+            });
+          }
+        };
+        _this.highlightOption($selectedOption[0]);
+        _this.scrollDropContentToOption($selectedOption[0]);
+        if (_this.options.selectLikeAlignment === 'always' || (_this.options.selectLikeAlignment === 'auto' && $content[0].scrollHeight <= $content[0].clientHeight)) {
+          return setTimeout(positionSelectStyle);
         }
-        return _this.highlightOption($selectedOption[0]);
       });
       return this.dropSelect.$drop.on('dropclose', function() {
-        return _this.$target.removeClass('drop-select-target-focused');
+        return _this.$target.removeClass('select-target-focused');
       });
     };
 
     Select.prototype.renderDrop = function() {
       var $dropSelectOptions;
-      $dropSelectOptions = $('<ul class="drop-select-options"></ul>');
+      $dropSelectOptions = $('<ul class="select-options"></ul>');
       this.$select.find('option').each(function() {
         var $option;
         $option = $(this);
-        return $dropSelectOptions.append("<li data-selected=\"" + ($option.is(':selected')) + "\" class=\"drop-select-option\" data-value=\"" + this.value + "\">" + ($option.text()) + "</li>");
+        return $dropSelectOptions.append("<li data-selected=\"" + ($option.is(':selected')) + "\" class=\"select-option\" data-value=\"" + this.value + "\">" + ($option.text()) + "</li>");
       });
       return this.dropSelect.$drop.find('.drop-content').html($dropSelectOptions[0]);
     };
 
-    Select.prototype.setupSelectEvents = function() {
+    Select.prototype.setupSelect = function() {
       var _this = this;
+      this.$select.data('select', this);
       return this.$select.on('change', function() {
         _this.renderDrop();
         return _this.renderTarget();
@@ -227,8 +244,8 @@
       if (!this.dropSelect.isOpened()) {
         return;
       }
-      options = this.dropSelect.$drop.find('.drop-select-option').toArray();
-      currentHighlightedIndex = this.dropSelect.$drop.find('.drop-select-option-highlight').index();
+      options = this.dropSelect.$drop.find('.select-option').toArray();
+      currentHighlightedIndex = this.dropSelect.$drop.find('.select-option-highlight').index();
       if (currentHighlightedIndex == null) {
         return;
       }
@@ -255,15 +272,15 @@
     };
 
     Select.prototype.highlightOption = function(option) {
-      this.dropSelect.$drop.find('.drop-select-option-highlight').removeClass('drop-select-option-highlight');
-      return $(option).addClass('drop-select-option-highlight');
+      this.dropSelect.$drop.find('.select-option-highlight').removeClass('select-option-highlight');
+      return $(option).addClass('select-option-highlight');
     };
 
     Select.prototype.moveHighlight = function(directionKeyCode) {
       var $currentHighlight, $newHighlight;
-      $currentHighlight = this.dropSelect.$drop.find('.drop-select-option-highlight');
+      $currentHighlight = this.dropSelect.$drop.find('.select-option-highlight');
       if (!$currentHighlight.length) {
-        return this.highlightOption(this.dropSelect.$drop.find('.drop-select-option:first'));
+        return this.highlightOption(this.dropSelect.$drop.find('.select-option:first'));
       }
       $newHighlight = directionKeyCode === UP ? $currentHighlight.prev() : $currentHighlight.next();
       if (!$newHighlight.length) {
@@ -283,7 +300,7 @@
     };
 
     Select.prototype.selectHighlightedOption = function() {
-      return this.selectOption(this.dropSelect.$drop.find('.drop-select-option-highlight')[0]);
+      return this.selectOption(this.dropSelect.$drop.find('.select-option-highlight')[0]);
     };
 
     Select.prototype.selectOption = function(option) {

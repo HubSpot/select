@@ -28,34 +28,60 @@
         </div>
     </div>
 </div>
-<div class="hs-page-width-normal"><div class="row-fluid"><div class="span6"><h1 class="hs-doc-page-header"><a class="hs-doc-homepage-link" href="../">select</a></h1></div><div class="span6 hidden-phone"><div class="hs-doc-slim-github-link-wrapper"><a class="hs-doc-slim-github-link" href="http://github.com/HubSpot/select">On GitHub</a></div></div></div></div><div class="hs-page-width-normal"><div class="row-fluid"><div class="span3"><div class="hs-doc-sidenav"><nav><ul class="hs-public-sidenav"><li class=""><a href="../">Home</a></li><li><b>Annotated source</b></li><li><a target="_blank" href="../source/select.html">select.coffee</a></li></ul></nav></div></div><div class="span9"><div class="hs-doc-content"><p><script src="docs/js/intro.js"></script></p>
-<p><script src="tether.js"></script></p>
-<p><script src="constraint.js"></script></p>
-<p><script src="markAttachment.js"></script></p>
-<link rel="stylesheet" href="docs/css/intro.css"></link>
+<div class="hs-page-width-normal"><div class="row-fluid"><div class="span6"><h1 class="hs-doc-page-header"><a class="hs-doc-homepage-link" href="../">select</a></h1></div><div class="span6 hidden-phone"><div class="hs-doc-slim-github-link-wrapper"><a class="hs-doc-slim-github-link" href="http://github.com/HubSpot/select">On GitHub</a></div></div></div></div><div class="hs-page-width-normal"><div class="row-fluid"><div class="span3"><div class="hs-doc-sidenav"><nav><ul class="hs-public-sidenav"><li class=""><a href="../">Home</a></li><li><b>Annotated source</b></li><li><a target="_blank" href="../source/select.html">select.coffee</a></li></ul></nav></div></div><div class="span9"><div class="hs-doc-content"><p><link rel="stylesheet" href="/select/css/select-theme-default.css" /></p>
+<p><link rel="stylesheet" href="/select/css/select-theme-dark.css" /></p>
+<p><link rel="stylesheet" href="/select/css/select-theme-chosen.css" /></p>
+<script src="/select/deps/tether/tether.min.js"></script>
+<script src="/select/deps/drop/drop.min.js"></script>
+<script src="/select/select.min.js"></script>
+<script>$(function(){ $('select').each(function(){ new Select({ el: this, className: $(this).attr('data-className') }); }); });</script>
 
 <h2>Select</h2>
 <p>Select is a javascript and CSS library for creating styleable select elements.</p>
-<p>Select uses <a href="http://github.hubspot.com/tether"><code>Tether</code> and <code>Drop</code></a> to create and position its element container.</p>
+<p>Select uses <a href="http://github.hubspot.com/tether">Tether</a> and <a href="http://github.hubspot.com/drop">Drop</a> to create and position its element container.</p>
 <h3>Dependencies</h3>
 <ul>
-<li><code>Tether</code> – <a href="https://github.com/HubSpot/tether/blob/master/tether.js">Source</a></li>
-<li><code>Drop</code> – <a href="https://github.com/HubSpot/tether/blob/master/drop.js">Source</a></li>
+<li>jQuery</li>
+<li>Tether – <a href="https://github.com/HubSpot/tether">GitHub</a>, <a href="https://github.com/HubSpot/tether/releases">Download</a></li>
+<li>Drop – <a href="https://github.com/HubSpot/drop">GitHub</a>, <a href="https://github.com/HubSpot/drop/releases">Download</a></li>
 </ul>
 <h3>Usage</h3>
-<p>Simply call:</p>
-<pre><code class="lang-coffeescript"><span class="keyword">new</span> Select { el }</code></pre>
-<h3>Methods</h3>
-<p>Coming soon...</p>
-<h3>Options</h3>
-<p>You can pass these when constructing <code>Select</code>.</p>
-<ul>
-<li><code>el</code>: The original <code>&lt;select&gt;</code> element to convert</li>
-<li><code>selectStyle</code> (Default <code>false</code>): When <code>true</code>, aligns the options chooser the way a real <code>&lt;select&gt;</code> is aligned. When <code>false</code>, aligns the options chooser like a canonical dropdown menu.</li>
-</ul>
+<h4>Initialization</h4>
+<p>To initialize a single <code>selectElement</code>, simply create a <code>new Select</code> object.</p>
+<pre><code class="lang-coffeescript"><span class="keyword">new</span> Select
+    el: selectElement</code></pre>
+<p>To initialize all selects on a page, you could do something like this:</p>
+<pre><code class="lang-coffeescript">$(<span class="string">'select'</span>).each -&gt; <span class="keyword">new</span> Select el: @</code></pre>
+<h4>Changing the theme</h4>
+<p>To change from the default theme, change the <code>className</code> property.</p>
+<pre><code class="lang-coffeescript"><span class="keyword">new</span> Select
+    el: selectElement
+    className: <span class="string">'select-theme-dark'</span></code></pre>
+<h4>Changing the positioning</h4>
+<p>Select has an option called <code>selectLikeAlignment</code> which allows you to change whether
+the <span data-tooltip-content="Drop.js is a dependency of Select.js">drop</span> is positioned like a real
+select element or like a canonical dropdown menu.</p>
+<p>By default, this property is set to <code>&quot;auto&quot;</code>, meaning it will align the <span data-tooltip-content="Drop.js is a dependency of Select.js">drop</span> like a select only when the number of items in the options chooser does not cause it to scroll. The other options are <code>&quot;always&quot;</code> and never <code>&quot;never&quot;</code>.</p>
+<p>In this example, we Select to always open the <span data-tooltip-content="Drop.js is a dependency of Select.js">drop</span> like a dropdown menu.</p>
+<pre><code class="lang-coffeescript"><span class="keyword">new</span> Select
+    el: selectElement
+    selectLikeAlignment: <span class="string">'never'</span></code></pre>
 <h3>Themes</h3>
-<p>More coming soon...</p>
-</div></div></div></div><div class="hs3-public-footer"><div class="row-fluid hs-page-width-normal"><div class="span3 hidden-phone"><h3>HubSpot</h3><ul><li><a href="http://www.hubspot.com">Home</a></li><li><a href="http://www.hubspot.com/software">Products</a></li><li><a href="http://www.hubspot.com/internet-marketing-company/">About</a></li></ul></div><div class="span3"><h3>Projects</h3><ul><li><a href="http://github.hubspot.com/messenger">Messenger</a></li><li><a href="http://github.hubspot.com/facewall">Facewall</a></li><li><a href="http://github.hubspot.com/jquery-zoomer">jQuery Zoomer</a></li><li><a href="http://github.hubspot.com/humanize">Humanize</a></li><li><a href="http://github.hubspot.com/teeble">Teeble</a></li></ul></div><div class="span3"><h3>Development Team</h3><ul><li><a href="http://dev.hubspot.com">Home</a></li><li><a href="http://dev.hubspot.com/teams">Teams</a></li><li><a href="http://dev.hubspot.com/people">People</a></li><li><a href="http://dev.hubspot.com/jobs">Jobs</a></li></ul></div><div class="span3 hidden-phone"><h3>Developer API</h3><ul><li><a href="http://developers.hubspot.com/">Developer Documentation</a></li></ul></div></div></div><!-- Start of Async HubSpot Analytics Code -->
+<p>Currently there are three themes for Select.js.</p>
+<table>
+<thead>
+<tr>
+<th>Theme</th>
+<th>Class name</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Default</td><td>(No class name necessary)</td><td><select data-className="select-theme-default"><option value="" selected="selected">Select a state...</option> <option value="AL">Alabama</option> <option value="AK">Alaska</option> <option value="AZ">Arizona</option> <option value="AR">Arkansas</option> <option value="CA">California</option> <option value="CO">Colorado</option> <option value="CT">Connecticut</option> <option value="DE">Delaware</option> <option value="DC">District Of Columbia</option> <option value="FL">Florida</option> <option value="GA">Georgia</option> <option value="HI">Hawaii</option> <option value="ID">Idaho</option> <option value="IL">Illinois</option> <option value="IN">Indiana</option> <option value="IA">Iowa</option> <option value="KS">Kansas</option> <option value="KY">Kentucky</option> <option value="LA">Louisiana</option> <option value="ME">Maine</option> <option value="MD">Maryland</option> <option value="MA">Massachusetts</option> <option value="MI">Michigan</option> <option value="MN">Minnesota</option> <option value="MS">Mississippi</option> <option value="MO">Missouri</option> <option value="MT">Montana</option> <option value="NE">Nebraska</option> <option value="NV">Nevada</option> <option value="NH">New Hampshire</option> <option value="NJ">New Jersey</option> <option value="NM">New Mexico</option> <option value="NY">New York</option> <option value="NC">North Carolina</option> <option value="ND">North Dakota</option> <option value="OH">Ohio</option> <option value="OK">Oklahoma</option> <option value="OR">Oregon</option> <option value="PA">Pennsylvania</option> <option value="RI">Rhode Island</option> <option value="SC">South Carolina</option> <option value="SD">South Dakota</option> <option value="TN">Tennessee</option> <option value="TX">Texas</option> <option value="UT">Utah</option> <option value="VT">Vermont</option> <option value="VA">Virginia</option> <option value="WA">Washington</option> <option value="WV">West Virginia</option> <option value="WI">Wisconsin</option> <option value="WY">Wyoming</option></select></tr>
+<tr><td>Dark</td><td>select-theme-dark</td><td><select data-className="select-theme-dark"><option value="" selected="selected">Select a state...</option> <option value="AL">Alabama</option> <option value="AK">Alaska</option> <option value="AZ">Arizona</option> <option value="AR">Arkansas</option> <option value="CA">California</option> <option value="CO">Colorado</option> <option value="CT">Connecticut</option> <option value="DE">Delaware</option> <option value="DC">District Of Columbia</option> <option value="FL">Florida</option> <option value="GA">Georgia</option> <option value="HI">Hawaii</option> <option value="ID">Idaho</option> <option value="IL">Illinois</option> <option value="IN">Indiana</option> <option value="IA">Iowa</option> <option value="KS">Kansas</option> <option value="KY">Kentucky</option> <option value="LA">Louisiana</option> <option value="ME">Maine</option> <option value="MD">Maryland</option> <option value="MA">Massachusetts</option> <option value="MI">Michigan</option> <option value="MN">Minnesota</option> <option value="MS">Mississippi</option> <option value="MO">Missouri</option> <option value="MT">Montana</option> <option value="NE">Nebraska</option> <option value="NV">Nevada</option> <option value="NH">New Hampshire</option> <option value="NJ">New Jersey</option> <option value="NM">New Mexico</option> <option value="NY">New York</option> <option value="NC">North Carolina</option> <option value="ND">North Dakota</option> <option value="OH">Ohio</option> <option value="OK">Oklahoma</option> <option value="OR">Oregon</option> <option value="PA">Pennsylvania</option> <option value="RI">Rhode Island</option> <option value="SC">South Carolina</option> <option value="SD">South Dakota</option> <option value="TN">Tennessee</option> <option value="TX">Texas</option> <option value="UT">Utah</option> <option value="VT">Vermont</option> <option value="VA">Virginia</option> <option value="WA">Washington</option> <option value="WV">West Virginia</option> <option value="WI">Wisconsin</option> <option value="WY">Wyoming</option></select></tr>
+<tr><td>Chosen</td><td>select-theme-chosen</td><td><select data-className="select-theme-chosen"><option value="" selected="selected">Select a state...</option> <option value="AL">Alabama</option> <option value="AK">Alaska</option> <option value="AZ">Arizona</option> <option value="AR">Arkansas</option> <option value="CA">California</option> <option value="CO">Colorado</option> <option value="CT">Connecticut</option> <option value="DE">Delaware</option> <option value="DC">District Of Columbia</option> <option value="FL">Florida</option> <option value="GA">Georgia</option> <option value="HI">Hawaii</option> <option value="ID">Idaho</option> <option value="IL">Illinois</option> <option value="IN">Indiana</option> <option value="IA">Iowa</option> <option value="KS">Kansas</option> <option value="KY">Kentucky</option> <option value="LA">Louisiana</option> <option value="ME">Maine</option> <option value="MD">Maryland</option> <option value="MA">Massachusetts</option> <option value="MI">Michigan</option> <option value="MN">Minnesota</option> <option value="MS">Mississippi</option> <option value="MO">Missouri</option> <option value="MT">Montana</option> <option value="NE">Nebraska</option> <option value="NV">Nevada</option> <option value="NH">New Hampshire</option> <option value="NJ">New Jersey</option> <option value="NM">New Mexico</option> <option value="NY">New York</option> <option value="NC">North Carolina</option> <option value="ND">North Dakota</option> <option value="OH">Ohio</option> <option value="OK">Oklahoma</option> <option value="OR">Oregon</option> <option value="PA">Pennsylvania</option> <option value="RI">Rhode Island</option> <option value="SC">South Carolina</option> <option value="SD">South Dakota</option> <option value="TN">Tennessee</option> <option value="TX">Texas</option> <option value="UT">Utah</option> <option value="VT">Vermont</option> <option value="VA">Virginia</option> <option value="WA">Washington</option> <option value="WV">West Virginia</option> <option value="WI">Wisconsin</option> <option value="WY">Wyoming</option></select></tr>
+</tbody>
+</table></div></div></div></div><div class="hs3-public-footer"><div class="row-fluid hs-page-width-normal"><div class="span3 hidden-phone"><h3>HubSpot</h3><ul><li><a href="http://www.hubspot.com">Home</a></li><li><a href="http://www.hubspot.com/software">Products</a></li><li><a href="http://www.hubspot.com/internet-marketing-company/">About</a></li></ul></div><div class="span3"><h3>Projects</h3><ul><li><a href="http://github.hubspot.com/messenger">Messenger</a></li><li><a href="http://github.hubspot.com/facewall">Facewall</a></li><li><a href="http://github.hubspot.com/jquery-zoomer">jQuery Zoomer</a></li><li><a href="http://github.hubspot.com/humanize">Humanize</a></li><li><a href="http://github.hubspot.com/teeble">Teeble</a></li></ul></div><div class="span3"><h3>Development Team</h3><ul><li><a href="http://dev.hubspot.com">Home</a></li><li><a href="http://dev.hubspot.com/teams">Teams</a></li><li><a href="http://dev.hubspot.com/people">People</a></li><li><a href="http://dev.hubspot.com/jobs">Jobs</a></li></ul></div><div class="span3 hidden-phone"><h3>Developer API</h3><ul><li><a href="http://developers.hubspot.com/">Developer Documentation</a></li></ul></div></div></div><!-- Start of Async HubSpot Analytics Code -->
 <script type="text/javascript">
     (function(d,s,i,r) {
         if (d.getElementById(i)){return;}
