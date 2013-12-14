@@ -6,7 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <script type="text/javascript" src="//use.typekit.net/jbn8qxr.js"></script>
         <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-        <link rel="stylesheet" href="/select/deps/tether/css/drop.css" />
+        <!--link rel="stylesheet" href="/select/deps/tether/css/drop.css" /-->
+        <link rel="stylesheet" href="http://github.hubspot.com/tether/css/drop.css" />
         <link rel="stylesheet" href="/select/css/drop-select-theme-default.css" />
         <style>
             html {
@@ -292,7 +293,7 @@
         </div>
 
         <div class="scroll-parent">
-            <select class="drop-select">
+            <select data-select-style="never" class="drop-select">
                 <option value="">Select a country...</option>
                 <option value="United States">United States</option>
                 <option value="United Kingdom">United Kingdom</option>
@@ -610,7 +611,7 @@
         </div>
 
         <div class="scroll-parent">
-            <select class="drop-select">
+            <select data-select-style="auto" class="drop-select">
                 <option value="" selected="selected">Select a state...</option>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
@@ -682,7 +683,7 @@
         </div>
 
         <div class="scroll-parent">
-            <select class="drop-select">
+            <select data-select-style="never" class="drop-select">
                 <option value="potato-chips">Potato chips</option>
                 <option value="chips-and-salsa">Chips and salsa</option>
                 <option value="cookies">Cookies</option>
@@ -709,7 +710,7 @@
 
         <div class="scroll-parent">
             Align dropdown items to target on open (like a real select):<br/>
-            <select data-select-style="true" class="drop-select">
+            <select data-select-style="auto" class="drop-select">
                 <option value="potato-chips">Potato chips</option>
                 <option selected="true" value="chips-and-salsa">Chips and salsa</option>
                 <option value="cookies">Cookies</option>
@@ -736,7 +737,7 @@
         </div>
 
         <div class="scroll-parent">
-            <select class="drop-select">
+            <select data-select-style="never" class="drop-select">
                 <option value="">Select a snack...</option>
                 <option value="potato-chips">Potato chips</option>
                 <option value="chips-and-salsa">Chips and salsa</option>
@@ -755,7 +756,7 @@
             $('select.drop-select').each(function(){
                 new Select({
                     el: this,
-                    selectStyle: $(this).attr('data-select-style') === 'true'
+                    selectStyle: $(this).attr('data-select-style') || 'auto'
                 });
             });
         </script>
