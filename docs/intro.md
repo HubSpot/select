@@ -23,16 +23,12 @@ Simply call:
 new Select { el }
 ```
 
-### Methods
-
-Coming soon...
-
 ### Options
 
 You can pass these when constructing `Select`.
 
 - `el`: The original `<select>` element to convert
-- `selectStyle` (Default `false`): When `true`, aligns the options chooser the way a real `<select>` is aligned. When `false`, aligns the options chooser like a canonical dropdown menu.
+- `selectStyle` (`"auto"` (__default__), `"always"`, `"never"`. ): When `"always"`, aligns the options chooser the way a real `<select>` is aligned. When `"never"`, aligns the options chooser like a canonical dropdown menu. When `"auto"`, it will behave like a select only when the number of items in the options chooser does not cause it to scroll.
 
 ### Themes
 

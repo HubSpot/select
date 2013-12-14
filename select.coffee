@@ -73,7 +73,11 @@ $(window).on 'keydown', (e) ->
 
 class Select
 
+    @defaults:
+        selectStyle: 'auto'
+
     constructor: (@options) ->
+        @options = $.extend {}, Select.defaults, @options
         @$select = $ @options.el
 
         @setupTarget()
@@ -130,10 +134,18 @@ class Select
 
         @dropSelect.$drop.on 'dropopen', =>
             $selectedOption = @dropSelect.$drop.find('[data-selected="true"]')
-            if @options?.selectStyle is true
-                offset = @dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
-                @dropSelect.tether.offset.top = - offset
+            $content = @dropSelect.$drop.find('.drop-content')
+
+            positionSelectStyle = =>
+                if @dropSelect.$drop.hasClass('tether-abutted-left tether-abutted-bottom')
+                    offset = @dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
+                    @dropSelect.$drop.css top: "+=#{ offset }"
+
             @highlightOption $selectedOption[0]
+            @scrollDropContentToOption $selectedOption[0]
+
+            if @options.selectStyle is 'always' or (@options.selectStyle is 'auto' and $content[0].scrollHeight <= $content[0].clientHeight)
+                setTimeout positionSelectStyle
 
         @dropSelect.$drop.on 'dropclose', =>
             @$target.removeClass('drop-select-target-focused')

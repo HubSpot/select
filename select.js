@@ -102,8 +102,13 @@
   });
 
   Select = (function() {
+    Select.defaults = {
+      selectStyle: 'auto'
+    };
+
     function Select(options) {
       this.options = options;
+      this.options = $.extend({}, Select.defaults, this.options);
       this.$select = $(this.options.el);
       this.setupTarget();
       this.renderTarget();
@@ -162,13 +167,23 @@
         return _this.highlightOption(e.target);
       });
       this.dropSelect.$drop.on('dropopen', function() {
-        var $selectedOption, offset, _ref;
+        var $content, $selectedOption, positionSelectStyle;
         $selectedOption = _this.dropSelect.$drop.find('[data-selected="true"]');
-        if (((_ref = _this.options) != null ? _ref.selectStyle : void 0) === true) {
-          offset = _this.dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight());
-          _this.dropSelect.tether.offset.top = -offset;
+        $content = _this.dropSelect.$drop.find('.drop-content');
+        positionSelectStyle = function() {
+          var offset;
+          if (_this.dropSelect.$drop.hasClass('tether-abutted-left tether-abutted-bottom')) {
+            offset = _this.dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight());
+            return _this.dropSelect.$drop.css({
+              top: "+=" + offset
+            });
+          }
+        };
+        _this.highlightOption($selectedOption[0]);
+        _this.scrollDropContentToOption($selectedOption[0]);
+        if (_this.options.selectStyle === 'always' || (_this.options.selectStyle === 'auto' && $content[0].scrollHeight <= $content[0].clientHeight)) {
+          return setTimeout(positionSelectStyle);
         }
-        return _this.highlightOption($selectedOption[0]);
       });
       return this.dropSelect.$drop.on('dropclose', function() {
         return _this.$target.removeClass('drop-select-target-focused');
