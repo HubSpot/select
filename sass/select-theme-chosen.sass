@@ -1,0 +1,135 @@
+@import compass/css3
+@import compass/utilities/general/clearfix
+
+@import no-mobile-tap-highlight
+@import user-select
+@import checkmark
+
+@import ../deps/drop/sass/drop
+
+$optionLineHeight: 19px
+$paddingTopBottom: 6px
+
+$maxRows: 8
+$maxRowsMobile: 5
+$optionHeight: $optionLineHeight + (2 * $paddingTopBottom)
+$maxContentSize: $maxRows * $optionHeight
+$maxContentSizeMobile: $maxRowsMobile * $optionHeight
+$mobileBreakPointSize: ($maxRows + 4) * $optionHeight
+
+.select-theme-chosen
+    font-family: "Helvetica Neue", sans-serif
+    font-size: 13px
+
+    &, & *, & *:after, & *:before
+        +box-sizing(border-box)
+
+.drop.select-theme-chosen
+
+    .drop-content
+        +border-radius(5px)
+        +box-shadow(0 0 0 1px rgba(0, 0, 0, .1), 0 2px 8px rgba(0, 0, 0, .2))
+        background: #fff
+        color: #444
+        overflow: auto
+        max-width: $maxContentSize
+        max-height: $maxContentSize
+
+        @media (max-width: $mobileBreakPointSize), (max-height: $mobileBreakPointSize)
+            max-width: $maxContentSizeMobile
+            max-height: $maxContentSizeMobile
+
+    .select-options
+        +no-mobile-tap-highlight
+        margin: 0
+        padding: 0
+
+        .select-option
+            +no-mobile-tap-highlight
+            position: relative
+            list-style: none
+            margin: 0
+            line-height: $optionLineHeight
+            padding: $paddingTopBottom 11px $paddingTopBottom 30px
+            display: block
+            cursor: pointer
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+
+            &[data-selected="true"]
+
+                &:before
+                    +checkmark(#444)
+                    position: absolute
+                    left: 13px
+                    top: 0
+                    top: 5px
+                    height: 11px
+                    width: 11px
+                    margin: auto
+
+            &:hover, &.select-option-highlight
+                +background-image(linear-gradient(#3875D7 20%, #2A62BC 90%))
+                background-color: #3875D7
+                color: #fff
+
+                &[data-selected="true"]:before
+                    +checkmark(#fff)
+
+            &:first-child
+                +border-radius(5px 5px 0 0)
+
+            &:last-child
+                +border-radius(0 0 5px 5px)
+
+.select-target.select-theme-chosen
+    +inline-block
+    +border-radius(5px)
+    +user-select(none)
+    +no-mobile-tap-highlight
+    +box-shadow(0 0 3px #FFF inset, 0 1px 1px rgba(0, 0, 0, 0.1))
+    +background-image(linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%))
+    position: relative
+    padding: 3px 30px 2px 11px
+    background: #f6f6f6
+    border: 1px solid #aaa
+    cursor: pointer
+    color: #444
+    text-decoration: none
+    white-space: nowrap
+    max-width: 100%
+    overflow: hidden
+    text-overflow: ellipsis
+    line-height: 24px
+
+    &.select-target-focused, &.select-target-focused:focus
+        border-color: #5897FB
+        outline: none
+
+    b
+        position: absolute
+        right: 13px
+        top: 0
+        bottom: 1px
+        margin: auto
+        height: 16px
+        width: 26px
+
+        &:before, &:after
+            content: ""
+            display: block
+            position: absolute
+            margin: auto
+            right: 0
+            height: 0
+            width: 0
+            border: 3px solid transparent
+
+        &:before
+            top: 0
+            border-bottom-color: inherit
+
+        &:after
+            bottom: 0
+            border-top-color: inherit
