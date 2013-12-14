@@ -75,7 +75,7 @@ class Select
 
     @defaults:
         selectLikeAlignment: 'auto'
-        theme: 'select-theme-default'
+        className: 'select-theme-default'
 
     constructor: (@options) ->
         @options = $.extend {}, Select.defaults, @options
@@ -121,7 +121,7 @@ class Select
     setupDrop: ->
         @dropSelect = new DropSelect
             target: @$target[0]
-            className: @options.theme
+            className: @options.className
             attach: 'bottom left'
             constrainToWindow: true
             constrainToScrollParent: false

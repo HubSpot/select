@@ -104,7 +104,7 @@
   Select = (function() {
     Select.defaults = {
       selectLikeAlignment: 'auto',
-      theme: 'select-theme-default'
+      className: 'select-theme-default'
     };
 
     function Select(options) {
@@ -155,7 +155,7 @@
       var _this = this;
       this.dropSelect = new DropSelect({
         target: this.$target[0],
-        className: this.options.theme,
+        className: this.options.className,
         attach: 'bottom left',
         constrainToWindow: true,
         constrainToScrollParent: false,
