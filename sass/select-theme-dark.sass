@@ -17,12 +17,12 @@ $maxContentSize: $maxRows * $optionHeight
 $maxContentSizeMobile: $maxRowsMobile * $optionHeight
 $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
 
-.select-theme-default
+.select-theme-dark
 
     &, & *, & *:after, & *:before
         +box-sizing(border-box)
 
-.drop.select-theme-default
+.drop.select-theme-dark
 
     .drop-content
         +border-radius(.25em)
@@ -59,7 +59,7 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
             &[data-selected="true"]
 
                 &:before
-                    +checkmark(#444)
+                    +checkmark(#b9b9b9)
                     position: absolute
                     left: 1em
                     top: 0
@@ -81,17 +81,17 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
             &:last-child
                 +border-radius(0 0 .25em .25em)
 
-.select-target.select-theme-default
+.select-target.select-theme-dark
     +inline-block
     +border-radius(.25em)
     +user-select(none)
     +no-mobile-tap-highlight
     position: relative
     padding: $paddingTopBottom 3em $paddingTopBottom 1em
-    background: #f6f6f6
-    border: .18em solid #ddd
+    background: #252525
+    border: .18em solid #151515
     cursor: pointer
-    color: #444
+    color: #b9b9b9
     text-decoration: none
     white-space: nowrap
     max-width: 100%
@@ -99,8 +99,8 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
     text-overflow: ellipsis
 
     &:hover
-        border-color: #aaa
-        color: #000
+        border-color: #000
+        color: #fff
 
     &.select-target-focused, &.select-target-focused:focus
         border-color: #63a2f1
