@@ -92,7 +92,7 @@ class Select
     setupTarget: ->
         $options = @$select.find('option')
 
-        @$target = $ '''<a href="javascript:;" class="select-target select-theme-default"></a>'''
+        @$target = $ """<a href="javascript:;" class="select-target #{ @options.className }"></a>"""
 
         @$target.data 'select', @
 

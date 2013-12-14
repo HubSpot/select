@@ -122,7 +122,7 @@
       var $options,
         _this = this;
       $options = this.$select.find('option');
-      this.$target = $('<a href="javascript:;" class="select-target select-theme-default"></a>');
+      this.$target = $("<a href=\"javascript:;\" class=\"select-target " + this.options.className + "\"></a>");
       this.$target.data('select', this);
       this.$target.on('click', function() {
         if (!_this.dropSelect.isOpened()) {
