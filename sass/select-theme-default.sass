@@ -5,22 +5,24 @@
 @import user-select
 @import checkmark
 
+@import ../deps/drop/sass/drop
+
 $optionLineHeight: 1.25rem
 $paddingTopBottom: .5rem
 
-$maxRows: 10
-$maxRowsMobile: 6
+$maxRows: 8
+$maxRowsMobile: 5
 $optionHeight: $optionLineHeight + (2 * $paddingTopBottom)
 $maxContentSize: $maxRows * $optionHeight
 $maxContentSizeMobile: $maxRowsMobile * $optionHeight
 $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
 
-.drop-select-theme-default
+.select-theme-default
 
     &, & *, & *:after, & *:before
         +box-sizing(border-box)
 
-.drop.drop-select-theme-default
+.drop.select-theme-default
 
     .drop-content
         +border-radius(.25em)
@@ -36,12 +38,12 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
             max-width: $maxContentSizeMobile
             max-height: $maxContentSizeMobile
 
-    .drop-select-options
+    .select-options
         +no-mobile-tap-highlight
         margin: 0
         padding: 0
 
-        .drop-select-option
+        .select-option
             +no-mobile-tap-highlight
             position: relative
             list-style: none
@@ -66,7 +68,7 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
                     width: 1em
                     margin: auto
 
-            &:hover, &.drop-select-option-highlight
+            &:hover, &.select-option-highlight
                 background: #63a2f1
                 color: #fff
 
@@ -79,7 +81,7 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
             &:last-child
                 +border-radius(0 0 .25em .25em)
 
-.drop-select-target.drop-select-theme-default
+.select-target.select-theme-default
     +inline-block
     +border-radius(.25em)
     +user-select(none)
@@ -100,7 +102,7 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
         border-color: #aaa
         color: #000
 
-    &.drop-select-target-focused, &.drop-select-target-focused:focus
+    &.select-target-focused, &.select-target-focused:focus
         border-color: #63a2f1
         outline: none
 
