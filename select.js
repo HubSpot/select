@@ -103,7 +103,7 @@
 
   Select = (function() {
     Select.defaults = {
-      selectStyle: 'auto'
+      selectLikeAlignment: 'auto'
     };
 
     function Select(options) {
@@ -181,7 +181,7 @@
         };
         _this.highlightOption($selectedOption[0]);
         _this.scrollDropContentToOption($selectedOption[0]);
-        if (_this.options.selectStyle === 'always' || (_this.options.selectStyle === 'auto' && $content[0].scrollHeight <= $content[0].clientHeight)) {
+        if (_this.options.selectLikeAlignment === 'always' || (_this.options.selectLikeAlignment === 'auto' && $content[0].scrollHeight <= $content[0].clientHeight)) {
           return setTimeout(positionSelectStyle);
         }
       });

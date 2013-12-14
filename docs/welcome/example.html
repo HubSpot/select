@@ -293,7 +293,7 @@
         </div>
 
         <div class="scroll-parent">
-            <select data-select-style="never" class="drop-select">
+            <select data-select-like-alignement="never" class="drop-select">
                 <option value="">Select a country...</option>
                 <option value="United States">United States</option>
                 <option value="United Kingdom">United Kingdom</option>
@@ -611,7 +611,7 @@
         </div>
 
         <div class="scroll-parent">
-            <select data-select-style="auto" class="drop-select">
+            <select data-select-like-alignement="auto" class="drop-select">
                 <option value="" selected="selected">Select a state...</option>
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
@@ -683,7 +683,7 @@
         </div>
 
         <div class="scroll-parent">
-            <select data-select-style="never" class="drop-select">
+            <select data-select-like-alignement="never" class="drop-select">
                 <option value="potato-chips">Potato chips</option>
                 <option value="chips-and-salsa">Chips and salsa</option>
                 <option value="cookies">Cookies</option>
@@ -710,7 +710,7 @@
 
         <div class="scroll-parent">
             Align dropdown items to target on open (like a real select):<br/>
-            <select data-select-style="auto" class="drop-select">
+            <select data-select-like-alignement="auto" class="drop-select">
                 <option value="potato-chips">Potato chips</option>
                 <option selected="true" value="chips-and-salsa">Chips and salsa</option>
                 <option value="cookies">Cookies</option>
@@ -737,7 +737,7 @@
         </div>
 
         <div class="scroll-parent">
-            <select data-select-style="never" class="drop-select">
+            <select data-select-like-alignement="never" class="drop-select">
                 <option value="">Select a snack...</option>
                 <option value="potato-chips">Potato chips</option>
                 <option value="chips-and-salsa">Chips and salsa</option>
@@ -756,7 +756,7 @@
             $('select.drop-select').each(function(){
                 new Select({
                     el: this,
-                    selectStyle: $(this).attr('data-select-style') || 'auto'
+                    selectLikeAlignment: $(this).attr('data-select-like-alignement') || 'auto'
                 });
             });
         </script>

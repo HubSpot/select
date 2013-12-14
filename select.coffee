@@ -74,7 +74,7 @@ $(window).on 'keydown', (e) ->
 class Select
 
     @defaults:
-        selectStyle: 'auto'
+        selectLikeAlignment: 'auto'
 
     constructor: (@options) ->
         @options = $.extend {}, Select.defaults, @options
@@ -144,7 +144,7 @@ class Select
             @highlightOption $selectedOption[0]
             @scrollDropContentToOption $selectedOption[0]
 
-            if @options.selectStyle is 'always' or (@options.selectStyle is 'auto' and $content[0].scrollHeight <= $content[0].clientHeight)
+            if @options.selectLikeAlignment is 'always' or (@options.selectLikeAlignment is 'auto' and $content[0].scrollHeight <= $content[0].clientHeight)
                 setTimeout positionSelectStyle
 
         @dropSelect.$drop.on 'dropclose', =>
