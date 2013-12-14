@@ -2,79 +2,124 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Select – Styleable select elements built on Tether</title>
-    <meta name="description" content="Select is a Javascript and CSS library. It is free and open source and was developed by HubSpot developer Adam Schwartz (@adamfschwartz).">
+    <title>Select.js – Styleable select elements built on Tether.js</title>
+    <meta name="description" content="Select.js is a Javascript and CSS library for creating styleable select elements. It is part of the Tether.js family of UI libraries. It is free and open source and was developed by HubSpot developer Adam Schwartz (@adamfschwartz).">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link rel="icon" href="http://static.hubspot.com/favicon.ico">
 
     <script type="text/javascript" src="//use.typekit.net/jbn8qxr.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
-    <!-- Tether drop themes -->
-    <link rel="stylesheet" href="/tether/css/drop.css" />
-    <link rel="stylesheet" href="/tether/css/drop-theme-default.css" />
-    <link rel="stylesheet" href="/tether/css/drop-theme-arrows.css" />
-    <link rel="stylesheet" href="/tether/css/drop-tooltip-theme-arrows.css" />
+    <link rel="stylesheet" href="/static-resources/css/documentation.css">
+
+    <!-- Select themes -->
+    <link rel="stylesheet" href="/select/css/select-theme-default.css" />
 
     <!-- Welcome docs styles -->
     <link rel="stylesheet" href="/select/docs/welcome/css/prism.css" />
     <link rel="stylesheet" href="/select/docs/welcome/css/welcome.css" />
 </head>
 <body>
-    <div class="hero-wrap">
-        <table class="showcase hero"><tr><td>
-            <div class="showcase-inner">
-                <div class="tether-target-demo">
-                    <h1>Select</h1>
-                    <h2>Styleable select elements built on Tether</h2>
-                    <p>
-                        <a class="button" href="http://github.com/HubSpot/select">★ On Github</a>
-                    </p>
-                </div>
-            </div>
-        </td></tr></table>
-    </div>
-
-    <div class="browser-demo-start-point"></div>
-
-    <table class="showcase browser-demo"><tr><td>
+    <table class="showcase hero"><tr><td>
         <div class="showcase-inner">
-            <div class="section-copy" data-section="intro">
-                <h2>What?</h2>
-                <p>Tether can be used for many types of floating elements on a page.</p>
+            <h1>Select</h1>
+            <div class="hero-container">
+                <select class="hero-select">
+                    <option value="" selected="selected">Select a state...</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="DC">District Of Columbia</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                </select>
             </div>
-            <div class="section-copy" data-section="explain">
-                <h2>&nbsp;</h2>
-                <p>In this example we're showing an action menu <em>tethered</em> to a list item.</p>
-            </div>
-            <div class="section-copy" data-section="resize">
-                <h2>Resillient</h2>
-                <p>Tether keeps your element <em>tethered</em> on resize and scroll events.</p>
-            </div>
-            <div class="section-copy" data-section="outro">
-                <h2>Demo</h2>
-                <p>Interact with this demo to learn more.</p>
-            </div>
-            <div class="browser-demo-inner">
-                <div class="browser-window">
-                    <div class="browser-titlebar">
-                        <div class="browser-dots"><b></b><b></b><b></b></div>
-                    </div>
-                    <div class="browser-frame">
-                        <iframe src="browser-demo.html"></iframe>
-                    </div>
-                </div>
-            </div>
+            <h2>Styleable select elements built on <a href="/tether/docs/welcome">Tether</a></h2>
+            <p>
+                <a class="button" href="http://github.com/HubSpot/select">★ On Github</a> &nbsp;&nbsp;
+                <a class="button dark" href="https://github.com/HubSpot/select/releases">Download</a>
+            </p>
         </div>
     </td></tr></table>
 
-    <table class="showcase browser-demo-section no-next-arrow" data-section="intro"><tr><td></td></tr></table>
-    <table class="showcase browser-demo-section no-next-arrow" data-section="explain"><tr><td></td></tr></table>
-    <table class="showcase browser-demo-section no-next-arrow" data-section="resize"><tr><td></td></tr></table>
-    <table class="showcase browser-demo-section no-next-arrow" data-section="outro"><tr><td></td></tr></table>
-    <table class="showcase browser-demo-section no-next-arrow" data-section="__empty"><tr><td></td></tr></table>
+    <table class="showcase about"><tr><td>
+        <div class="showcase-inner">
+            <h1>How to Use</h1>
+            <p>Select is an open-source javascript and CSS library which makes <code>&lt;select&gt;</code> elements stylable. It depends on <a href="http://jquery.com">jQuery</a>, <a href="/tether">Tether.js</a>, and <a href="/drop">Drop.js</a>.</p>
+            <p>To use, first <a href="https://github.com/HubSpot/select/releases" target="_blank">download the latest release</a>.
+            <p>Then simply add this javascript to your page:</p>
+<pre class="  language-markup"><code class="  language-markup"><span class="token comment" spellcheck="true">&lt;!-- Select styles --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>select-theme-default.css<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
 
-    <div class="browser-demo-stop-point"></div>
+<span class="token comment" spellcheck="true">&lt;!-- Select dependencies --&gt;</span>
+<span class="token script"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>jquery.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></span>
+<span class="token script"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tether.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></span>
+<span class="token script"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>drop.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></span>
+
+<span class="token comment" spellcheck="true">&lt;!-- Select --&gt;</span>
+<span class="token script"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>select.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></span></code></pre>
+            <p>And that's it! Learn more by visiting the <a href="/select">documentation</a>.
+        </div>
+    </td></tr></table>
+    <table id="themeShowcase" class="showcase themes select-theme-default"><tr><td>
+        <div class="showcase-inner">
+            <h1>Themes</h1>
+            <h2>Selects for every occasion.</h2>
+            <p>
+                <select class="themes-select">
+                    <option value="default" selected="true">Default (Select another theme...)</option>
+                    <option value="theme-2">Theme 2</option>
+                    <option value="theme-3">Theme 3</option>
+                    <option value="theme-4">Theme 4</option>
+                </select>
+            </p>
+        </div>
+    </td></tr></table>
 
     <table class="showcase last-showcase no-next-arrow share"><tr><td>
         <div class="showcase-inner">
@@ -99,7 +144,7 @@
             </style>
             <div class="share-buttons">
                 <div class="share-button retweet-button">
-                    <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://github.hubspot.com/tether/docs/welcome" data-text="Tether.js - Marrying elements for life" data-count="horizontal" data-via="HubSpotDev">Tweet</a>
+                    <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://github.hubspot.com/select/docs/welcome" data-text="Select.js – Styleable select elements built on Tether.js" data-count="horizontal" data-via="HubSpotDev">Tweet</a>
                     <script>
                         (function(){
                             var recommends, button;
@@ -127,10 +172,16 @@
     </td></tr></table>
 
     <!-- Javascript -->
-    <script src="/select/docs/welcome/js/jquery.js"></script>
-    <script src="/select/docs/welcome/js/log.js"></script>
-    <script src="/tether/tether.js"></script>
-    <script src="/tether/drop.js"></script>
+
+    <!-- Select dependencies -->
+    <script src="/select/deps/jquery/jquery.min.js"></script>
+    <script src="/select/deps/tether/tether.min.js"></script>
+    <script src="/select/deps/drop/drop.min.js"></script>
+
+    <!-- Select -->
+    <script src="/select/select.js"></script>
+
+    <!-- Welcome page -->
     <script src="/select/docs/welcome/js/welcome.js"></script>
 
     <!-- HubSpot analytics -->
