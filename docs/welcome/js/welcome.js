@@ -1,5 +1,5 @@
 (function() {
-  var init, setupHeroSelect, setupThemeSelect;
+  var currentThemeClassName, init, setupHeroSelect, setupThemeSelect;
 
   init = function() {
     setupHeroSelect();
@@ -12,16 +12,23 @@
     });
   };
 
+  currentThemeClassName = void 0;
+
   setupThemeSelect = function() {
-    var $select, selectDrop;
+    var $select, $showcase, select;
+    $showcase = $('#themeShowcase');
     $select = $('.themes-select');
-    selectDrop = new Select({
-      el: $select[0]
+    currentThemeClassName = $select.val();
+    select = new Select({
+      el: $select[0],
+      className: currentThemeClassName
     });
-    return $select.change = function() {
+    return $select.on('change', function() {
       var newClassName;
-      return newClassName = $select.val();
-    };
+      newClassName = $select.val();
+      $([select.dropSelect.$drop[0], select.$target[0], $showcase[0]]).removeClass(currentThemeClassName).addClass(newClassName);
+      return currentThemeClassName = newClassName;
+    });
   };
 
   $(init);

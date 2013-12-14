@@ -99,6 +99,12 @@ table.showcase.about {
     margin-right: auto; }
 table.showcase.themes {
   background: #eeeeee; }
+  table.showcase.themes.select-theme-dark {
+    background: #323232; }
+    table.showcase.themes.select-theme-dark h1, table.showcase.themes.select-theme-dark h2 {
+      color: #e6e6e6; }
+  table.showcase.themes.select-theme-chosen {
+    background: white; }
   table.showcase.themes .themes-list {
     margin: 4em auto;
     padding: 0;
