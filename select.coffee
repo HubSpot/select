@@ -87,7 +87,7 @@ class Select
         @setupDrop()
         @renderDrop()
 
-        @setupSelectEvents()
+        @setupSelect()
 
     setupTarget: ->
         $options = @$select.find('option')
@@ -160,7 +160,9 @@ class Select
 
         @dropSelect.$drop.find('.drop-content').html $dropSelectOptions[0]
 
-    setupSelectEvents: ->
+    setupSelect: ->
+        @$select.data 'select', @
+
         @$select.on 'change', =>
             @renderDrop()
             @renderTarget()

@@ -115,7 +115,7 @@
       this.renderTarget();
       this.setupDrop();
       this.renderDrop();
-      this.setupSelectEvents();
+      this.setupSelect();
     }
 
     Select.prototype.setupTarget = function() {
@@ -202,8 +202,9 @@
       return this.dropSelect.$drop.find('.drop-content').html($dropSelectOptions[0]);
     };
 
-    Select.prototype.setupSelectEvents = function() {
+    Select.prototype.setupSelect = function() {
       var _this = this;
+      this.$select.data('select', this);
       return this.$select.on('change', function() {
         _this.renderDrop();
         return _this.renderTarget();
