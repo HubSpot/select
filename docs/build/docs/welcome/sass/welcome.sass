@@ -1,0 +1,164 @@
+@import compass/css3
+
+html, body
+    height: 100%
+
+body
+    margin: 0
+    font-family: "proxima-nova", "Helvetica Neue", sans-serif
+
+table.showcase
+    height: 100%
+    width: 100%
+    position: relative
+
+    .showcase-inner
+        margin: 40px auto 60px
+        padding: 10px
+
+    &:after
+        content: ""
+        display: block
+        position: absolute
+        opacity: 0.5
+        left: 0
+        right: 0
+        bottom: 20px
+        margin: auto
+        height: 0
+        width: 0
+        border-width: 18px
+        border-style: solid
+        border-color: transparent
+        border-top-color: inherit
+
+    &.last-showcase:after
+        display: none
+
+    .showcase-inner
+
+        h1
+            font-size: 50px
+            text-align: center
+            font-weight: 300
+
+        h2
+            font-size: 24px
+            text-align: center
+            font-weight: 300
+            margin: 1em 0 1em
+            padding: 0 10%
+
+            a
+                color: inherit
+
+        p
+            text-align: center
+
+.select-target
+    width: 200px
+    text-align: left
+
+.button
+    display: inline-block
+    border: 2px solid #333
+    color: #333
+    padding: 1em 1.25em
+    font-weight: 500
+    text-transform: uppercase
+    letter-spacing: 3px
+    text-decoration: none
+    cursor: pointer
+    width: 140px
+    font-size: .8em
+    line-height: 1.3em
+
+    &.dark
+        background: #333
+        color: #fff
+
+table.showcase
+
+    &.hero
+
+        .hero-container
+            +background-image(linear-gradient(left, #fff, #f0f0f0, #fff))
+            margin: 0 auto
+            text-align: center
+
+    &.about
+        background: #fff1dd
+
+        a
+            color: #c96c24
+
+        p
+            +box-sizing(border-box)
+            text-align: left
+            width: 500px
+            max-width: 100%
+            margin-left: auto
+            margin-right: auto
+
+            > code
+                background: rgba(0, 0, 0, 0.05)
+
+        pre
+            +box-sizing(border-box)
+            text-align: left
+            width: 500px
+            max-width: 100%
+            margin-left: auto
+            margin-right: auto
+
+    &.themes
+        background: #eee
+
+        &.select-theme-dark
+            background: #323232
+
+            h1, h2
+                color: #e6e6e6
+
+        &.select-theme-chosen
+            background: #fff
+
+        .themes-list
+            margin: 4em auto
+            padding: 0
+            list-style: none
+            text-align: center
+            font-size: 18px
+
+            li
+                padding: 0
+                margin: 0
+                display: inline
+
+                a
+                    cursor: pointer
+                    opacity: 0.3
+                    padding: .5em
+                    display: inline-block
+
+                    &.selected
+                        opacity: 1
+
+@media (max-width: 786px)
+    table.showcase
+        .showcase-inner table[data-sortable] tr *:nth-child(4), .button.dark
+            display: none
+
+@media (max-width: 480px)
+    table.showcase .showcase-inner table[data-sortable] tr *:nth-child(3)
+        display: none
+
+@media (max-width: 568px)
+    table.showcase.about
+        p, pre
+            width: 400px
+
+@media (max-width: 420px)
+    table.showcase.about
+        p, pre
+            width: 280px
