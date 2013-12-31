@@ -31,7 +31,9 @@ new Select
 To initialize all selects on a page, you could do something like this:
 
 ```coffeescript
-$('select').each -> new Select el: @
+selectElements = document.querySelectorAll('select')
+for selectElement in selectElements
+    new Select el: selectElement
 ```
 
 #### Changing the theme
