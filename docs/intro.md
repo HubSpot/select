@@ -10,11 +10,10 @@
 
 Select is a javascript and CSS library for creating styleable select elements.
 
-Select uses [Tether](http://github.hubspot.com/tether) and [Drop](http://github.hubspot.com/drop) to create and position its element container.
+Select uses [Tether](http://github.hubspot.com/tether/docs/welcome) and [Drop](http://github.com/HubSpot/drop) to create and position its element container.
 
 ### Dependencies
 
-- jQuery
 - Tether – [GitHub](https://github.com/HubSpot/tether), [Download](https://github.com/HubSpot/tether/releases)
 - Drop – [GitHub](https://github.com/HubSpot/drop), [Download](https://github.com/HubSpot/drop/releases)
 
