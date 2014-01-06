@@ -23,9 +23,6 @@
   ],
   "dependencies": {
     "tether": "0.2.x",
-    "drop": "0.1.x"
-  },
-  "resolutions": {
-    "tether": "0.2.x"
+    "drop": "0.2.x"
   }
 }
