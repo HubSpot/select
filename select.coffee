@@ -126,7 +126,7 @@ class Select
 
     setupDrop: ->
         @drop = document.createElement 'div'
-        addClass @drop, 'drop'
+        addClass @drop, 'select'
 
         if @options.className
             addClass @drop, @options.className
@@ -207,8 +207,8 @@ class Select
         @tether = new Tether
             element: @drop
             target: @target
-            attachment: 'bottom left'
-            targetAttachment: 'top left'
+            attachment: 'top left'
+            targetAttachment: 'bottom left'
             classPrefix: 'select'
             constraints: [
                 to: 'window'

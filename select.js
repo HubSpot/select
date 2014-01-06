@@ -155,7 +155,7 @@
     Select.prototype.setupDrop = function() {
       var _this = this;
       this.drop = document.createElement('div');
-      addClass(this.drop, 'drop');
+      addClass(this.drop, 'select');
       if (this.options.className) {
         addClass(this.drop, this.options.className);
       }
@@ -171,15 +171,15 @@
         }
       });
       this.content = document.createElement('div');
-      addClass(this.content, 'drop-content');
+      addClass(this.content, 'select-content');
       return this.drop.appendChild(this.content);
     };
 
     Select.prototype.open = function() {
       var positionSelectStyle, selectedOption,
         _this = this;
-      addClass(this.drop, 'drop-open');
-      addClass(this.target, 'drop-open');
+      addClass(this.drop, 'select-open');
+      addClass(this.target, 'select-open');
       setTimeout(function() {
         return _this.tether.enable();
       });
@@ -205,8 +205,8 @@
 
     Select.prototype.close = function() {
       this.tether.disable();
-      removeClass(this.drop, 'drop-open');
-      removeClass(this.target, 'drop-open');
+      removeClass(this.drop, 'select-open');
+      removeClass(this.target, 'select-open');
       return removeClass(this.target, 'select-target-focused');
     };
 
@@ -219,7 +219,7 @@
     };
 
     Select.prototype.isOpen = function() {
-      return hasClass(this.drop, 'drop-open');
+      return hasClass(this.drop, 'select-open');
     };
 
     Select.prototype.bindClick = function() {
@@ -245,8 +245,9 @@
       return this.tether = new Tether({
         element: this.drop,
         target: this.target,
-        attachment: 'bottom left',
-        targetAttachment: 'top left',
+        attachment: 'top left',
+        targetAttachment: 'bottom left',
+        classPrefix: 'select',
         constraints: [
           {
             to: 'window',
