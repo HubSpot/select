@@ -142,12 +142,12 @@ class Select
                 @highlightOption e.target
 
         @content = document.createElement 'div'
-        addClass @content, 'drop-content'
+        addClass @content, 'select-content'
         @drop.appendChild @content
 
     open: ->
-        addClass @drop, 'drop-open'
-        addClass @target, 'drop-open'
+        addClass @drop, 'select-open'
+        addClass @target, 'select-open'
 
         setTimeout =>
             @tether.enable()
@@ -174,8 +174,8 @@ class Select
     close: ->
         @tether.disable()
 
-        removeClass @drop, 'drop-open'
-        removeClass @target, 'drop-open'
+        removeClass @drop, 'select-open'
+        removeClass @target, 'select-open'
         removeClass @target, 'select-target-focused'
 
     toggle: ->
@@ -185,7 +185,7 @@ class Select
             @open()
 
     isOpen: ->
-        hasClass @drop, 'drop-open'
+        hasClass @drop, 'select-open'
 
     bindClick: ->
         @target.addEventListener clickEvent, => @toggle()
@@ -209,6 +209,7 @@ class Select
             target: @target
             attachment: 'bottom left'
             targetAttachment: 'top left'
+            classPrefix: 'select'
             constraints: [
                 to: 'window'
                 pin: true
