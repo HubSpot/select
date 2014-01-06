@@ -5,7 +5,7 @@
 @import user-select
 @import checkmark
 
-@import ../deps/drop/sass/drop.sass
+@import ../deps/tether/sass/tether.sass
 
 $optionLineHeight: 19px
 $paddingTopBottom: 6px
@@ -57,7 +57,7 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
             overflow: hidden
             text-overflow: ellipsis
 
-            &[data-selected="true"]
+            &.select-option-selected
 
                 &:before
                     +checkmark(#444)
@@ -74,7 +74,7 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
                 background-color: #3875D7
                 color: #fff
 
-                &[data-selected="true"]:before
+                &.select-option-selected:before
                     +checkmark(#fff)
 
             &:first-child
