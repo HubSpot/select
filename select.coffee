@@ -110,7 +110,6 @@ class Select
                 @target.blur()
 
         @target.addEventListener 'focus', =>
-            console.log 'focus'
             addClass @target, 'select-target-focused'
 
         @target.addEventListener 'blur', (e) =>

@@ -137,7 +137,6 @@
         }
       });
       this.target.addEventListener('focus', function() {
-        console.log('focus');
         return addClass(_this.target, 'select-target-focused');
       });
       this.target.addEventListener('blur', function(e) {
