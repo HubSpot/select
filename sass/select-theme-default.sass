@@ -5,7 +5,9 @@
 @import user-select
 @import checkmark
 
-@import ../deps/tether/sass/tether
+@import ../deps/tether/sass/helpers/tether
+
++tether($themePrefix: "select")
 
 $optionLineHeight: 1.25rem
 $paddingTopBottom: .5rem
@@ -22,9 +24,9 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
     &, & *, & *:after, & *:before
         +box-sizing(border-box)
 
-.drop.select-theme-default
+.select.select-theme-default
 
-    .drop-content
+    .select-content
         +border-radius(.25em)
         +box-shadow(0 2px 8px rgba(0, 0, 0, .2))
         background: #fff
