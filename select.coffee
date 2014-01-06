@@ -107,7 +107,7 @@ class Select
 
         @$target.on 'blur', (e) =>
             if @dropSelect.isOpened()
-                if e.relatedTarget and not $(e.relatedTarget).parents('.drop:first').is(@dropSelect.$drop)
+                if e.relatedTarget and not $(e.relatedTarget).parents('.drop:first').is(@dropSelect.drop)
                     @dropSelect.close()
             else
                 @$target.removeClass('select-target-focused')
@@ -127,20 +127,20 @@ class Select
             constrainToScrollParent: false
             openOn: 'click'
 
-        @dropSelect.$drop.on 'click', '.select-option', (e) =>
+        $(@dropSelect.drop).on 'click', '.select-option', (e) =>
             @selectOption e.target
 
-        @dropSelect.$drop.on 'mousemove', '.select-option', (e) =>
+        $(@dropSelect.drop).on 'mousemove', '.select-option', (e) =>
             @highlightOption e.target
 
-        @dropSelect.$drop.on 'dropopen', =>
-            $selectedOption = @dropSelect.$drop.find('[data-selected="true"]')
-            $content = @dropSelect.$drop.find('.drop-content')
+        $(@dropSelect.drop).on 'dropopen', =>
+            $selectedOption = $(@dropSelect.drop).find('[data-selected="true"]')
+            $content = $(@dropSelect.drop).find('.drop-content')
 
             positionSelectStyle = =>
-                if @dropSelect.$drop.hasClass('tether-abutted-left tether-abutted-bottom')
-                    offset = @dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
-                    @dropSelect.$drop.css top: "+=#{ offset }"
+                if $(@dropSelect.drop).hasClass('tether-abutted-left tether-abutted-bottom')
+                    offset = $(@dropSelect.drop).offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight())
+                    $(@dropSelect.drop).css top: "+=#{ offset }"
 
             @highlightOption $selectedOption[0]
             @scrollDropContentToOption $selectedOption[0]
@@ -148,7 +148,7 @@ class Select
             if @options.selectLikeAlignment is 'always' or (@options.selectLikeAlignment is 'auto' and $content[0].scrollHeight <= $content[0].clientHeight)
                 setTimeout positionSelectStyle
 
-        @dropSelect.$drop.on 'dropclose', =>
+        $(@dropSelect.drop).on 'dropclose', =>
             @$target.removeClass('select-target-focused')
 
     renderDrop: ->
@@ -158,7 +158,7 @@ class Select
             $option = $ @
             $dropSelectOptions.append """<li data-selected="#{ $option.is(':selected') }" class="select-option" data-value="#{ @value }">#{ $option.text() }</li>"""
 
-        @dropSelect.$drop.find('.drop-content').html $dropSelectOptions[0]
+        $(@dropSelect.drop).find('.drop-content').html $dropSelectOptions[0]
 
     setupSelect: ->
         @$select.data 'select', @
@@ -194,8 +194,8 @@ class Select
     highlightOptionByText: (text) ->
         return unless @dropSelect.isOpened()
 
-        options = @dropSelect.$drop.find('.select-option').toArray()
-        currentHighlightedIndex = @dropSelect.$drop.find('.select-option-highlight').index()
+        options = $(@dropSelect.drop).find('.select-option').toArray()
+        currentHighlightedIndex = $(@dropSelect.drop).find('.select-option-highlight').index()
         return unless currentHighlightedIndex?
 
         isRepeatedCharacter = strIsRepeatedCharacter text
@@ -219,14 +219,14 @@ class Select
             i += 1
 
     highlightOption: (option) ->
-        @dropSelect.$drop.find('.select-option-highlight').removeClass('select-option-highlight')
+        $(@dropSelect.drop).find('.select-option-highlight').removeClass('select-option-highlight')
         $(option).addClass('select-option-highlight')
 
     moveHighlight: (directionKeyCode) ->
-        $currentHighlight = @dropSelect.$drop.find('.select-option-highlight')
+        $currentHighlight = $(@dropSelect.drop).find('.select-option-highlight')
 
         if not $currentHighlight.length
-            return @highlightOption @dropSelect.$drop.find('.select-option:first')
+            return @highlightOption $(@dropSelect.drop).find('.select-option:first')
 
         $newHighlight = if directionKeyCode is UP then $currentHighlight.prev() else $currentHighlight.next()
         return unless $newHighlight.length
@@ -236,13 +236,13 @@ class Select
 
     scrollDropContentToOption: (option) ->
         $option = $ option
-        $content = @dropSelect.$drop.find('.drop-content')
+        $content = $(@dropSelect.drop).find('.drop-content')
 
         if $content[0].scrollHeight > $content[0].clientHeight
             $content.scrollTop $option.offset().top - ($content.offset().top - $content.scrollTop())
 
     selectHighlightedOption: ->
-        @selectOption @dropSelect.$drop.find('.select-option-highlight')[0]
+        @selectOption $(@dropSelect.drop).find('.select-option-highlight')[0]
 
     selectOption: (option) ->
         @$select.val($(option).data('value')).change()

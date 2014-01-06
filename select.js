@@ -136,7 +136,7 @@
       });
       this.$target.on('blur', function(e) {
         if (_this.dropSelect.isOpened()) {
-          if (e.relatedTarget && !$(e.relatedTarget).parents('.drop:first').is(_this.dropSelect.$drop)) {
+          if (e.relatedTarget && !$(e.relatedTarget).parents('.drop:first').is(_this.dropSelect.drop)) {
             return _this.dropSelect.close();
           }
         } else {
@@ -161,21 +161,21 @@
         constrainToScrollParent: false,
         openOn: 'click'
       });
-      this.dropSelect.$drop.on('click', '.select-option', function(e) {
+      $(this.dropSelect.drop).on('click', '.select-option', function(e) {
         return _this.selectOption(e.target);
       });
-      this.dropSelect.$drop.on('mousemove', '.select-option', function(e) {
+      $(this.dropSelect.drop).on('mousemove', '.select-option', function(e) {
         return _this.highlightOption(e.target);
       });
-      this.dropSelect.$drop.on('dropopen', function() {
+      $(this.dropSelect.drop).on('dropopen', function() {
         var $content, $selectedOption, positionSelectStyle;
-        $selectedOption = _this.dropSelect.$drop.find('[data-selected="true"]');
-        $content = _this.dropSelect.$drop.find('.drop-content');
+        $selectedOption = $(_this.dropSelect.drop).find('[data-selected="true"]');
+        $content = $(_this.dropSelect.drop).find('.drop-content');
         positionSelectStyle = function() {
           var offset;
-          if (_this.dropSelect.$drop.hasClass('tether-abutted-left tether-abutted-bottom')) {
-            offset = _this.dropSelect.$drop.offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight());
-            return _this.dropSelect.$drop.css({
+          if ($(_this.dropSelect.drop).hasClass('tether-abutted-left tether-abutted-bottom')) {
+            offset = $(_this.dropSelect.drop).offset().top - ($selectedOption.offset().top + $selectedOption.outerHeight());
+            return $(_this.dropSelect.drop).css({
               top: "+=" + offset
             });
           }
@@ -186,7 +186,7 @@
           return setTimeout(positionSelectStyle);
         }
       });
-      return this.dropSelect.$drop.on('dropclose', function() {
+      return $(this.dropSelect.drop).on('dropclose', function() {
         return _this.$target.removeClass('select-target-focused');
       });
     };
@@ -199,7 +199,7 @@
         $option = $(this);
         return $dropSelectOptions.append("<li data-selected=\"" + ($option.is(':selected')) + "\" class=\"select-option\" data-value=\"" + this.value + "\">" + ($option.text()) + "</li>");
       });
-      return this.dropSelect.$drop.find('.drop-content').html($dropSelectOptions[0]);
+      return $(this.dropSelect.drop).find('.drop-content').html($dropSelectOptions[0]);
     };
 
     Select.prototype.setupSelect = function() {
@@ -244,8 +244,8 @@
       if (!this.dropSelect.isOpened()) {
         return;
       }
-      options = this.dropSelect.$drop.find('.select-option').toArray();
-      currentHighlightedIndex = this.dropSelect.$drop.find('.select-option-highlight').index();
+      options = $(this.dropSelect.drop).find('.select-option').toArray();
+      currentHighlightedIndex = $(this.dropSelect.drop).find('.select-option-highlight').index();
       if (currentHighlightedIndex == null) {
         return;
       }
@@ -272,15 +272,15 @@
     };
 
     Select.prototype.highlightOption = function(option) {
-      this.dropSelect.$drop.find('.select-option-highlight').removeClass('select-option-highlight');
+      $(this.dropSelect.drop).find('.select-option-highlight').removeClass('select-option-highlight');
       return $(option).addClass('select-option-highlight');
     };
 
     Select.prototype.moveHighlight = function(directionKeyCode) {
       var $currentHighlight, $newHighlight;
-      $currentHighlight = this.dropSelect.$drop.find('.select-option-highlight');
+      $currentHighlight = $(this.dropSelect.drop).find('.select-option-highlight');
       if (!$currentHighlight.length) {
-        return this.highlightOption(this.dropSelect.$drop.find('.select-option:first'));
+        return this.highlightOption($(this.dropSelect.drop).find('.select-option:first'));
       }
       $newHighlight = directionKeyCode === UP ? $currentHighlight.prev() : $currentHighlight.next();
       if (!$newHighlight.length) {
@@ -293,14 +293,14 @@
     Select.prototype.scrollDropContentToOption = function(option) {
       var $content, $option;
       $option = $(option);
-      $content = this.dropSelect.$drop.find('.drop-content');
+      $content = $(this.dropSelect.drop).find('.drop-content');
       if ($content[0].scrollHeight > $content[0].clientHeight) {
         return $content.scrollTop($option.offset().top - ($content.offset().top - $content.scrollTop()));
       }
     };
 
     Select.prototype.selectHighlightedOption = function() {
-      return this.selectOption(this.dropSelect.$drop.find('.select-option-highlight')[0]);
+      return this.selectOption($(this.dropSelect.drop).find('.select-option-highlight')[0]);
     };
 
     Select.prototype.selectOption = function(option) {
