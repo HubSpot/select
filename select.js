@@ -170,6 +170,12 @@
           return _this.highlightOption(e.target);
         }
       });
+      this.drop.addEventListener('mouseover', function(e) {
+        return document.body.style.overflow = 'hidden';
+      });
+      this.drop.addEventListener('mouseout', function(e) {
+        return document.body.style.overflow = 'auto';
+      });
       this.content = document.createElement('div');
       addClass(this.content, 'select-content');
       return this.drop.appendChild(this.content);
