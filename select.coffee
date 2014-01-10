@@ -141,6 +141,12 @@ class Select
             if hasClass(e.target, 'select-option')
                 @highlightOption e.target
 
+        @drop.addEventListener 'mouseover', (e) =>
+            document.body.style.overflow = 'hidden';
+
+        @drop.addEventListener 'mouseout', (e) =>
+            document.body.style.overflow = 'auto';
+
         @content = document.createElement 'div'
         addClass @content, 'select-content'
         @drop.appendChild @content
