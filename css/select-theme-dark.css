@@ -1,12 +1,12 @@
-.select, .select:after, .select:before, .select *, .select *:after, .select *:before {
+.select-element, .select-element:after, .select-element:before, .select-element *, .select-element *:after, .select-element *:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-.select {
+.select-element {
   position: absolute;
   display: none; }
-  .select.select-open {
+  .select-element.select-open {
     display: block; }
 
 .select-theme-dark, .select-theme-dark *, .select-theme-dark *:after, .select-theme-dark *:before {
@@ -14,7 +14,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-.select.select-theme-dark .select-content {
+.select-element.select-theme-dark .select-content {
   -webkit-border-radius: 0.25em;
   -moz-border-radius: 0.25em;
   -ms-border-radius: 0.25em;
@@ -30,15 +30,15 @@
   max-width: 18rem;
   max-height: 18rem; }
   @media (max-width: 27rem), (max-height: 27rem) {
-    .select.select-theme-dark .select-content {
+    .select-element.select-theme-dark .select-content {
       max-width: 11.25rem;
       max-height: 11.25rem; } }
-.select.select-theme-dark .select-options {
+.select-element.select-theme-dark .select-options {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-touch-callout: none;
   margin: 0;
   padding: 0; }
-  .select.select-theme-dark .select-options .select-option {
+  .select-element.select-theme-dark .select-options .select-option {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-touch-callout: none;
     position: relative;
@@ -51,7 +51,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; }
-    .select.select-theme-dark .select-options .select-option.select-option-selected:before {
+    .select-element.select-theme-dark .select-options .select-option.select-option-selected:before {
       content: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='-0.5 0 20 15'><rect fill='#b9b9b9' stroke='none' transform='rotate(45 4.0033 8.87436)' height='5' width='6.32304' y='6.37436' x='0.84178'></rect><rect fill='#b9b9b9' stroke='none' transform='rotate(45 11.1776 7.7066)' width='5' height='16.79756' y='-0.69218' x='8.67764'></rect></svg>");
       position: absolute;
       left: 1em;
@@ -60,18 +60,18 @@
       height: 1em;
       width: 1em;
       margin: auto; }
-    .select.select-theme-dark .select-options .select-option:hover, .select.select-theme-dark .select-options .select-option.select-option-highlight {
+    .select-element.select-theme-dark .select-options .select-option:hover, .select-element.select-theme-dark .select-options .select-option.select-option-highlight {
       background: #63a2f1;
       color: white; }
-      .select.select-theme-dark .select-options .select-option:hover.select-option-selected:before, .select.select-theme-dark .select-options .select-option.select-option-highlight.select-option-selected:before {
+      .select-element.select-theme-dark .select-options .select-option:hover.select-option-selected:before, .select-element.select-theme-dark .select-options .select-option.select-option-highlight.select-option-selected:before {
         content: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='-0.5 0 20 15'><rect fill='white' stroke='none' transform='rotate(45 4.0033 8.87436)' height='5' width='6.32304' y='6.37436' x='0.84178'></rect><rect fill='white' stroke='none' transform='rotate(45 11.1776 7.7066)' width='5' height='16.79756' y='-0.69218' x='8.67764'></rect></svg>"); }
-    .select.select-theme-dark .select-options .select-option:first-child {
+    .select-element.select-theme-dark .select-options .select-option:first-child {
       -webkit-border-radius: 0.25em 0.25em 0 0;
       -moz-border-radius: 0.25em 0.25em 0 0;
       -ms-border-radius: 0.25em 0.25em 0 0;
       -o-border-radius: 0.25em 0.25em 0 0;
       border-radius: 0.25em 0.25em 0 0; }
-    .select.select-theme-dark .select-options .select-option:last-child {
+    .select-element.select-theme-dark .select-options .select-option:last-child {
       -webkit-border-radius: 0 0 0.25em 0.25em;
       -moz-border-radius: 0 0 0.25em 0.25em;
       -ms-border-radius: 0 0 0.25em 0.25em;
