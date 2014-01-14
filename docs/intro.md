@@ -1,8 +1,6 @@
 <link rel="stylesheet" href="/select/css/select-theme-default.css" />
 <link rel="stylesheet" href="/select/css/select-theme-dark.css" />
 <link rel="stylesheet" href="/select/css/select-theme-chosen.css" />
-<script src="/select/deps/tether/tether.min.js"></script>
-<script src="/select/deps/drop/drop.min.js"></script>
 <script src="/select/select.min.js"></script>
 <script>$(function(){ $('select').each(function(){ new Select({ el: this, className: $(this).attr('data-className') }); }); });</script>
 
@@ -14,8 +12,11 @@ Select uses [Tether](http://github.hubspot.com/tether/docs/welcome) and [Drop](h
 
 ### Dependencies
 
-- Tether – [GitHub](https://github.com/HubSpot/tether), [Download](https://github.com/HubSpot/tether/releases)
-- Drop – [GitHub](https://github.com/HubSpot/drop), [Download](https://github.com/HubSpot/drop/releases)
+None!
+
+### Browser Support
+
+IE9+ and all modern browsers
 
 ### Usage
 

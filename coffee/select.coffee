@@ -30,6 +30,7 @@ document.addEventListener 'keypress', (e) ->
 
     return if e.charCode is 0
 
+    console.log 'press', e.charCode
     newCharacter = String.fromCharCode e.charCode
 
     if strIsRepeatedCharacter(searchText) and not strIsRepeatedCharacter(searchText + newCharacter)
@@ -56,6 +57,7 @@ document.addEventListener 'keypress', (e) ->
 document.addEventListener 'keydown', (e) ->
     return unless select = getFocusedSelect()
 
+    console.log 'down', e.keyCode
     if e.keyCode in [UP, DOWN, ESCAPE]
         e.preventDefault()
 
