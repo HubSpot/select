@@ -311,15 +311,15 @@ class Select
 
         options = @drop.querySelectorAll('.select-option')
 
-        highlighedIndex = Array::indexOf.call options, highlighted
-        return unless highlighedIndex >= 0
+        highlightedIndex = Array::indexOf.call options, highlighted
+        return unless highlightedIndex >= 0
 
         if directionKeyCode is UP
-            highlighedIndex -= 1
+            highlightedIndex -= 1
         else
             highlightedIndex += 1
 
-        if highlighedIndex < 0 or highlightedIndex >= options.length
+        if highlightedIndex < 0 or highlightedIndex >= options.length
             return
 
         newHighlight = options[highlightedIndex]

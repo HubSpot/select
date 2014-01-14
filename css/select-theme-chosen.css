@@ -1,12 +1,12 @@
-.select, .select:after, .select:before, .select *, .select *:after, .select *:before {
+.select-element, .select-element:after, .select-element:before, .select-element *, .select-element *:after, .select-element *:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-.select {
+.select-element {
   position: absolute;
   display: none; }
-  .select.select-open {
+  .select-element.select-open {
     display: block; }
 
 .select-theme-chosen {

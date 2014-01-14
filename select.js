@@ -365,22 +365,22 @@
     };
 
     Select.prototype.moveHighlight = function(directionKeyCode) {
-      var highlighedIndex, highlighted, newHighlight, options;
+      var highlighted, highlightedIndex, newHighlight, options;
       highlighted = this.drop.querySelector('.select-option-highlight');
       if (!highlighted) {
         return this.highlightOption(this.drop.querySelector('.select-option'));
       }
       options = this.drop.querySelectorAll('.select-option');
-      highlighedIndex = Array.prototype.indexOf.call(options, highlighted);
-      if (!(highlighedIndex >= 0)) {
+      highlightedIndex = Array.prototype.indexOf.call(options, highlighted);
+      if (!(highlightedIndex >= 0)) {
         return;
       }
       if (directionKeyCode === UP) {
-        highlighedIndex -= 1;
+        highlightedIndex -= 1;
       } else {
         highlightedIndex += 1;
       }
-      if (highlighedIndex < 0 || highlightedIndex >= options.length) {
+      if (highlightedIndex < 0 || highlightedIndex >= options.length) {
         return;
       }
       newHighlight = options[highlightedIndex];
