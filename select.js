@@ -1143,7 +1143,7 @@
 
   getFocusedSelect = function() {
     var _ref1;
-    return (_ref1 = document.querySelector('.select-target-focused')) != null ? _ref1.selectInstance : void 0;
+    return (_ref1 = document.querySelector('.select-target-focused,.select-target.select-open')) != null ? _ref1.selectInstance : void 0;
   };
 
   searchText = '';
@@ -1160,7 +1160,6 @@
     if (e.charCode === 0) {
       return;
     }
-    console.log('press', e.charCode);
     newCharacter = String.fromCharCode(e.charCode);
     if (strIsRepeatedCharacter(searchText) && !strIsRepeatedCharacter(searchText + newCharacter)) {
       searchText = newCharacter;
@@ -1190,7 +1189,6 @@
     if (!(select = getFocusedSelect())) {
       return;
     }
-    console.log('down', e.keyCode);
     if ((_ref1 = e.keyCode) === UP || _ref1 === DOWN || _ref1 === ESCAPE) {
       e.preventDefault();
     }
