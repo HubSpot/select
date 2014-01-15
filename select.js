@@ -1,4 +1,4 @@
-/*! select 0.3.0 */
+/*! select 0.3.1 */
 /*! tether 0.3.4 */
 (function() {
   var Evented, addClass, extend, getBounds, getOffsetParent, getScrollParent, hasClass, removeClass,
