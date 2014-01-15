@@ -14,7 +14,7 @@ isRepeatedChar = (str) ->
     if a is b then b else false
 
 getFocusedSelect = ->
-  document.querySelector('.select-target-focused,.select-target.select-open')?.selectInstance
+  document.querySelector('.select-target-focused')?.selectInstance
 
 searchText = ''
 searchTextTimeout = undefined
@@ -116,6 +116,10 @@ class Select extends Evented
     @target.href = 'javascript:;'
 
     addClass @target, 'select-target'
+
+    tabIndex = @select.getAttribute('tabindex') or 0
+    @target.setAttribute 'tabindex', tabIndex
+
     if @options.className
       addClass @target, @options.className
 
@@ -196,7 +200,6 @@ class Select extends Evented
 
     removeClass @drop, 'select-open'
     removeClass @target, 'select-open'
-    removeClass @target, 'select-target-focused'
 
     @trigger 'close'
 

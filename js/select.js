@@ -31,7 +31,7 @@
 
   getFocusedSelect = function() {
     var _ref1;
-    return (_ref1 = document.querySelector('.select-target-focused,.select-target.select-open')) != null ? _ref1.selectInstance : void 0;
+    return (_ref1 = document.querySelector('.select-target-focused')) != null ? _ref1.selectInstance : void 0;
   };
 
   searchText = '';
@@ -128,10 +128,13 @@
     }
 
     Select.prototype.setupTarget = function() {
-      var _this = this;
+      var tabIndex,
+        _this = this;
       this.target = document.createElement('a');
       this.target.href = 'javascript:;';
       addClass(this.target, 'select-target');
+      tabIndex = this.select.getAttribute('tabindex') || 0;
+      this.target.setAttribute('tabindex', tabIndex);
       if (this.options.className) {
         addClass(this.target, this.options.className);
       }
@@ -215,7 +218,6 @@
       this.tether.disable();
       removeClass(this.drop, 'select-open');
       removeClass(this.target, 'select-open');
-      removeClass(this.target, 'select-target-focused');
       return this.trigger('close');
     };
 
