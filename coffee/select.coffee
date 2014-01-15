@@ -9,13 +9,9 @@ DOWN = 40
 touchDevice = 'ontouchstart' of document.documentElement
 clickEvent = if touchDevice then 'touchstart' else 'click'
 
-strIsRepeatedCharacter = (str) ->
-    return false unless str.length > 1
-
-    letter = str.charAt 0
-    for char in str
-        return false if char isnt letter
-    return true
+isRepeatedChar = (str) ->
+    Array::reduce.call str, (a, b) ->
+        if a is b then b else false
 
 getFocusedSelect = ->
     document.querySelector('.select-target-focused,.select-target.select-open')?.selectInstance
@@ -27,33 +23,51 @@ lastCharacter = undefined
 
 document.addEventListener 'keypress', (e) ->
     return unless select = getFocusedSelect()
-
     return if e.charCode is 0
-
-    newCharacter = String.fromCharCode e.charCode
-
-    if strIsRepeatedCharacter(searchText) and not strIsRepeatedCharacter(searchText + newCharacter)
-        searchText = newCharacter
-    else
-        searchText += newCharacter
-        searchText += newCharacter if lastCharacter is newCharacter
-
-    lastCharacter = newCharacter
 
     if e.keyCode is SPACE
         e.preventDefault()
-
-    if select.isOpen()
-        select.highlightOptionByText searchText
-    else
-        select.selectOptionByText searchText
 
     clearTimeout searchTextTimeout
     searchTextTimeout = setTimeout ->
         searchText = ''
     , 500
 
+    searchText += String.fromCharCode e.charCode
+
+    options = select.findOptionsByPrefix(searchText)
+
+    if options.length is 1
+        # We have an exact match, choose it
+        select.selectOption options[0]
+        return
+
+    if searchText.length > 1 and isRepeatedChar(searchText)
+        # They hit the same char over and over, maybe they want to cycle through
+        # the options that start with that char
+        repeatedOptions = select.findOptionsByPrefix(searchText[0])
+        
+        if repeatedOptions.length
+            selected = repeatedOptions.indexOf select.getChosen()
+
+            # Pick the next thing (if something with this prefix wasen't selected we'll end up with the first option)
+            selected += 1
+            selected = selected % repeatedOptions.length
+
+            select.selectOption repeatedOptions[selected]
+            return
+
+    if options.length
+        # We have multiple things that start with this prefix.  Based on the behavior of native select,
+        # this is considered after the repeated case.
+        select.selectOption options[0]
+        return
+
+    # No match at all, do nothing
+    
 document.addEventListener 'keydown', (e) ->
+    # We consider this independently of the keypress handler so we can intercept keys that have
+    # built-in functions.
     return unless select = getFocusedSelect()
 
     if e.keyCode in [UP, DOWN, ESCAPE]
@@ -252,49 +266,29 @@ class Select
             @renderDrop()
             @renderTarget()
 
-    findOptionByText: (text) ->
+    findOptionsByPrefix: (text) ->
         options = @drop.querySelectorAll('.select-option')
-        if @isOpen
-            highlightedOption = @drop.querySelector('.select-option-highlight')
-        else
-            highlightedOption = @drop.querySelector('.select-option-selected')
-
-        highlightedIndex = Array::indexOf.call options, highlightedOption
-        if highlightedIndex is -1
-            highlightedIndex = 0
 
         text = text.toLowerCase()
 
-        isRepeatedCharacter = strIsRepeatedCharacter text
-        i = highlightedIndex
-        i += 1 if isRepeatedCharacter
+        Array::filter.call options, (option) ->
+            option.innerHTML.toLowerCase().substr(0, text.length) is text
 
-        optionsChecked = 0
+    getChosen: ->
+        if @isOpen()
+            @drop.querySelector('.select-option-highlight')
+        else
+            @drop.querySelector('.select-option-selected')
 
-        while optionsChecked < options.length
-            i = 0 if i >= options.length
-            option = options[i]
+    selectOption: (option) ->
+        if @isOpen()
+            @highlightOption option
+            @scrollDropContentToOption option
+        else
+            @pickOption option, false
 
-            optionText = option.innerHTML.toLowerCase()
-
-            if (isRepeatedCharacter and optionText[0] is text[0]) or optionText.substr(0, text.length) is text
-                return option
-
-            optionsChecked += 1
-            i += 1
-
-    highlightOptionByText: (text) ->
-        return unless @isOpen()
-        return unless option = @findOptionByText text
-
-        @highlightOption option
-        @scrollDropContentToOption option
-
-    selectOptionByText: (text) ->
-        return unless option = @findOptionByText text
-            
-        @select.value = option.getAttribute('data-value')
-        @triggerChange()
+    resetSelection: ->
+        @selectOption @drop.querySelector('.select-option')
 
     highlightOption: (option) ->
         highlighted = @drop.querySelector('.select-option-highlight')
@@ -304,10 +298,9 @@ class Select
         addClass option, 'select-option-highlight'
 
     moveHighlight: (directionKeyCode) ->
-        highlighted = @drop.querySelector('.select-option-highlight')
-
-        if not highlighted
-            return @highlightOption @drop.querySelector('.select-option')
+        unless highlighted = @drop.querySelector('.select-option-highlight')
+            @highlightOption @drop.querySelector('.select-option')
+            return
 
         options = @drop.querySelectorAll('.select-option')
 
@@ -337,13 +330,14 @@ class Select
     selectHighlightedOption: ->
         @pickOption @drop.querySelector('.select-option-highlight')
 
-    pickOption: (option) ->
+    pickOption: (option, close=true) ->
         @select.value = option.getAttribute 'data-value'
         @triggerChange()
 
-        setTimeout =>
-            @close()
-            @target.focus()
+        if close
+            setTimeout =>
+                @close()
+                @target.focus()
 
     triggerChange: ->
         event = document.createEvent("HTMLEvents")

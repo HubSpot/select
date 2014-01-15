@@ -1,5 +1,5 @@
 (function() {
-  var DOWN, ENTER, ESCAPE, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, lastCharacter, removeClass, searchText, searchTextTimeout, strIsRepeatedCharacter, touchDevice, _ref;
+  var DOWN, ENTER, ESCAPE, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, _ref;
 
   _ref = Tether.Utils, extend = _ref.extend, addClass = _ref.addClass, removeClass = _ref.removeClass, hasClass = _ref.hasClass, getBounds = _ref.getBounds;
 
@@ -17,19 +17,14 @@
 
   clickEvent = touchDevice ? 'touchstart' : 'click';
 
-  strIsRepeatedCharacter = function(str) {
-    var char, letter, _i, _len;
-    if (!(str.length > 1)) {
-      return false;
-    }
-    letter = str.charAt(0);
-    for (_i = 0, _len = str.length; _i < _len; _i++) {
-      char = str[_i];
-      if (char !== letter) {
+  isRepeatedChar = function(str) {
+    return Array.prototype.reduce.call(str, function(a, b) {
+      if (a === b) {
+        return b;
+      } else {
         return false;
       }
-    }
-    return true;
+    });
   };
 
   getFocusedSelect = function() {
@@ -44,35 +39,39 @@
   lastCharacter = void 0;
 
   document.addEventListener('keypress', function(e) {
-    var newCharacter, select;
+    var options, repeatedOptions, select, selected;
     if (!(select = getFocusedSelect())) {
       return;
     }
     if (e.charCode === 0) {
       return;
     }
-    newCharacter = String.fromCharCode(e.charCode);
-    if (strIsRepeatedCharacter(searchText) && !strIsRepeatedCharacter(searchText + newCharacter)) {
-      searchText = newCharacter;
-    } else {
-      searchText += newCharacter;
-      if (lastCharacter === newCharacter) {
-        searchText += newCharacter;
-      }
-    }
-    lastCharacter = newCharacter;
     if (e.keyCode === SPACE) {
       e.preventDefault();
     }
-    if (select.isOpen()) {
-      select.highlightOptionByText(searchText);
-    } else {
-      select.selectOptionByText(searchText);
-    }
     clearTimeout(searchTextTimeout);
-    return searchTextTimeout = setTimeout(function() {
+    searchTextTimeout = setTimeout(function() {
       return searchText = '';
     }, 500);
+    searchText += String.fromCharCode(e.charCode);
+    options = select.findOptionsByPrefix(searchText);
+    if (options.length === 1) {
+      select.selectOption(options[0]);
+      return;
+    }
+    if (searchText.length > 1 && isRepeatedChar(searchText)) {
+      repeatedOptions = select.findOptionsByPrefix(searchText[0]);
+      if (repeatedOptions.length) {
+        selected = repeatedOptions.indexOf(select.getChosen());
+        selected += 1;
+        selected = selected % repeatedOptions.length;
+        select.selectOption(repeatedOptions[selected]);
+        return;
+      }
+    }
+    if (options.length) {
+      select.selectOption(options[0]);
+    }
   });
 
   document.addEventListener('keydown', function(e) {
@@ -301,58 +300,34 @@
       });
     };
 
-    Select.prototype.findOptionByText = function(text) {
-      var highlightedIndex, highlightedOption, i, isRepeatedCharacter, option, optionText, options, optionsChecked;
+    Select.prototype.findOptionsByPrefix = function(text) {
+      var options;
       options = this.drop.querySelectorAll('.select-option');
-      if (this.isOpen) {
-        highlightedOption = this.drop.querySelector('.select-option-highlight');
-      } else {
-        highlightedOption = this.drop.querySelector('.select-option-selected');
-      }
-      highlightedIndex = Array.prototype.indexOf.call(options, highlightedOption);
-      if (highlightedIndex === -1) {
-        highlightedIndex = 0;
-      }
       text = text.toLowerCase();
-      isRepeatedCharacter = strIsRepeatedCharacter(text);
-      i = highlightedIndex;
-      if (isRepeatedCharacter) {
-        i += 1;
-      }
-      optionsChecked = 0;
-      while (optionsChecked < options.length) {
-        if (i >= options.length) {
-          i = 0;
-        }
-        option = options[i];
-        optionText = option.innerHTML.toLowerCase();
-        if ((isRepeatedCharacter && optionText[0] === text[0]) || optionText.substr(0, text.length) === text) {
-          return option;
-        }
-        optionsChecked += 1;
-        i += 1;
+      return Array.prototype.filter.call(options, function(option) {
+        return option.innerHTML.toLowerCase().substr(0, text.length) === text;
+      });
+    };
+
+    Select.prototype.getChosen = function() {
+      if (this.isOpen()) {
+        return this.drop.querySelector('.select-option-highlight');
+      } else {
+        return this.drop.querySelector('.select-option-selected');
       }
     };
 
-    Select.prototype.highlightOptionByText = function(text) {
-      var option;
-      if (!this.isOpen()) {
-        return;
+    Select.prototype.selectOption = function(option) {
+      if (this.isOpen()) {
+        this.highlightOption(option);
+        return this.scrollDropContentToOption(option);
+      } else {
+        return this.pickOption(option, false);
       }
-      if (!(option = this.findOptionByText(text))) {
-        return;
-      }
-      this.highlightOption(option);
-      return this.scrollDropContentToOption(option);
     };
 
-    Select.prototype.selectOptionByText = function(text) {
-      var option;
-      if (!(option = this.findOptionByText(text))) {
-        return;
-      }
-      this.select.value = option.getAttribute('data-value');
-      return this.triggerChange();
+    Select.prototype.resetSelection = function() {
+      return this.selectOption(this.drop.querySelector('.select-option'));
     };
 
     Select.prototype.highlightOption = function(option) {
@@ -366,9 +341,9 @@
 
     Select.prototype.moveHighlight = function(directionKeyCode) {
       var highlighted, highlightedIndex, newHighlight, options;
-      highlighted = this.drop.querySelector('.select-option-highlight');
-      if (!highlighted) {
-        return this.highlightOption(this.drop.querySelector('.select-option'));
+      if (!(highlighted = this.drop.querySelector('.select-option-highlight'))) {
+        this.highlightOption(this.drop.querySelector('.select-option'));
+        return;
       }
       options = this.drop.querySelectorAll('.select-option');
       highlightedIndex = Array.prototype.indexOf.call(options, highlighted);
@@ -401,14 +376,19 @@
       return this.pickOption(this.drop.querySelector('.select-option-highlight'));
     };
 
-    Select.prototype.pickOption = function(option) {
+    Select.prototype.pickOption = function(option, close) {
       var _this = this;
+      if (close == null) {
+        close = true;
+      }
       this.select.value = option.getAttribute('data-value');
       this.triggerChange();
-      return setTimeout(function() {
-        _this.close();
-        return _this.target.focus();
-      });
+      if (close) {
+        return setTimeout(function() {
+          _this.close();
+          return _this.target.focus();
+        });
+      }
     };
 
     Select.prototype.triggerChange = function() {
