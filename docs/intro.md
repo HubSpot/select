@@ -102,12 +102,12 @@ new Select
 #### Changing the positioning
 
 Select has an option called `selectLikeAlignment` which allows you to change whether
-the <span data-tooltip-content="Drop.js is a dependency of Select.js">drop</span> is positioned like a real
-select element or like a canonical dropdown menu.
+the drop is positioned like a real
+select element (with the currently selected option over the element) or like a canonical dropdown menu.
 
-By default, this property is set to `"auto"`, meaning it will align the <span data-tooltip-content="Drop.js is a dependency of Select.js">drop</span> like a select only when the number of items in the options chooser does not cause it to scroll. The other options are `"always"` and never `"never"`.
+By default, this property is set to `"auto"`, meaning it will align the drop like a select only when the number of items in the options chooser does not cause it to scroll. The other options are `"always"` and never `"never"`.
 
-In this example, we Select to always open the <span data-tooltip-content="Drop.js is a dependency of Select.js">drop</span> like a dropdown menu.
+In this example, we Select to always open the drop like a dropdown menu.
 
 ```coffeescript
 new Select
