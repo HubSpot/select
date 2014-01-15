@@ -1108,9 +1108,11 @@
 }).call(this);
 
 (function() {
-  var DOWN, ENTER, ESCAPE, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, _ref;
+  var DOWN, ENTER, ESCAPE, Evented, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, _ref,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  _ref = Tether.Utils, extend = _ref.extend, addClass = _ref.addClass, removeClass = _ref.removeClass, hasClass = _ref.hasClass, getBounds = _ref.getBounds;
+  _ref = Tether.Utils, extend = _ref.extend, addClass = _ref.addClass, removeClass = _ref.removeClass, hasClass = _ref.hasClass, getBounds = _ref.getBounds, Evented = _ref.Evented;
 
   ENTER = 13;
 
@@ -1209,7 +1211,9 @@
     }
   });
 
-  Select = (function() {
+  Select = (function(_super) {
+    __extends(Select, _super);
+
     Select.defaults = {
       alignToHighlighed: 'auto',
       className: 'select-theme-default'
@@ -1219,6 +1223,9 @@
       this.options = options;
       this.options = extend({}, Select.defaults, this.options);
       this.select = this.options.el;
+      if (this.select.selectInstance != null) {
+        throw new Error("This element has already been turned into a Select");
+      }
       this.setupTarget();
       this.renderTarget();
       this.setupDrop();
@@ -1226,6 +1233,7 @@
       this.setupSelect();
       this.setupTether();
       this.bindClick();
+      this.value = this.select.value;
     }
 
     Select.prototype.setupTarget = function() {
@@ -1307,15 +1315,17 @@
         }
       };
       if (this.options.alignToHighlighted === 'always' || (this.options.alignToHighlighted === 'auto' && this.content.scrollHeight <= this.content.clientHeight)) {
-        return setTimeout(positionSelectStyle);
+        setTimeout(positionSelectStyle);
       }
+      return this.trigger('open');
     };
 
     Select.prototype.close = function() {
       this.tether.disable();
       removeClass(this.drop, 'select-open');
       removeClass(this.target, 'select-open');
-      return removeClass(this.target, 'select-target-focused');
+      removeClass(this.target, 'select-target-focused');
+      return this.trigger('close');
     };
 
     Select.prototype.toggle = function() {
@@ -1403,6 +1413,7 @@
     Select.prototype.setupSelect = function() {
       var _this = this;
       this.select.selectInstance = this;
+      addClass(this.select, 'select-select');
       return this.select.addEventListener('change', function() {
         _this.renderDrop();
         return _this.renderTarget();
@@ -1415,6 +1426,14 @@
       text = text.toLowerCase();
       return Array.prototype.filter.call(options, function(option) {
         return option.innerHTML.toLowerCase().substr(0, text.length) === text;
+      });
+    };
+
+    Select.prototype.findOptionsByValue = function(val) {
+      var options;
+      options = this.drop.querySelectorAll('.select-option');
+      return Array.prototype.filter.call(options, function(option) {
+        return option.getAttribute('data-value') === val;
       });
     };
 
@@ -1445,7 +1464,10 @@
       if (highlighted != null) {
         removeClass(highlighted, 'select-option-highlight');
       }
-      return addClass(option, 'select-option-highlight');
+      addClass(option, 'select-option-highlight');
+      return this.trigger('highlight', {
+        option: option
+      });
     };
 
     Select.prototype.moveHighlight = function(directionKeyCode) {
@@ -1490,7 +1512,7 @@
       if (close == null) {
         close = true;
       }
-      this.select.value = option.getAttribute('data-value');
+      this.value = this.select.value = option.getAttribute('data-value');
       this.triggerChange();
       if (close) {
         return setTimeout(function() {
@@ -1504,12 +1526,53 @@
       var event;
       event = document.createEvent("HTMLEvents");
       event.initEvent("change", true, false);
-      return this.select.dispatchEvent(event);
+      this.select.dispatchEvent(event);
+      return this.trigger('change', {
+        value: this.select.value
+      });
+    };
+
+    Select.prototype.change = function(val) {
+      var options;
+      options = this.findOptionsByValue(val);
+      if (!options.length) {
+        throw new Error("Select Error: An option with the value \"" + val + "\" doesn't exist");
+      }
+      return this.pickOption(options[0], false);
     };
 
     return Select;
 
-  })();
+  })(Evented);
+
+  Select.init = function(options) {
+    var el, _i, _len, _ref1, _results;
+    if (options == null) {
+      options = {};
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        return Select.init(options);
+      });
+      return;
+    }
+    if (options.selector == null) {
+      options.selector = 'select';
+    }
+    _ref1 = document.querySelectorAll(options.selector);
+    _results = [];
+    for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+      el = _ref1[_i];
+      if (!el.selectInstance) {
+        _results.push(new Select(extend({
+          el: el
+        }, options)));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
 
   window.Select = Select;
 

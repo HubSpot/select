@@ -1,4 +1,4 @@
-{extend, addClass, removeClass, hasClass, getBounds} = Tether.Utils
+{extend, addClass, removeClass, hasClass, getBounds, Evented} = Tether.Utils
 
 ENTER = 13
 ESCAPE = 27
@@ -86,8 +86,7 @@ document.addEventListener 'keydown', (e) ->
     if e.keyCode in [UP, DOWN, SPACE]
       select.open()
 
-class Select
-
+class Select extends Evented
   @defaults:
     alignToHighlighed: 'auto'
     className: 'select-theme-default'
@@ -95,6 +94,9 @@ class Select
   constructor: (@options) ->
     @options = extend {}, Select.defaults, @options
     @select = @options.el
+
+    if @select.selectInstance?
+      throw new Error "This element has already been turned into a Select"
 
     @setupTarget()
     @renderTarget()
@@ -106,6 +108,8 @@ class Select
     
     @setupTether()
     @bindClick()
+
+    @value = @select.value
 
   setupTarget: ->
     @target = document.createElement 'a'
@@ -185,12 +189,16 @@ class Select
     if @options.alignToHighlighted is 'always' or (@options.alignToHighlighted is 'auto' and @content.scrollHeight <= @content.clientHeight)
       setTimeout positionSelectStyle
 
+    @trigger 'open'
+
   close: ->
     @tether.disable()
 
     removeClass @drop, 'select-open'
     removeClass @target, 'select-open'
     removeClass @target, 'select-target-focused'
+
+    @trigger 'close'
 
   toggle: ->
     if @isOpen()
@@ -262,6 +270,8 @@ class Select
   setupSelect: ->
     @select.selectInstance = @
 
+    addClass @select, 'select-select'
+
     @select.addEventListener 'change', =>
       @renderDrop()
       @renderTarget()
@@ -273,6 +283,12 @@ class Select
 
     Array::filter.call options, (option) ->
       option.innerHTML.toLowerCase().substr(0, text.length) is text
+
+  findOptionsByValue: (val) ->
+    options = @drop.querySelectorAll('.select-option')
+
+    Array::filter.call options, (option) ->
+      option.getAttribute('data-value') is val
 
   getChosen: ->
     if @isOpen()
@@ -296,6 +312,8 @@ class Select
       removeClass highlighted, 'select-option-highlight'
 
     addClass option, 'select-option-highlight'
+
+    @trigger 'highlight', {option}
 
   moveHighlight: (directionKeyCode) ->
     unless highlighted = @drop.querySelector('.select-option-highlight')
@@ -331,7 +349,7 @@ class Select
     @pickOption @drop.querySelector('.select-option-highlight')
 
   pickOption: (option, close=true) ->
-    @select.value = option.getAttribute 'data-value'
+    @value = @select.value = option.getAttribute 'data-value'
     @triggerChange()
 
     if close
@@ -343,5 +361,26 @@ class Select
     event = document.createEvent("HTMLEvents")
     event.initEvent("change", true, false)
     @select.dispatchEvent event
+
+    @trigger 'change', {value: @select.value}
+
+  change: (val) ->
+    options = @findOptionsByValue val
+
+    if not options.length
+      throw new Error "Select Error: An option with the value \"#{ val }\" doesn't exist"
+
+    @pickOption options[0], false
+
+Select.init = (options={}) ->
+  if document.readyState is 'loading'
+    document.addEventListener 'DOMContentLoaded', -> Select.init(options)
+    return
+
+  options.selector ?= 'select'
+
+  for el in document.querySelectorAll(options.selector)
+    if not el.selectInstance
+      new Select extend {el}, options
 
 window.Select = Select

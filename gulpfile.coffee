@@ -5,18 +5,21 @@ concat = require('gulp-concat')
 uglify = require('gulp-uglify')
 header = require('gulp-header')
 rename = require('gulp-rename')
+gutil = require('gulp-util')
 
 pkg = require('./package.json')
 banner = "/*! #{ pkg.name } #{ pkg.version } */\n"
 
 gulp.task 'coffee', ->
-  gulp.src('./coffee/*')
-    .pipe(coffee())
-    .pipe(gulp.dest('./js/'))
+  try
+    gulp.src('./coffee/*')
+      .pipe(coffee().on('error', gutil.log))
+      .pipe(gulp.dest('./js/'))
 
-  gulp.src('./docs/welcome/coffee/*')
-    .pipe(coffee())
-    .pipe(gulp.dest('./docs/welcome/js/'))
+    gulp.src('./docs/welcome/coffee/*')
+      .pipe(coffee())
+      .pipe(gulp.dest('./docs/welcome/js/'))
+  catch e
 
 gulp.task 'concat', ->
   gulp.src(['./bower_components/tether/tether.js', 'js/select.js'])

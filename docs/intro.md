@@ -29,13 +29,65 @@ new Select
     el: selectElement
 ```
 
-To initialize all selects on a page, you could do something like this:
+To initialize all selects on a page, you can use the `Select.init` method:
 
 ```coffeescript
-selectElements = document.querySelectorAll('select')
-for selectElement in selectElements
-    new Select el: selectElement
+Select.init()
 ```
+
+By default, that will init all `select` elements, pass a `selector` to be more specific:
+
+```coffeescript
+Select.init({selector: '.my-select'})
+```
+
+You can pass any options you'd like to init your select's with into `init`:
+
+```coffeescript
+Select.init({className: 'select-theme-dark'})
+```
+
+#### The Select Object
+  
+The `Select` constructor returns a `Select` object.  You can also get the select instance by reading the `.selectInstance` property off of the
+original `select` element:
+
+```coffeescript
+MySelect = new Select
+  el: myElement
+
+# OR
+
+new Select
+  el: myElement
+
+MySelect = el.selectInstance
+```
+
+The `Select` object has the following properties:
+
+- `.close()`: Close the dropdown, if it's open
+- `.open()`: Open the dropdown, if it's closed
+- `.toggle()`: Toggle between open and closed
+- `.isOpen()`: Returns true if the dropdown is open
+- `.change(val)`: Change the select to the option with the value provided
+- `.value`: The current value of the select
+
+You can also bind events on the select object:
+
+- `.on(event, handler, [context])`: When `event` happens, call `handler`, with `context`
+- `.off(event, [handler])`: Unbind the provided `event` - `handler` combination
+- `.once(event, handler, [context])`: The next time `event` happens, call `handler`, with `context`
+
+Events:
+
+- `open`
+- `close`
+- `change`
+- `highlight`
+
+When the select's value changes, the value of the original `select` element it's based on will change
+as well, so feel free to read the value from that element, or listen to it's `change` event.
 
 #### Changing the theme
 
