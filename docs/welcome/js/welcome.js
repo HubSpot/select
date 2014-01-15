@@ -26,7 +26,7 @@
     return $select.on('change', function() {
       var newClassName;
       newClassName = $select.val();
-      $([select.dropSelect.$drop[0], select.$target[0], $showcase[0]]).removeClass(currentThemeClassName).addClass(newClassName);
+      $([select.drop, select.target, $showcase[0]]).removeClass(currentThemeClassName).addClass(newClassName);
       return currentThemeClassName = newClassName;
     });
   };
