@@ -1,0 +1,87 @@
+@import compass/css3
+@import compass/utilities/general/clearfix
+
+@import no-mobile-tap-highlight
+@import user-select
+@import checkmark
+
+@import ../bower_components/tether/sass/helpers/tether
+
+=select-theme-base($themeName, $optionLineHeight, $paddingTopBottom)
+    $maxRows: 8
+    $maxRowsMobile: 5
+    $optionHeight: $optionLineHeight + (2 * $paddingTopBottom)
+    $maxContentSize: $maxRows * $optionHeight
+    $maxContentSizeMobile: $maxRowsMobile * $optionHeight
+    $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
+
+    .select-theme-#{ $themeName }
+
+        &, & *, & *:after, & *:before
+            +box-sizing(border-box)
+
+    .select.select-theme-#{ $themeName }
+
+        .select-content
+            overflow: auto
+            -webkit-overflow-scrolling: touch
+            max-width: $maxContentSize
+            max-height: $maxContentSize
+
+            @media (max-width: $mobileBreakPointSize), (max-height: $mobileBreakPointSize)
+                max-width: $maxContentSizeMobile
+                max-height: $maxContentSizeMobile
+
+        .select-options
+            +no-mobile-tap-highlight
+            margin: 0
+            padding: 0
+
+            .select-option
+                +no-mobile-tap-highlight
+                position: relative
+                list-style: none
+                margin: 0
+                line-height: $optionLineHeight
+                padding-top: $paddingTopBottom
+                padding-bottom: $paddingTopBottom
+                display: block
+                cursor: pointer
+                white-space: nowrap
+                overflow: hidden
+                text-overflow: ellipsis
+
+    .select-target.select-theme-#{ $themeName }
+        +inline-block
+        +user-select(none)
+        +no-mobile-tap-highlight
+        position: relative
+        cursor: pointer
+        text-decoration: none
+        white-space: nowrap
+        max-width: 100%
+        overflow: hidden
+        text-overflow: ellipsis
+
+        &.select-target-focused, &.select-target-focused:focus
+            outline: none
+
+        b
+            position: absolute
+
+            &:before, &:after
+                content: ""
+                display: block
+                position: absolute
+                margin: auto
+                right: 0
+                height: 0
+                width: 0
+
+            &:before
+                top: 0
+                border-bottom-color: inherit
+
+            &:after
+                bottom: 0
+                border-top-color: inherit
