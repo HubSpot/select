@@ -6,7 +6,11 @@
 
 ## Select
 
-Select is a javascript and CSS library for creating styleable select elements.
+Select is a Javascript and CSS library for creating styleable select elements.  Unlike many other select-replacements, Select is designed
+from the ground up to replicate the behavior of native select controls as much as is possible, providing a seemless experience for users.
+
+Use select where you would use a native select.  It doesn't, and will never, provide any sort of search functionality, so you probably
+don't want to use it on a list of more than a few hundred elements.
 
 Select uses [Tether](http://github.hubspot.com/tether/docs/welcome) to efficiently position its element container.
 
