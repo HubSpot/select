@@ -9,6 +9,9 @@ DOWN = 40
 touchDevice = 'ontouchstart' of document.documentElement
 clickEvent = if touchDevice then 'touchstart' else 'click'
 
+useNative = ->
+  touchDevice and (innerWidth <= 640 or innerHeight <= 640)
+
 isRepeatedChar = (str) ->
   Array::reduce.call str, (a, b) ->
     if a is b then b else false
@@ -111,6 +114,9 @@ class Select extends Evented
 
     @value = @select.value
 
+  useNative: ->
+    @options.useNative is true or (useNative() and @options.useNative isnt false)
+
   setupTarget: ->
     @target = document.createElement 'a'
     @target.href = 'javascript:;'
@@ -142,9 +148,6 @@ class Select extends Evented
         removeClass @target, 'select-target-focused'
 
     @select.parentNode.insertBefore(@target, @select.nextSibling)
-    
-    # TODO: Do with a class?
-    @select.style.display = 'none'
 
   setupDrop: ->
     @drop = document.createElement 'div'
@@ -168,8 +171,19 @@ class Select extends Evented
     @drop.appendChild @content
 
   open: ->
-    addClass @drop, 'select-open'
     addClass @target, 'select-open'
+
+    if @useNative()
+      @select.style.display = 'block'
+
+      setTimeout =>
+        event = document.createEvent("MouseEvents")
+        event.initEvent("mousedown", true, true)
+        @select.dispatchEvent event
+
+      return
+
+    addClass @drop, 'select-open'
 
     setTimeout =>
       @tether.enable()
@@ -196,10 +210,15 @@ class Select extends Evented
     @trigger 'open'
 
   close: ->
+    removeClass @target, 'select-open'
+
+    if @useNative()
+      @select.style.display = 'none'
+      return
+
     @tether.disable()
 
     removeClass @drop, 'select-open'
-    removeClass @target, 'select-open'
 
     @trigger 'close'
 
@@ -213,7 +232,9 @@ class Select extends Evented
     hasClass @drop, 'select-open'
 
   bindClick: ->
-    @target.addEventListener clickEvent, => @toggle()
+    @target.addEventListener clickEvent, (e) =>
+      e.preventDefault()
+      @toggle()
 
     document.addEventListener clickEvent, (event) =>
       return unless @isOpen()

@@ -122,6 +122,18 @@ new Select
     selectLikeAlignment: 'never'
 ```
 
+#### Native controls
+
+By default, select fallsback to opening the native browser select on touch devices which are less than or equal to 640px in either height or width.
+
+To disable this:
+
+```coffeescript
+new Select
+    el: selectElement
+    useNative: false
+```
+
 ### Themes
 
 Currently there are three themes for Select.js.

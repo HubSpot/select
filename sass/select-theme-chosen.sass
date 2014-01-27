@@ -7,6 +7,8 @@
 
 @import ../bower_components/tether/sass/helpers/tether
 
+@import select
+
 +tether($themePrefix: "select")
 
 $optionLineHeight: 19px
@@ -36,6 +38,8 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
         overflow: auto
         max-width: $maxContentSize
         max-height: $maxContentSize
+
+        -webkit-overflow-scrolling: touch
 
         @media (max-width: $mobileBreakPointSize), (max-height: $mobileBreakPointSize)
             max-width: $maxContentSizeMobile

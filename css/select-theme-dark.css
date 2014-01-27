@@ -1,3 +1,12 @@
+.select-select {
+  display: none;
+  /* For when we are on a small touch device and want to use native controls */
+  -webkit-pointer-events: none;
+  -moz-pointer-events: none;
+  pointer-events: none;
+  position: absolute;
+  opacity: 0; }
+
 .select-element, .select-element:after, .select-element:before, .select-element *, .select-element *:after, .select-element *:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -28,7 +37,8 @@
   font-family: inherit;
   overflow: auto;
   max-width: 18rem;
-  max-height: 18rem; }
+  max-height: 18rem;
+  -webkit-overflow-scrolling: touch; }
   @media (max-width: 27rem), (max-height: 27rem) {
     .select.select-theme-dark .select-content {
       max-width: 11.25rem;

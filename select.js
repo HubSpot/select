@@ -1108,7 +1108,7 @@
 }).call(this);
 
 (function() {
-  var DOWN, ENTER, ESCAPE, Evented, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, _ref,
+  var DOWN, ENTER, ESCAPE, Evented, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, useNative, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -1127,6 +1127,10 @@
   touchDevice = 'ontouchstart' in document.documentElement;
 
   clickEvent = touchDevice ? 'touchstart' : 'click';
+
+  useNative = function() {
+    return touchDevice && (innerWidth <= 640 || innerHeight <= 640);
+  };
 
   isRepeatedChar = function(str) {
     return Array.prototype.reduce.call(str, function(a, b) {
@@ -1236,6 +1240,10 @@
       this.value = this.select.value;
     }
 
+    Select.prototype.useNative = function() {
+      return this.options.useNative === true || (useNative() && this.options.useNative !== false);
+    };
+
     Select.prototype.setupTarget = function() {
       var tabIndex,
         _this = this;
@@ -1267,8 +1275,7 @@
           return removeClass(_this.target, 'select-target-focused');
         }
       });
-      this.select.parentNode.insertBefore(this.target, this.select.nextSibling);
-      return this.select.style.display = 'none';
+      return this.select.parentNode.insertBefore(this.target, this.select.nextSibling);
     };
 
     Select.prototype.setupDrop = function() {
@@ -1297,8 +1304,18 @@
     Select.prototype.open = function() {
       var positionSelectStyle, selectedOption,
         _this = this;
-      addClass(this.drop, 'select-open');
       addClass(this.target, 'select-open');
+      if (this.useNative()) {
+        this.select.style.display = 'block';
+        setTimeout(function() {
+          var event;
+          event = document.createEvent("MouseEvents");
+          event.initEvent("mousedown", true, true);
+          return _this.select.dispatchEvent(event);
+        });
+        return;
+      }
+      addClass(this.drop, 'select-open');
       setTimeout(function() {
         return _this.tether.enable();
       });
@@ -1324,9 +1341,13 @@
     };
 
     Select.prototype.close = function() {
+      removeClass(this.target, 'select-open');
+      if (this.useNative()) {
+        this.select.style.display = 'none';
+        return;
+      }
       this.tether.disable();
       removeClass(this.drop, 'select-open');
-      removeClass(this.target, 'select-open');
       return this.trigger('close');
     };
 
@@ -1344,7 +1365,8 @@
 
     Select.prototype.bindClick = function() {
       var _this = this;
-      this.target.addEventListener(clickEvent, function() {
+      this.target.addEventListener(clickEvent, function(e) {
+        e.preventDefault();
         return _this.toggle();
       });
       return document.addEventListener(clickEvent, function(event) {
