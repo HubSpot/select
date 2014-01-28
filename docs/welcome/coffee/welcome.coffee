@@ -5,7 +5,7 @@ init = ->
 setupHeroSelect = ->
     new Select
         el: $('.hero-select')[0]
-        selectLikeAlignment: 'always'
+        alignToHighlight: 'always'
 
 currentThemeClassName = undefined
 setupThemeSelect = ->
@@ -15,7 +15,7 @@ setupThemeSelect = ->
     select = new Select
         el: $select[0]
         className: currentThemeClassName
-        selectLikeAlignment: 'always'
+        alignToHighlight: 'always'
 
     $select.on 'change', ->
         newClassName = $select.val()

@@ -9,7 +9,7 @@
   setupHeroSelect = function() {
     return new Select({
       el: $('.hero-select')[0],
-      selectLikeAlignment: 'always'
+      alignToHighlight: 'always'
     });
   };
 
@@ -23,7 +23,7 @@
     select = new Select({
       el: $select[0],
       className: currentThemeClassName,
-      selectLikeAlignment: 'always'
+      alignToHighlight: 'always'
     });
     return $select.on('change', function() {
       var newClassName;
