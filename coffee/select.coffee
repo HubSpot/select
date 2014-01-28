@@ -258,7 +258,6 @@ class Select extends Evented
       classPrefix: 'select'
       constraints: [
         to: 'window'
-        pin: true
         attachment: 'together'
       ]
 
