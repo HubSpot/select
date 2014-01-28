@@ -108,7 +108,7 @@ new Select
 
 #### Changing the positioning
 
-Select has an option called `selectLikeAlignment` which allows you to change whether
+Select has an option called `alignToHighlighted` which allows you to change whether
 the drop is positioned like a real
 select element (with the currently selected option over the element) or like a canonical dropdown menu.
 
@@ -119,7 +119,7 @@ In this example, we Select to always open the drop like a dropdown menu.
 ```coffeescript
 new Select
     el: selectElement
-    selectLikeAlignment: 'never'
+    alignToHighlighted: 'never'
 ```
 
 #### Native controls
