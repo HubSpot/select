@@ -284,7 +284,6 @@
         constraints: [
           {
             to: 'window',
-            pin: true,
             attachment: 'together'
           }
         ]
