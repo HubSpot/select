@@ -1,6 +1,6 @@
 {
   "name": "select",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Styleable select elements built on Tether",
   "authors": [
     "Adam Schwartz <adam.flynn.schwartz@gmail.com>",
