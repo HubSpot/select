@@ -8,7 +8,8 @@
 
   setupHeroSelect = function() {
     return new Select({
-      el: $('.hero-select')[0]
+      el: $('.hero-select')[0],
+      selectLikeAlignment: 'always'
     });
   };
 
@@ -21,7 +22,8 @@
     currentThemeClassName = $select.val();
     select = new Select({
       el: $select[0],
-      className: currentThemeClassName
+      className: currentThemeClassName,
+      selectLikeAlignment: 'always'
     });
     return $select.on('change', function() {
       var newClassName;
