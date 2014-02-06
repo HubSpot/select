@@ -1,4 +1,4 @@
-/*! select 0.4.5 */
+/*! select 0.4.8 */
 /*! tether 0.5.0 */
 (function() {
   var Evented, addClass, defer, deferred, extend, flush, getBounds, getOffsetParent, getOrigin, getScrollParent, hasClass, node, removeClass, uniqueId, updateClasses, zeroPosCache,
@@ -1514,11 +1514,9 @@
         }
       });
       this.target.addEventListener('focus', function() {
-        console.log('focus');
         return addClass(_this.target, 'select-target-focused');
       });
       this.target.addEventListener('blur', function(e) {
-        console.log('blur');
         if (_this.isOpen()) {
           if (e.relatedTarget && !_this.drop.contains(e.relatedTarget)) {
             _this.close();

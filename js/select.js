@@ -155,11 +155,9 @@
         }
       });
       this.target.addEventListener('focus', function() {
-        console.log('focus');
         return addClass(_this.target, 'select-target-focused');
       });
       this.target.addEventListener('blur', function(e) {
-        console.log('blur');
         if (_this.isOpen()) {
           if (e.relatedTarget && !_this.drop.contains(e.relatedTarget)) {
             _this.close();
