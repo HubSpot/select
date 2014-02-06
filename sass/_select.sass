@@ -3,7 +3,9 @@
 .select-select
     display: none
 
+.select-select-native
     /* For when we are on a small touch device and want to use native controls */
-    +pointer-events(none)
     position: absolute
-    opacity: 0
+    width: 0
+    height: 0
+    overflow: hidden

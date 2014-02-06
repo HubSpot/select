@@ -326,7 +326,11 @@
     Select.prototype.setupSelect = function() {
       var _this = this;
       this.select.selectInstance = this;
-      addClass(this.select, 'select-select');
+      if (this.useNative()) {
+        addClass(this.select, 'select-select-native');
+      } else {
+        addClass(this.select, 'select-select');
+      }
       return this.select.addEventListener('change', function() {
         _this.renderDrop();
         return _this.renderTarget();
