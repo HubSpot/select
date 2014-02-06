@@ -1500,8 +1500,12 @@
       this.target = document.createElement('a');
       this.target.href = 'javascript:;';
       addClass(this.target, 'select-target');
-      tabIndex = this.select.getAttribute('tabindex') || 0;
-      this.target.setAttribute('tabindex', tabIndex);
+      if (this.useNative()) {
+        this.target.setAttribute('tabindex', -1);
+      } else {
+        tabIndex = this.select.getAttribute('tabindex') || 0;
+        this.target.setAttribute('tabindex', tabIndex);
+      }
       if (this.options.className) {
         addClass(this.target, this.options.className);
       }

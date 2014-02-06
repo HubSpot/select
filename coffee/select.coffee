@@ -123,8 +123,12 @@ class Select extends Evented
 
     addClass @target, 'select-target'
 
-    tabIndex = @select.getAttribute('tabindex') or 0
-    @target.setAttribute 'tabindex', tabIndex
+    if @useNative()
+      # Only allow tabbing on the native <select>
+      @target.setAttribute 'tabindex', -1
+    else
+      tabIndex = @select.getAttribute('tabindex') or 0
+      @target.setAttribute 'tabindex', tabIndex
 
     if @options.className
       addClass @target, @options.className
