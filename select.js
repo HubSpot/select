@@ -1514,16 +1514,17 @@
         }
       });
       this.target.addEventListener('focus', function() {
+        console.log('focus');
         return addClass(_this.target, 'select-target-focused');
       });
       this.target.addEventListener('blur', function(e) {
+        console.log('blur');
         if (_this.isOpen()) {
           if (e.relatedTarget && !_this.drop.contains(e.relatedTarget)) {
-            return _this.close();
+            _this.close();
           }
-        } else {
-          return removeClass(_this.target, 'select-target-focused');
         }
+        return removeClass(_this.target, 'select-target-focused');
       });
       return this.select.parentNode.insertBefore(this.target, this.select.nextSibling);
     };

@@ -138,14 +138,16 @@ class Select extends Evented
         @target.blur()
 
     @target.addEventListener 'focus', =>
+      console.log 'focus'
       addClass @target, 'select-target-focused'
 
     @target.addEventListener 'blur', (e) =>
+      console.log 'blur'
       if @isOpen()
         if e.relatedTarget and not @drop.contains(e.relatedTarget)
           @close()
-      else
-        removeClass @target, 'select-target-focused'
+
+      removeClass @target, 'select-target-focused'
 
     @select.parentNode.insertBefore(@target, @select.nextSibling)
 
