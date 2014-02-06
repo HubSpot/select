@@ -49,7 +49,7 @@ document.addEventListener 'keypress', (e) ->
     # They hit the same char over and over, maybe they want to cycle through
     # the options that start with that char
     repeatedOptions = select.findOptionsByPrefix(searchText[0])
-    
+
     if repeatedOptions.length
       selected = repeatedOptions.indexOf select.getChosen()
 
@@ -67,7 +67,7 @@ document.addEventListener 'keypress', (e) ->
     return
 
   # No match at all, do nothing
-  
+
 document.addEventListener 'keydown', (e) ->
   # We consider this independently of the keypress handler so we can intercept keys that have
   # built-in functions.
@@ -108,7 +108,7 @@ class Select extends Evented
     @renderDrop()
 
     @setupSelect()
-    
+
     @setupTether()
     @bindClick()
 
@@ -123,8 +123,12 @@ class Select extends Evented
 
     addClass @target, 'select-target'
 
-    tabIndex = @select.getAttribute('tabindex') or 0
-    @target.setAttribute 'tabindex', tabIndex
+    if @useNative()
+      # Only allow tabbing on the native <select>
+      @target.setAttribute 'tabindex', -1
+    else
+      tabIndex = @select.getAttribute('tabindex') or 0
+      @target.setAttribute 'tabindex', tabIndex
 
     if @options.className
       addClass @target, @options.className
@@ -293,7 +297,10 @@ class Select extends Evented
   setupSelect: ->
     @select.selectInstance = @
 
-    addClass @select, 'select-select'
+    if @useNative()
+      addClass @select, 'select-select-native'
+    else
+      addClass @select, 'select-select'
 
     @select.addEventListener 'change', =>
       @renderDrop()

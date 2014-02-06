@@ -1,5 +1,5 @@
 /*! select 0.4.8 */
-/*! tether 0.5.0 */
+/*! tether 0.5.2 */
 (function() {
   var Evented, addClass, defer, deferred, extend, flush, getBounds, getOffsetParent, getOrigin, getScrollParent, hasClass, node, removeClass, uniqueId, updateClasses, zeroPosCache,
     __hasProp = {}.hasOwnProperty,
@@ -612,7 +612,7 @@
             if (this.target !== document.body) {
               out.height = Math.max(out.height, 24);
             }
-            scrollPercentage = target.scrollTop / (target.scrollHeight - height);
+            scrollPercentage = this.target.scrollTop / (target.scrollHeight - height);
             out.top = scrollPercentage * (height - out.height - fitAdj) + bounds.top + parseFloat(style.borderTopWidth);
             if (this.target === document.body) {
               out.height = Math.max(out.height, 24);
@@ -814,7 +814,7 @@
         _ref4 = ['Top', 'Left', 'Bottom', 'Right'];
         for (_j = 0, _len1 = _ref4.length; _j < _len1; _j++) {
           side = _ref4[_j];
-          offsetBorder[side] = parseFloat(offsetParentStyle["border" + side + "Width"]);
+          offsetBorder[side.toLowerCase()] = parseFloat(offsetParentStyle["border" + side + "Width"]);
         }
         offsetPosition.right = document.body.scrollWidth - offsetPosition.left - offsetParentSize.width + offsetBorder.right;
         offsetPosition.bottom = document.body.scrollHeight - offsetPosition.top - offsetParentSize.height + offsetBorder.bottom;
@@ -1500,8 +1500,12 @@
       this.target = document.createElement('a');
       this.target.href = 'javascript:;';
       addClass(this.target, 'select-target');
-      tabIndex = this.select.getAttribute('tabindex') || 0;
-      this.target.setAttribute('tabindex', tabIndex);
+      if (this.useNative()) {
+        this.target.setAttribute('tabindex', -1);
+      } else {
+        tabIndex = this.select.getAttribute('tabindex') || 0;
+        this.target.setAttribute('tabindex', tabIndex);
+      }
       if (this.options.className) {
         addClass(this.target, this.options.className);
       }
@@ -1685,7 +1689,11 @@
     Select.prototype.setupSelect = function() {
       var _this = this;
       this.select.selectInstance = this;
-      addClass(this.select, 'select-select');
+      if (this.useNative()) {
+        addClass(this.select, 'select-select-native');
+      } else {
+        addClass(this.select, 'select-select');
+      }
       return this.select.addEventListener('change', function() {
         _this.renderDrop();
         return _this.renderTarget();

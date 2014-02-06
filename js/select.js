@@ -141,8 +141,12 @@
       this.target = document.createElement('a');
       this.target.href = 'javascript:;';
       addClass(this.target, 'select-target');
-      tabIndex = this.select.getAttribute('tabindex') || 0;
-      this.target.setAttribute('tabindex', tabIndex);
+      if (this.useNative()) {
+        this.target.setAttribute('tabindex', -1);
+      } else {
+        tabIndex = this.select.getAttribute('tabindex') || 0;
+        this.target.setAttribute('tabindex', tabIndex);
+      }
       if (this.options.className) {
         addClass(this.target, this.options.className);
       }
@@ -326,7 +330,11 @@
     Select.prototype.setupSelect = function() {
       var _this = this;
       this.select.selectInstance = this;
-      addClass(this.select, 'select-select');
+      if (this.useNative()) {
+        addClass(this.select, 'select-select-native');
+      } else {
+        addClass(this.select, 'select-select');
+      }
       return this.select.addEventListener('change', function() {
         _this.renderDrop();
         return _this.renderTarget();
