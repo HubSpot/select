@@ -112,6 +112,8 @@ class Select extends Evented
     @setupTether()
     @bindClick()
 
+    @bindMutationEvents()
+
     @value = @select.value
 
   useNative: ->
@@ -290,14 +292,27 @@ class Select extends Evented
     @content.innerHTML = ''
     @content.appendChild optionList
 
+  update: =>
+    @renderDrop()
+    @renderTarget()
+
   setupSelect: ->
     @select.selectInstance = @
 
     addClass @select, 'select-select'
 
-    @select.addEventListener 'change', =>
-      @renderDrop()
-      @renderTarget()
+    @select.addEventListener 'change', @update
+
+  bindMutationEvents: ->
+    if window.MutationObserver?
+      @observer = new MutationObserver @update
+      @observer.observe @select,
+        childList: true
+        attributes: true
+        characterData: true
+        subtree: true
+    else
+      @select.addEventListener 'DOMSubtreeModified', @update
 
   findOptionsByPrefix: (text) ->
     options = @drop.querySelectorAll('.select-option')

@@ -1,5 +1,6 @@
 (function() {
   var DOWN, ENTER, ESCAPE, Evented, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, useNative, _ref,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -116,6 +117,7 @@
 
     function Select(options) {
       this.options = options;
+      this.update = __bind(this.update, this);
       this.options = extend({}, Select.defaults, this.options);
       this.select = this.options.el;
       if (this.select.selectInstance != null) {
@@ -128,6 +130,7 @@
       this.setupSelect();
       this.setupTether();
       this.bindClick();
+      this.bindMutationEvents();
       this.value = this.select.value;
     }
 
@@ -323,14 +326,29 @@
       return this.content.appendChild(optionList);
     };
 
+    Select.prototype.update = function() {
+      this.renderDrop();
+      return this.renderTarget();
+    };
+
     Select.prototype.setupSelect = function() {
-      var _this = this;
       this.select.selectInstance = this;
       addClass(this.select, 'select-select');
-      return this.select.addEventListener('change', function() {
-        _this.renderDrop();
-        return _this.renderTarget();
-      });
+      return this.select.addEventListener('change', this.update);
+    };
+
+    Select.prototype.bindMutationEvents = function() {
+      if (window.MutationObserver != null) {
+        this.observer = new MutationObserver(this.update);
+        return this.observer.observe(this.select, {
+          childList: true,
+          attributes: true,
+          characterData: true,
+          subtree: true
+        });
+      } else {
+        return this.select.addEventListener('DOMSubtreeModified', this.update);
+      }
     };
 
     Select.prototype.findOptionsByPrefix = function(text) {
