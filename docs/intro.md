@@ -10,7 +10,7 @@ Select is a Javascript and CSS library for creating styleable select elements.  
 from the ground up to replicate the behavior of native select controls as much as is possible, providing a seemless experience for users.
 That means it works properly when you type characters, use tab for focus, etc.
 
-Use Select where you would use a native select.  It doesn't, and will never, provide any sort of search functionality, so you probably
+Use Select where you would use a native select.  It doesn't, and will never, provide any sort of autocomplete functionality, so you probably
 don't want to use it on a list of more than a few hundred elements.
 
 Select uses [Tether](http://github.hubspot.com/tether/docs/welcome) to efficiently position its element container.
@@ -78,6 +78,7 @@ The `Select` object has the following properties:
 - `.toggle()`: Toggle between open and closed
 - `.isOpen()`: Returns true if the dropdown is open
 - `.change(val)`: Change the select to the option with the value provided
+- `.update()`: Update the dropdown with new options.  This happens automatically when you change the underlying select, so you should never have to call it.
 - `.value`: The current value of the select
 
 You can also bind events on the select object:
