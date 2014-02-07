@@ -3,7 +3,9 @@ init = ->
     setupThemeSelect()
 
 setupHeroSelect = ->
-    new Select el: $('.hero-select')[0]
+    new Select
+        el: $('.hero-select')[0]
+        alignToHighlighted: 'always'
 
 currentThemeClassName = undefined
 setupThemeSelect = ->
@@ -13,10 +15,11 @@ setupThemeSelect = ->
     select = new Select
         el: $select[0]
         className: currentThemeClassName
+        alignToHighlighted: 'always'
 
     $select.on 'change', ->
         newClassName = $select.val()
-        $([select.dropSelect.$drop[0], select.$target[0], $showcase[0]]).removeClass(currentThemeClassName).addClass(newClassName)
+        $([select.drop, select.target, $showcase[0]]).removeClass(currentThemeClassName).addClass(newClassName)
         currentThemeClassName = newClassName
 
 $ init

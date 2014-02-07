@@ -8,7 +8,8 @@
 
   setupHeroSelect = function() {
     return new Select({
-      el: $('.hero-select')[0]
+      el: $('.hero-select')[0],
+      alignToHighlighted: 'always'
     });
   };
 
@@ -21,12 +22,13 @@
     currentThemeClassName = $select.val();
     select = new Select({
       el: $select[0],
-      className: currentThemeClassName
+      className: currentThemeClassName,
+      alignToHighlighted: 'always'
     });
     return $select.on('change', function() {
       var newClassName;
       newClassName = $select.val();
-      $([select.dropSelect.$drop[0], select.$target[0], $showcase[0]]).removeClass(currentThemeClassName).addClass(newClassName);
+      $([select.drop, select.target, $showcase[0]]).removeClass(currentThemeClassName).addClass(newClassName);
       return currentThemeClassName = newClassName;
     });
   };

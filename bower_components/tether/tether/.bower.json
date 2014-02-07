@@ -1,0 +1,30 @@
+{
+  "name": "tether",
+  "version": "0.5.0",
+  "homepage": "https://github.hubspot.com/tether",
+  "authors": [
+    "Zack Bloom <zbloom@hubspot.com>",
+    "Adam Schwartz <adam.flynn.schwartz@gmail.com>"
+  ],
+  "description": "Tether elements together",
+  "keywords": [
+    "javascript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.5.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.5.0",
+    "commit": "7e4745cdce6b6f71a7a2affd50c7ef6c9fce38ce"
+  },
+  "_source": "git://github.com/HubSpot/tether.git",
+  "_target": "~0.5.0",
+  "_originalSource": "tether"
+}
