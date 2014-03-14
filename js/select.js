@@ -277,7 +277,7 @@
     };
 
     Select.prototype.setupTether = function() {
-      return this.tether = new Tether({
+      return this.tether = new Tether(extend({
         element: this.drop,
         target: this.target,
         attachment: 'top left',
@@ -289,7 +289,7 @@
             attachment: 'together'
           }
         ]
-      });
+      }, this.options.tetherOptions));
     };
 
     Select.prototype.renderTarget = function() {
