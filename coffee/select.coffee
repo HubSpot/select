@@ -164,6 +164,10 @@ class Select extends Evented
       if hasClass(e.target, 'select-option')
         @pickOption e.target
 
+      # Built-in selects don't propagate click events in their drop directly to
+      # the body, so we don't want to either.
+      e.stopPropagation()
+
     @drop.addEventListener 'mousemove', (e) =>
       if hasClass(e.target, 'select-option')
         @highlightOption e.target

@@ -181,8 +181,9 @@
       document.body.appendChild(this.drop);
       this.drop.addEventListener('click', function(e) {
         if (hasClass(e.target, 'select-option')) {
-          return _this.pickOption(e.target);
+          _this.pickOption(e.target);
         }
+        return e.stopPropagation();
       });
       this.drop.addEventListener('mousemove', function(e) {
         if (hasClass(e.target, 'select-option')) {
