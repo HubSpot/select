@@ -1,4 +1,4 @@
-/*! select 0.5.0 */
+/*! select 0.5.1 */
 /*! tether 0.5.0 */
 (function() {
   var Evented, addClass, defer, deferred, extend, flush, getBounds, getOffsetParent, getOrigin, getScrollParent, hasClass, node, removeClass, uniqueId, updateClasses, zeroPosCache,
