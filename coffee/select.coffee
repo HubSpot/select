@@ -256,7 +256,7 @@ class Select extends Evented
       @close()
 
   setupTether: ->
-    @tether = new Tether
+    @tether = new Tether extend
       element: @drop
       target: @target
       attachment: 'top left'
@@ -266,6 +266,7 @@ class Select extends Evented
         to: 'window'
         attachment: 'together'
       ]
+    , @options.tetherOptions
 
   renderTarget: ->
     @target.innerHTML = ''
