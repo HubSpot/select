@@ -1,7 +1,7 @@
 {
   "name": "select",
   "main": "select.js",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "homepage": "https://github.com/HubSpot/select",
   "authors": [
     "Zack Bloom <zbloom@hubspot.com>",
@@ -23,6 +23,6 @@
     "tests"
   ],
   "dependencies": {
-    "tether": "~0.5.0"
+    "tether": "~0.6.5"
   }
 }
