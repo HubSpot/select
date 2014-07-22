@@ -1,6 +1,6 @@
 {
   "name": "select",
-  "main": "select.js",
+  "main": "js/select.js",
   "version": "0.5.2",
   "homepage": "https://github.com/HubSpot/select",
   "authors": [
