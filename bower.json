@@ -1,7 +1,7 @@
 {
   "name": "select",
   "main": "js/select.js",
-  "version": "0.5.2",
+  "version": "0.6.1",
   "homepage": "https://github.com/HubSpot/select",
   "authors": [
     "Zack Bloom <zbloom@hubspot.com>",
