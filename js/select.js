@@ -1,3 +1,14 @@
+
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(["tether"], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory(require('tether'));
+  } else {
+    root.Select = factory(root.Tether);
+  }
+}(this, function(Tether) {
+
 (function() {
   var DOWN, ENTER, ESCAPE, Evented, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, useNative, _ref,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -509,3 +520,7 @@
   window.Select = Select;
 
 }).call(this);
+
+return this.Select;
+
+}));

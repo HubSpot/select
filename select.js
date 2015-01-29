@@ -1,16 +1,15 @@
 /*! select 0.6.1 */
 /*! tether 0.6.5 */
 
-
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define(factory);
   } else if (typeof exports === 'object') {
-    module.exports = factory(require,exports,module);
+    module.exports = factory(require, exports, module);
   } else {
     root.Tether = factory();
   }
-}(this, function(require,exports,module) {
+}(this, function(require, exports, module) {
 
 (function() {
   var Evented, addClass, defer, deferred, extend, flush, getBounds, getOffsetParent, getOrigin, getScrollBarSize, getScrollParent, hasClass, node, removeClass, uniqueId, updateClasses, zeroPosCache,
@@ -1443,6 +1442,17 @@ return this.Tether;
 
 }));
 
+
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(["tether"], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory(require('tether'));
+  } else {
+    root.Select = factory(root.Tether);
+  }
+}(this, function(Tether) {
+
 (function() {
   var DOWN, ENTER, ESCAPE, Evented, SPACE, Select, UP, addClass, clickEvent, extend, getBounds, getFocusedSelect, hasClass, isRepeatedChar, lastCharacter, removeClass, searchText, searchTextTimeout, touchDevice, useNative, _ref,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -1954,3 +1964,7 @@ return this.Tether;
   window.Select = Select;
 
 }).call(this);
+
+return this.Select;
+
+}));
