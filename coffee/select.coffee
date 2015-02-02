@@ -93,6 +93,7 @@ class Select extends Evented
   @defaults:
     alignToHighlighed: 'auto'
     className: 'select-theme-default'
+    clickEvent: clickEvent
 
   constructor: (@options) ->
     @options = extend {}, Select.defaults, @options
@@ -238,11 +239,11 @@ class Select extends Evented
     hasClass @drop, 'select-open'
 
   bindClick: ->
-    @target.addEventListener clickEvent, (e) =>
+    @target.addEventListener @options.clickEvent, (e) =>
       e.preventDefault()
       @toggle()
 
-    document.addEventListener clickEvent, (event) =>
+    document.addEventListener @options.clickEvent, (event) =>
       return unless @isOpen()
 
       # Clicking inside dropdown

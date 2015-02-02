@@ -112,7 +112,8 @@
 
     Select.defaults = {
       alignToHighlighed: 'auto',
-      className: 'select-theme-default'
+      className: 'select-theme-default',
+      clickEvent: clickEvent
     };
 
     function Select(options) {
@@ -259,11 +260,11 @@
 
     Select.prototype.bindClick = function() {
       var _this = this;
-      this.target.addEventListener(clickEvent, function(e) {
+      this.target.addEventListener(this.options.clickEvent, function(e) {
         e.preventDefault();
         return _this.toggle();
       });
-      return document.addEventListener(clickEvent, function(event) {
+      return document.addEventListener(this.options.clickEvent, function(event) {
         if (!_this.isOpen()) {
           return;
         }
