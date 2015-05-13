@@ -50,8 +50,8 @@ table.showcase {
 
 .button {
   display: inline-block;
-  border: 2px solid #333333;
-  color: #333333;
+  border: 2px solid #333;
+  color: #333;
   padding: 1em 1.25em;
   font-weight: 500;
   text-transform: uppercase;
@@ -59,27 +59,23 @@ table.showcase {
   text-decoration: none;
   cursor: pointer;
   width: 140px;
-  font-size: 0.8em;
+  font-size: .8em;
   line-height: 1.3em; }
   .button.dark {
-    background: #333333;
-    color: white; }
+    background: #333;
+    color: #fff; }
 
 table.showcase.hero .hero-container {
-  background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, #ffffff), color-stop(50%, #f0f0f0), color-stop(100%, #ffffff));
-  background-image: -webkit-linear-gradient(left, #ffffff, #f0f0f0, #ffffff);
-  background-image: -moz-linear-gradient(left, #ffffff, #f0f0f0, #ffffff);
-  background-image: -o-linear-gradient(left, #ffffff, #f0f0f0, #ffffff);
-  background-image: linear-gradient(left, #ffffff, #f0f0f0, #ffffff);
+  background-image: -webkit-linear-gradient(left, #fff, #f0f0f0, #fff);
+  background-image: linear-gradient(left, #fff, #f0f0f0, #fff);
   margin: 0 auto;
   text-align: center; }
+
 table.showcase.about {
   background: #fff1dd; }
   table.showcase.about a {
     color: #c96c24; }
   table.showcase.about p {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
     text-align: left;
     width: 500px;
@@ -89,22 +85,21 @@ table.showcase.about {
     table.showcase.about p > code {
       background: rgba(0, 0, 0, 0.05); }
   table.showcase.about pre {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
     text-align: left;
     width: 500px;
     max-width: 100%;
     margin-left: auto;
     margin-right: auto; }
+
 table.showcase.themes {
-  background: #eeeeee; }
+  background: #eee; }
   table.showcase.themes.select-theme-dark {
     background: #323232; }
     table.showcase.themes.select-theme-dark h1, table.showcase.themes.select-theme-dark h2 {
       color: #e6e6e6; }
   table.showcase.themes.select-theme-chosen {
-    background: white; }
+    background: #fff; }
   table.showcase.themes .themes-list {
     margin: 4em auto;
     padding: 0;
@@ -118,7 +113,7 @@ table.showcase.themes {
       table.showcase.themes .themes-list li a {
         cursor: pointer;
         opacity: 0.3;
-        padding: 0.5em;
+        padding: .5em;
         display: inline-block; }
         table.showcase.themes .themes-list li a.selected {
           opacity: 1; }
@@ -126,12 +121,15 @@ table.showcase.themes {
 @media (max-width: 786px) {
   table.showcase .showcase-inner table[data-sortable] tr *:nth-child(4), table.showcase .button.dark {
     display: none; } }
+
 @media (max-width: 480px) {
   table.showcase .showcase-inner table[data-sortable] tr *:nth-child(3) {
     display: none; } }
+
 @media (max-width: 568px) {
   table.showcase.about p, table.showcase.about pre {
     width: 400px; } }
+
 @media (max-width: 420px) {
   table.showcase.about p, table.showcase.about pre {
     width: 280px; } }
