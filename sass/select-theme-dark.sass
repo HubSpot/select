@@ -1,11 +1,8 @@
-@import compass/css3
-@import compass/utilities/general/clearfix
-
 @import no-mobile-tap-highlight
 @import user-select
 @import checkmark
-@import pointer-events
 
+@import ../bower_components/tether/sass/mixins/inline-block
 @import ../bower_components/tether/sass/helpers/tether
 
 @import select
@@ -25,14 +22,14 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
 .select-theme-dark
 
     &, & *, & *:after, & *:before
-        +box-sizing(border-box)
+        box-sizing: border-box
 
 .select.select-theme-dark
     +user-select(none)
 
     .select-content
-        +border-radius(.25em)
-        +box-shadow(0 2px 8px rgba(0, 0, 0, .2))
+        border-radius: .25em
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .2)
         background: #252525
         color: #b9b9b9
         font-family: inherit
@@ -84,16 +81,16 @@ $mobileBreakPointSize: ($maxRows + 4) * $optionHeight
                     +checkmark(#fff)
 
             &:first-child
-                +border-radius(.25em .25em 0 0)
+                border-radius: .25em .25em 0 0
 
             &:last-child
-                +border-radius(0 0 .25em .25em)
+                border-radius: 0 0 .25em .25em
 
 .select-target.select-theme-dark
     +inline-block
-    +border-radius(.25em)
     +user-select(none)
     +no-mobile-tap-highlight
+    border-radius: .25em
     position: relative
     padding: $paddingTopBottom 3em $paddingTopBottom 1em
     background: #252525
