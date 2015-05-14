@@ -125,13 +125,15 @@ document.addEventListener('keydown', (e) => {
 
 class Select extends Evented {
   constructor(options) {
-    super()
+    super(options)
     this.options = extend({}, Select.defaults, options);
     this.select = this.options.el;
 
     if (typeof this.select.selectInstance !== 'undefined') {
       throw new Error('This element has already been turned into a Select');
     }
+
+    this.update = this.update.bind(this);
 
     this.setupTarget();
     this.renderTarget();
@@ -242,7 +244,9 @@ class Select extends Evented {
 
     addClass(this.drop, 'select-open');
 
-    setTimeout(this.tether.enable);
+    setTimeout(() => {
+      this.tether.enable();
+    });
 
     const selectedOption = this.drop.querySelector('.select-option-selected');
 
@@ -268,7 +272,9 @@ class Select extends Evented {
     const alignToHighlighted = this.options.alignToHighlighted;
     const {scrollHeight, clientHeight} = this.content;
     if (alignToHighlighted === 'always' || (alignToHighlighted === 'auto' && scrollHeight <= clientHeight)) {
-      setTimeout(positionSelectStyle);
+      setTimeout(() => {
+        positionSelectStyle();
+      });
     }
 
     this.trigger('open');
@@ -298,7 +304,7 @@ class Select extends Evented {
   }
 
   isOpen() {
-    hasClass(this.drop, 'select-open');
+    return hasClass(this.drop, 'select-open');
   }
 
   bindClick() {
@@ -349,7 +355,7 @@ class Select extends Evented {
     for (let i = 0; i < options.length; ++i) {
       const option = options[i];
       if (option.selected) {
-        this.target.innerHTML = options.innerHTML;
+        this.target.innerHTML = option.innerHTML;
         break;
       }
     }
@@ -413,7 +419,7 @@ class Select extends Evented {
 
     text = text.toLowerCase();
 
-    Array.prototype.filter.call(options, (option) => {
+    return Array.prototype.filter.call(options, (option) => {
       return option.innerHTML.toLowerCase().substr(0, text.length) === text;
     });
   }
@@ -421,7 +427,7 @@ class Select extends Evented {
   findOptionsByValue(val) {
     let options = this.drop.querySelectorAll('.select-option');
 
-    Array.prototype.filter.call(options, (option) => {
+    return Array.prototype.filter.call(options, (option) => {
       return option.getAttribute('data-value') === val;
     });
   }
@@ -467,7 +473,7 @@ class Select extends Evented {
     const options = this.drop.querySelectorAll('.select-option');
 
     let highlightedIndex = Array.prototype.indexOf.call(options, highlighted);
-    if (!highlightedIndex >= 0) {
+    if (!(highlightedIndex >= 0)) {
       return;
     }
 

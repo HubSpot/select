@@ -148,13 +148,15 @@ var Select = (function (_Evented) {
   function Select(options) {
     _classCallCheck(this, Select);
 
-    _get(Object.getPrototypeOf(Select.prototype), 'constructor', this).call(this);
+    _get(Object.getPrototypeOf(Select.prototype), 'constructor', this).call(this, options);
     this.options = extend({}, Select.defaults, options);
     this.select = this.options.el;
 
     if (typeof this.select.selectInstance !== 'undefined') {
       throw new Error('This element has already been turned into a Select');
     }
+
+    this.update = this.update.bind(this);
 
     this.setupTarget();
     this.renderTarget();
@@ -280,7 +282,9 @@ var Select = (function (_Evented) {
 
       addClass(this.drop, 'select-open');
 
-      setTimeout(this.tether.enable);
+      setTimeout(function () {
+        _this3.tether.enable();
+      });
 
       var selectedOption = this.drop.querySelector('.select-option-selected');
 
@@ -308,7 +312,9 @@ var Select = (function (_Evented) {
       var clientHeight = _content.clientHeight;
 
       if (alignToHighlighted === 'always' || alignToHighlighted === 'auto' && scrollHeight <= clientHeight) {
-        setTimeout(positionSelectStyle);
+        setTimeout(function () {
+          positionSelectStyle();
+        });
       }
 
       this.trigger('open');
@@ -341,7 +347,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'isOpen',
     value: function isOpen() {
-      hasClass(this.drop, 'select-open');
+      return hasClass(this.drop, 'select-open');
     }
   }, {
     key: 'bindClick',
@@ -395,7 +401,7 @@ var Select = (function (_Evented) {
       for (var i = 0; i < options.length; ++i) {
         var option = options[i];
         if (option.selected) {
-          this.target.innerHTML = options.innerHTML;
+          this.target.innerHTML = option.innerHTML;
           break;
         }
       }
@@ -464,7 +470,7 @@ var Select = (function (_Evented) {
 
       text = text.toLowerCase();
 
-      Array.prototype.filter.call(options, function (option) {
+      return Array.prototype.filter.call(options, function (option) {
         return option.innerHTML.toLowerCase().substr(0, text.length) === text;
       });
     }
@@ -473,7 +479,7 @@ var Select = (function (_Evented) {
     value: function findOptionsByValue(val) {
       var options = this.drop.querySelectorAll('.select-option');
 
-      Array.prototype.filter.call(options, function (option) {
+      return Array.prototype.filter.call(options, function (option) {
         return option.getAttribute('data-value') === val;
       });
     }
@@ -524,7 +530,7 @@ var Select = (function (_Evented) {
       var options = this.drop.querySelectorAll('.select-option');
 
       var highlightedIndex = Array.prototype.indexOf.call(options, highlighted);
-      if (!highlightedIndex >= 0) {
+      if (!(highlightedIndex >= 0)) {
         return;
       }
 
