@@ -35,7 +35,7 @@ gulp.task('clean', function() {
 
 
 // Javascript
-gulp.task('js', ['clean'], function() {
+gulp.task('js', function() {
   gulp.src('./src/js/select.js')
     .pipe(babel())
     .pipe(umd(umdOptions))
@@ -87,5 +87,5 @@ gulp.task('watch', ['js', 'css'], function() {
 
 
 // Defaults
-gulp.task('build', ['js', 'css'])
-gulp.task('default', ['build'])
+gulp.task('build', ['js', 'css']);
+gulp.task('default', ['build']);

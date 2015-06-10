@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "install": "bower install",
+    "watch": "gulp watch",
     "build": "gulp build"
   },
   "license": "MIT",
@@ -31,6 +32,6 @@
     "gulp-wrap-umd": "^0.2.1"
   },
   "dependencies": {
-    "tether": "~1.0.0"
+    "tether": "~1.0.2"
   }
 }

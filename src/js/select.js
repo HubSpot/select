@@ -26,7 +26,7 @@ function useNative() {
 function isRepeatedChar (str) {
   return Array.prototype.reduce.call(str, (a, b) => {
     return a === b ? b : false;
-  })
+  });
 }
 
 function getFocusedSelect () {
@@ -106,10 +106,10 @@ document.addEventListener('keydown', (e) => {
       case UP:
       case DOWN:
         select.moveHighlight(e.keyCode);
-        break
+        break;
       case ENTER:
         select.selectHighlightedOption();
-        break
+        break;
       case ESCAPE:
         select.close();
         select.target.focus();
@@ -119,13 +119,13 @@ document.addEventListener('keydown', (e) => {
       select.open();
     }
   }
-})
+});
 
 
 
 class Select extends Evented {
   constructor(options) {
-    super(options)
+    super(options);
     this.options = extend({}, Select.defaults, options);
     this.select = this.options.el;
 
@@ -173,9 +173,9 @@ class Select extends Evented {
 
     this.target.addEventListener('click', () => {
       if (!this.isOpen()) {
-        this.target.focus()
+        this.target.focus();
       } else {
-        this.target.blur()
+        this.target.blur();
       }
     });
 
@@ -213,7 +213,7 @@ class Select extends Evented {
 
       // Built-in selects don't propagate click events in their drop directly
       // to the body, so we don't want to either.
-      e.stopPropagation()
+      e.stopPropagation();
     });
 
     this.drop.addEventListener('mousemove', (e) => {
@@ -327,7 +327,7 @@ class Select extends Evented {
       // Clicking target
       if (event.target === this.target ||
           this.target.contains(event.target)) {
-        return
+        return;
       }
 
       this.close();
@@ -441,7 +441,7 @@ class Select extends Evented {
 
   selectOption(option) {
     if (this.isOpen()) {
-      this.highlightOption(option)
+      this.highlightOption(option);
       this.scrollDropContentToOption(option);
     } else {
       this.pickOption(option, false);
@@ -497,7 +497,7 @@ class Select extends Evented {
     const {scrollHeight, clientHeight, scrollTop} = this.content;
     if (scrollHeight > clientHeight) {
       const contentBounds = getBounds(this.content);
-      const optionBounds = getBounds(option)
+      const optionBounds = getBounds(option);
 
       this.content.scrollTop = optionBounds.top - (contentBounds.top - scrollTop);
     }
@@ -515,7 +515,7 @@ class Select extends Evented {
       setTimeout(() => {
         this.close();
         this.target.focus();
-      })
+      });
     }
   }
 
