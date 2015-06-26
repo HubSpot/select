@@ -1,4 +1,4 @@
-/*! tether-select 1.1.0 */
+/*! tether-select 1.2.0 */
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -576,8 +576,12 @@ var Select = (function (_Evented) {
 
       var close = arguments[1] === undefined ? true : arguments[1];
 
-      this.value = this.select.value = option.getAttribute('data-value');
-      this.triggerChange();
+      this.select.value = option.getAttribute('data-value');
+
+      if (this.value !== this.select.value) {
+        this.value = this.select.value;
+        this.triggerChange();
+      }
 
       if (close) {
         setTimeout(function () {

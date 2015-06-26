@@ -1,15 +1,14 @@
-var del         = require('del');
-var gulp        = require('gulp');
-var babel       = require('gulp-babel');
-var bump        = require('gulp-bump');
-var filter      = require('gulp-filter');
-var header      = require('gulp-header');
-var prefixer    = require('gulp-autoprefixer');
-var rename      = require('gulp-rename');
-var uglify      = require('gulp-uglify');
-var sass        = require('gulp-sass');
-var tagVersion  = require('gulp-tag-version');
-var umd         = require('gulp-wrap-umd');
+var del       = require('del');
+var gulp      = require('gulp');
+var babel     = require('gulp-babel');
+var bump      = require('gulp-bump');
+var header    = require('gulp-header');
+var plumber   = require('gulp-plumber');
+var prefixer  = require('gulp-autoprefixer');
+var rename    = require('gulp-rename');
+var uglify    = require('gulp-uglify');
+var sass      = require('gulp-sass');
+var umd       = require('gulp-wrap-umd');
 
 // Variables
 var distDir = './dist';
@@ -35,6 +34,16 @@ gulp.task('clean', function() {
 
 
 // Javascript
+gulp.task('js:dev', function() {
+  gulp.src('./src/js/select.js')
+    .pipe(plumber())
+    .pipe(babel({
+      blacklist: ['minification.removeDebugger']
+    }))
+    .pipe(umd(umdOptions))
+    .pipe(gulp.dest(distDir + '/js'));
+});
+
 gulp.task('js', function() {
   gulp.src('./src/js/select.js')
     .pipe(babel())
@@ -54,6 +63,7 @@ gulp.task('js', function() {
 // CSS
 gulp.task('css', function() {
   gulp.src('./src/css/**/*.sass')
+    .pipe(plumber())
     .pipe(sass({
       includePaths: ['./bower_components']
     }))
@@ -66,13 +76,9 @@ gulp.task('css', function() {
 var VERSIONS = ['patch', 'minor', 'major'];
 for (var i = 0; i < VERSIONS.length; ++i){
   (function(version) {
-    var pkgFilter = filter('package.json');
     gulp.task('version:' + version, function() {
       gulp.src(['package.json', 'bower.json'])
         .pipe(bump({type: version}))
-        .pipe(pkgFilter)
-        .pipe(tagVersion())
-        .pipe(pkgFilter.restore())
         .pipe(gulp.dest('.'))
     });
   })(VERSIONS[i]);
@@ -80,8 +86,8 @@ for (var i = 0; i < VERSIONS.length; ++i){
 
 
 // Watch
-gulp.task('watch', ['js', 'css'], function() {
-  gulp.watch('./src/js/**/*', ['js']);
+gulp.task('watch', ['js:dev', 'css'], function() {
+  gulp.watch('./src/js/**/*', ['js:dev']);
   gulp.watch('./src/css/**/*', ['css']);
 });
 

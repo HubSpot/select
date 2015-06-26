@@ -87,7 +87,7 @@ document.addEventListener('keypress', (e) => {
   }
 
   // No match at all, do nothing
-})
+});
 
 document.addEventListener('keydown', (e) => {
   // We consider this independently of the keypress handler so we can intercept
@@ -508,8 +508,12 @@ class Select extends Evented {
   }
 
   pickOption(option, close=true) {
-    this.value = this.select.value = option.getAttribute('data-value');
-    this.triggerChange();
+    this.select.value = option.getAttribute('data-value');
+
+    if (this.value !== this.select.value) {
+      this.value = this.select.value;
+      this.triggerChange();
+    }
 
     if (close) {
       setTimeout(() => {
