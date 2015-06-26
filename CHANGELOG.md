@@ -1,3 +1,7 @@
+## v1.2.0
+- Prevent `triggerChange` if value hasn't changed
+- Add `onReady` option for when `Select` is finished initializing
+
 ## v1.0.0
 - Bump `Tether` to v1
 

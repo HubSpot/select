@@ -172,6 +172,10 @@ var Select = (function (_Evented) {
     this.bindMutationEvents();
 
     this.value = this.select.value;
+
+    if (typeof this.options.onReady === 'function') {
+      this.options.onReady(this);
+    }
   }
 
   _inherits(Select, _Evented);

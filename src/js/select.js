@@ -149,6 +149,10 @@ class Select extends Evented {
     this.bindMutationEvents();
 
     this.value = this.select.value;
+
+    if (typeof this.options.onReady === 'function') {
+      this.options.onReady(this);
+    }
   }
 
   useNative() {
@@ -234,7 +238,7 @@ class Select extends Evented {
       this.select.style.display = 'block';
 
       setTimeout(() => {
-        let event = document.createEvent("MouseEvents");
+        const event = document.createEvent("MouseEvents");
         event.initEvent("mousedown", true, true);
         this.select.dispatchEvent(event);
       });
@@ -364,13 +368,13 @@ class Select extends Evented {
   }
 
   renderDrop() {
-    let optionList = document.createElement('ul');
+    const optionList = document.createElement('ul');
     addClass(optionList, 'select-options');
 
     const options = this.select.querySelectorAll('option');
     for (let i = 0; i < options.length; ++i) {
-      let el = options[i];
-      let option = document.createElement('li');
+      const el = options[i];
+      const option = document.createElement('li');
       addClass(option, 'select-option');
 
       option.setAttribute('data-value', el.value);
@@ -415,7 +419,7 @@ class Select extends Evented {
   }
 
   findOptionsByPrefix(text) {
-    let options = this.drop.querySelectorAll('.select-option');
+    const options = this.drop.querySelectorAll('.select-option');
 
     text = text.toLowerCase();
 
@@ -425,7 +429,7 @@ class Select extends Evented {
   }
 
   findOptionsByValue(val) {
-    let options = this.drop.querySelectorAll('.select-option');
+    const options = this.drop.querySelectorAll('.select-option');
 
     return Array.prototype.filter.call(options, (option) => {
       return option.getAttribute('data-value') === val;
@@ -453,7 +457,7 @@ class Select extends Evented {
   }
 
   highlightOption(option) {
-    let highlighted = this.drop.querySelector('.select-option-highlight');
+    const highlighted = this.drop.querySelector('.select-option-highlight');
     if (highlighted) {
       removeClass(highlighted, 'select-option-highlight');
     }
@@ -524,7 +528,7 @@ class Select extends Evented {
   }
 
   triggerChange() {
-    let event = document.createEvent("HTMLEvents");
+    const event = document.createEvent("HTMLEvents");
     event.initEvent("change", true, false);
     this.select.dispatchEvent(event);
 
