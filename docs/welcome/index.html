@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="/static-resources/css/documentation.css">
 
     <!-- Select themes -->
-    <link rel="stylesheet" href="/select/css/select-theme-default.css" />
-    <link rel="stylesheet" href="/select/css/select-theme-dark.css" />
-    <link rel="stylesheet" href="/select/css/select-theme-chosen.css" />
+    <link rel="stylesheet" href="/select/dist/css/select-theme-default.css" />
+    <link rel="stylesheet" href="/select/dist/css/select-theme-dark.css" />
+    <link rel="stylesheet" href="/select/dist/css/select-theme-chosen.css" />
 
     <!-- Welcome docs styles -->
     <link rel="stylesheet" href="/select/docs/welcome/css/prism.css" />
@@ -93,9 +93,10 @@
         <div class="showcase-inner">
             <h1>How to Use</h1>
             <p>Select is an open-source javascript and CSS library which makes <code>&lt;select&gt;</code> elements stylable. It's powered by <a href="/tether">Tether.js</a>.</p>
-            <p>To use, first <a href="https://github.com/HubSpot/select/releases" target="_blank">download the latest release</a>.
+            <p>To use, first download the latest <a href="https://github.com/HubSpot/tether/releases" target="_blank">tether</a> and <a href="https://github.com/HubSpot/select/releases" target="_blank">select</a> releases.
             <p>Then simply add this to your page:</p>
 <pre class="  language-markup"><code class="  language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>select-theme-default.css<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+<span class="token script"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tether.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></span>
 <span class="token script"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>select.min.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></span></code></pre>
             <p>And that's it! Learn more by visiting the <a href="/select">documentation</a>.
         </div>
@@ -168,7 +169,8 @@
     <!-- Javascript -->
 
     <!-- Select -->
-    <script src="/select/select.js"></script>
+    <script src="/select/bower_components/tether/dist/js/tether.js"></script>
+    <script src="/select/dist/js/select.js"></script>
 
     <!-- Welcome page -->
     <script src="/select/docs/welcome/js/jquery.min.js"></script>

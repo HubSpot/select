@@ -1,7 +1,8 @@
-<link rel="stylesheet" href="/select/css/select-theme-default.css" />
-<link rel="stylesheet" href="/select/css/select-theme-dark.css" />
-<link rel="stylesheet" href="/select/css/select-theme-chosen.css" />
-<script src="/select/select.min.js"></script>
+<link rel="stylesheet" href="/select/dist/css/select-theme-default.css" />
+<link rel="stylesheet" href="/select/dist/css/select-theme-dark.css" />
+<link rel="stylesheet" href="/select/dist/css/select-theme-chosen.css" />
+<script src="/select/bower_components/tether/dist/js/tether.js"></script>
+<script src="/select/dist/js/select.min.js"></script>
 <script>$(function(){ $('select').each(function(){ new Select({ el: this, className: $(this).attr('data-className') }); }); });</script>
 
 ## Select
@@ -19,7 +20,7 @@ Select uses [Tether](http://github.hubspot.com/tether/docs/welcome) to efficient
 
 ### Dependencies
 
-None!
+Tether
 
 ### Browser Support
 
