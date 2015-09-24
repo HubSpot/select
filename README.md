@@ -1,9 +1,7 @@
 ## Select
 
-[![npm
-version](https://badge.fury.io/js/tether-select.svg)](http://badge.fury.io/js/tether-select)
-[![Bower
-version](https://badge.fury.io/bo/tether-select.svg)](http://badge.fury.io/bo/tether-select)
+[![GitHub
+version](https://badge.fury.io/gh/HubSpot%2Fselect.svg)](http://badge.fury.io/gh/HubSpot%2Fselect)
 
 Select.js is a Javascript and CSS library for creating styleable select elements.  It aims to reproduce the behavior of native controls as much as is possible, while allowing for complete styling with CSS.
 
