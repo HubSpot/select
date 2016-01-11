@@ -231,13 +231,9 @@ class Select extends Evented {
     addClass(this.target, 'select-open');
 
     if (this.useNative()) {
-      this.select.style.display = 'block';
-
-      setTimeout(() => {
-        let event = document.createEvent("MouseEvents");
-        event.initEvent("mousedown", true, true);
-        this.select.dispatchEvent(event);
-      });
+      let event = document.createEvent("MouseEvents");
+      event.initEvent("mousedown", true, true);
+      this.select.dispatchEvent(event);
 
       return;
     }
@@ -284,8 +280,7 @@ class Select extends Evented {
     removeClass(this.target, 'select-open');
 
     if (this.useNative()) {
-      this.select.style.display = 'none';
-      return;
+      this.select.blur();
     }
 
     this.tether.disable();
