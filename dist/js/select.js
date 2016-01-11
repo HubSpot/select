@@ -1,4 +1,4 @@
-/*! tether-select 1.1.0 */
+/*! tether-select 1.1.1 */
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -16,11 +16,11 @@
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _Tether$Utils = Tether.Utils;
 var extend = _Tether$Utils.extend;
@@ -145,6 +145,8 @@ document.addEventListener('keydown', function (e) {
 });
 
 var Select = (function (_Evented) {
+  _inherits(Select, _Evented);
+
   function Select(options) {
     _classCallCheck(this, Select);
 
@@ -173,8 +175,6 @@ var Select = (function (_Evented) {
 
     this.value = this.select.value;
   }
-
-  _inherits(Select, _Evented);
 
   _createClass(Select, [{
     key: 'useNative',
@@ -269,13 +269,9 @@ var Select = (function (_Evented) {
       addClass(this.target, 'select-open');
 
       if (this.useNative()) {
-        this.select.style.display = 'block';
-
-        setTimeout(function () {
-          var event = document.createEvent('MouseEvents');
-          event.initEvent('mousedown', true, true);
-          _this3.select.dispatchEvent(event);
-        });
+        var _event = document.createEvent("MouseEvents");
+        _event.initEvent("mousedown", true, true);
+        this.select.dispatchEvent(_event);
 
         return;
       }
@@ -302,7 +298,7 @@ var Select = (function (_Evented) {
 
           var offset = dropBounds.top - (optionBounds.top + optionBounds.height);
 
-          _this3.drop.style.top = '' + ((parseFloat(_this3.drop.style.top) || 0) + offset) + 'px';
+          _this3.drop.style.top = (parseFloat(_this3.drop.style.top) || 0) + offset + 'px';
         }
       };
 
@@ -325,8 +321,7 @@ var Select = (function (_Evented) {
       removeClass(this.target, 'select-open');
 
       if (this.useNative()) {
-        this.select.style.display = 'none';
-        return;
+        this.select.blur();
       }
 
       this.tether.disable();
@@ -574,7 +569,7 @@ var Select = (function (_Evented) {
     value: function pickOption(option) {
       var _this5 = this;
 
-      var close = arguments[1] === undefined ? true : arguments[1];
+      var close = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
       this.value = this.select.value = option.getAttribute('data-value');
       this.triggerChange();
@@ -589,8 +584,8 @@ var Select = (function (_Evented) {
   }, {
     key: 'triggerChange',
     value: function triggerChange() {
-      var event = document.createEvent('HTMLEvents');
-      event.initEvent('change', true, false);
+      var event = document.createEvent("HTMLEvents");
+      event.initEvent("change", true, false);
       this.select.dispatchEvent(event);
 
       this.trigger('change', { value: this.select.value });
@@ -617,7 +612,7 @@ Select.defaults = {
 };
 
 Select.init = function () {
-  var options = arguments[0] === undefined ? {} : arguments[0];
+  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
