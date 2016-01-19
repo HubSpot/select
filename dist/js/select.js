@@ -154,6 +154,8 @@ var Select = (function (_Evented) {
     this.options = extend({}, Select.defaults, options);
     this.select = this.options.el;
 
+    this.createEventBounds();
+
     if (typeof this.select.selectInstance !== 'undefined') {
       throw new Error('This element has already been turned into a Select');
     }
@@ -177,6 +179,90 @@ var Select = (function (_Evented) {
   }
 
   _createClass(Select, [{
+    key: 'createEventBounds',
+    value: function createEventBounds() {
+
+      var self = this;
+
+      this.evnts = {
+        target: {
+
+          click: function click() {
+
+            if (!self.isOpen()) {
+              self.target.focus();
+            } else {
+              self.target.blur();
+            }
+          },
+
+          focus: function focus() {
+
+            addClass(self.target, 'select-target-focused');
+          },
+
+          blur: function blur(_ref) {
+            var relatedTarget = _ref.relatedTarget;
+
+            if (self.isOpen()) {
+              if (relatedTarget && !self.drop.contains(relatedTarget)) {
+                self.close();
+              }
+            }
+
+            removeClass(self.target, 'select-target-focused');
+          },
+
+          deviceClick: function deviceClick(e) {
+
+            e.preventDefault();
+            self.toggle();
+          }
+        },
+
+        drop: {
+          click: function click(e) {
+
+            if (hasClass(e.target, 'select-option')) {
+              self.pickOption(e.target);
+            }
+
+            // Built-in selects don't propagate click events in their drop directly
+            // to the body, so we don't want to either.
+            e.stopPropagation();
+          },
+
+          mousemove: function mousemove(e) {
+
+            if (hasClass(e.target, 'select-option')) {
+              self.highlightOption(e.target);
+            }
+          }
+        },
+
+        document: {
+          click: function click() {
+
+            if (!self.isOpen()) {
+              return;
+            }
+
+            // Clicking inside dropdown
+            if (event.target === self.drop || self.drop.contains(event.target)) {
+              return;
+            }
+
+            // Clicking target
+            if (event.target === self.target || self.target.contains(event.target)) {
+              return;
+            }
+
+            self.close();
+          }
+        }
+      };
+    }
+  }, {
     key: 'useNative',
     value: function useNative() {
       var native = this.options.useNative;
@@ -185,8 +271,6 @@ var Select = (function (_Evented) {
   }, {
     key: 'setupTarget',
     value: function setupTarget() {
-      var _this = this;
-
       this.target = document.createElement('a');
       this.target.href = 'javascript:;';
 
@@ -201,37 +285,15 @@ var Select = (function (_Evented) {
 
       this.target.selectInstance = this;
 
-      this.target.addEventListener('click', function () {
-        if (!_this.isOpen()) {
-          _this.target.focus();
-        } else {
-          _this.target.blur();
-        }
-      });
-
-      this.target.addEventListener('focus', function () {
-        addClass(_this.target, 'select-target-focused');
-      });
-
-      this.target.addEventListener('blur', function (_ref) {
-        var relatedTarget = _ref.relatedTarget;
-
-        if (_this.isOpen()) {
-          if (relatedTarget && !_this.drop.contains(relatedTarget)) {
-            _this.close();
-          }
-        }
-
-        removeClass(_this.target, 'select-target-focused');
-      });
+      this.target.addEventListener('click', this.evnts.target.click);
+      this.target.addEventListener('focus', this.evnts.target.focus);
+      this.target.addEventListener('blur', this.evnts.target.blur);
 
       this.select.parentNode.insertBefore(this.target, this.select.nextSibling);
     }
   }, {
     key: 'setupDrop',
     value: function setupDrop() {
-      var _this2 = this;
-
       this.drop = document.createElement('div');
       addClass(this.drop, 'select');
 
@@ -241,21 +303,8 @@ var Select = (function (_Evented) {
 
       document.body.appendChild(this.drop);
 
-      this.drop.addEventListener('click', function (e) {
-        if (hasClass(e.target, 'select-option')) {
-          _this2.pickOption(e.target);
-        }
-
-        // Built-in selects don't propagate click events in their drop directly
-        // to the body, so we don't want to either.
-        e.stopPropagation();
-      });
-
-      this.drop.addEventListener('mousemove', function (e) {
-        if (hasClass(e.target, 'select-option')) {
-          _this2.highlightOption(e.target);
-        }
-      });
+      this.drop.addEventListener('click', this.evnts.drop.click);
+      this.drop.addEventListener('mousemove', this.evnts.drop.mousemove);
 
       this.content = document.createElement('div');
       addClass(this.content, 'select-content');
@@ -264,7 +313,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'open',
     value: function open() {
-      var _this3 = this;
+      var _this = this;
 
       addClass(this.target, 'select-open');
 
@@ -279,7 +328,7 @@ var Select = (function (_Evented) {
       addClass(this.drop, 'select-open');
 
       setTimeout(function () {
-        _this3.tether.enable();
+        _this.tether.enable();
       });
 
       var selectedOption = this.drop.querySelector('.select-option-selected');
@@ -292,13 +341,13 @@ var Select = (function (_Evented) {
       this.scrollDropContentToOption(selectedOption);
 
       var positionSelectStyle = function positionSelectStyle() {
-        if (hasClass(_this3.drop, 'tether-abutted-left') || hasClass(_this3.drop, 'tether-abutted-bottom')) {
-          var dropBounds = getBounds(_this3.drop);
+        if (hasClass(_this.drop, 'tether-abutted-left') || hasClass(_this.drop, 'tether-abutted-bottom')) {
+          var dropBounds = getBounds(_this.drop);
           var optionBounds = getBounds(selectedOption);
 
           var offset = dropBounds.top - (optionBounds.top + optionBounds.height);
 
-          _this3.drop.style.top = (parseFloat(_this3.drop.style.top) || 0) + offset + 'px';
+          _this.drop.style.top = (parseFloat(_this.drop.style.top) || 0) + offset + 'px';
         }
       };
 
@@ -347,30 +396,9 @@ var Select = (function (_Evented) {
   }, {
     key: 'bindClick',
     value: function bindClick() {
-      var _this4 = this;
 
-      this.target.addEventListener(clickEvent, function (e) {
-        e.preventDefault();
-        _this4.toggle();
-      });
-
-      document.addEventListener(clickEvent, function (event) {
-        if (!_this4.isOpen()) {
-          return;
-        }
-
-        // Clicking inside dropdown
-        if (event.target === _this4.drop || _this4.drop.contains(event.target)) {
-          return;
-        }
-
-        // Clicking target
-        if (event.target === _this4.target || _this4.target.contains(event.target)) {
-          return;
-        }
-
-        _this4.close();
-      });
+      this.target.addEventListener(clickEvent, this.evnts.target.deviceClick);
+      document.addEventListener(clickEvent, this.evnts.document.click);
     }
   }, {
     key: 'setupTether',
@@ -567,7 +595,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'pickOption',
     value: function pickOption(option) {
-      var _this5 = this;
+      var _this2 = this;
 
       var close = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
@@ -576,8 +604,8 @@ var Select = (function (_Evented) {
 
       if (close) {
         setTimeout(function () {
-          _this5.close();
-          _this5.target.focus();
+          _this2.close();
+          _this2.target.focus();
         });
       }
     }
@@ -601,6 +629,63 @@ var Select = (function (_Evented) {
 
       this.pickOption(options[0], false);
     }
+  }, {
+    key: 'init',
+    value: function init() {
+      var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          return Select.init(options);
+        });
+        return;
+      }
+
+      if (typeof options.selector === 'undefined') {
+        options.selector = 'select';
+      }
+
+      // this.cached = [];
+      var selectors = document.querySelectorAll(options.selector);
+      for (var i = 0; i < selectors.length; ++i) {
+        var el = selectors[i];
+        if (!el.selectInstance) {
+          var item = new Select(extend({ el: el }, options));
+          // this.cached.push(item);
+        }
+      }
+    }
+  }, {
+    key: 'removeEvents',
+    value: function removeEvents() {
+
+      this.target.removeEventListener('click', this.evnts.target.click);
+      this.target.removeEventListener('focus', this.evnts.target.focus);
+      this.target.removeEventListener('blur', this.evnts.target.blur);
+
+      this.drop.removeEventListener('click', this.evnts.drop.click);
+      this.drop.removeEventListener('mousemove', this.evnts.drop.mousemove);
+
+      this.target.removeEventListener(clickEvent, this.evnts.target.deviceClick);
+      document.removeEventListener(clickEvent, this.evnts.document.click);
+
+      this.select.removeEventListener('change', this.update);
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+
+      this.removeEvents();
+
+      this.tether.destroy();
+
+      this.target.remove();
+      this.select.remove();
+      this.drop.remove();
+
+      delete this.tether;
+      delete this.observer;
+    }
   }]);
 
   return Select;
@@ -611,28 +696,28 @@ Select.defaults = {
   className: 'select-theme-default'
 };
 
-Select.init = function () {
-  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+// Why not using the default class for init/destroy methods?
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      return Select.init(options);
-    });
-    return;
-  }
+// Select.init = (options={}) => {
+//   if (document.readyState === 'loading') {
+//     document.addEventListener('DOMContentLoaded', () => Select.init(options));
+//     return;
+//   }
 
-  if (typeof options.selector === 'undefined') {
-    options.selector = 'select';
-  }
+//   if (typeof options.selector === 'undefined') {
+//     options.selector = 'select';
+//   }
 
-  var selectors = document.querySelectorAll(options.selector);
-  for (var i = 0; i < selectors.length; ++i) {
-    var el = selectors[i];
-    if (!el.selectInstance) {
-      new Select(extend({ el: el }, options));
-    }
-  }
-};
+//   const selectors = document.querySelectorAll(options.selector);
+//   for (let i = 0; i < selectors.length; ++i) {
+//     const el = selectors[i];
+//     if (!el.selectInstance) {
+//       new Select(extend({el}, options));
+//     }
+//   }
+// };
+
+// Select.destroy = () => {};
 return Select;
 
 }));

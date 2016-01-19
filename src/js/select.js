@@ -121,13 +121,14 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-
-
 class Select extends Evented {
   constructor(options) {
+
     super(options);
     this.options = extend({}, Select.defaults, options);
     this.select = this.options.el;
+
+    this.createEventBounds();
 
     if (typeof this.select.selectInstance !== 'undefined') {
       throw new Error('This element has already been turned into a Select');
@@ -151,6 +152,90 @@ class Select extends Evented {
     this.value = this.select.value;
   }
 
+  createEventBounds() {
+
+    const self = this;
+
+    this.evnts = {
+      target: {
+        
+        click() {
+
+          if (!self.isOpen()) {
+            self.target.focus();
+          } else {
+            self.target.blur();
+          }
+        },
+
+        focus() {
+
+          addClass(self.target, 'select-target-focused');
+        },
+
+        blur({relatedTarget}) {
+
+          if (self.isOpen()) {
+            if (relatedTarget && !self.drop.contains(relatedTarget)) {
+              self.close();
+            }
+          }
+
+          removeClass(self.target, 'select-target-focused');
+        },
+
+        deviceClick(e) {
+
+          e.preventDefault();
+          self.toggle();
+        }
+      },
+
+      drop: {
+        click(e) {
+
+          if (hasClass(e.target, 'select-option')) {
+            self.pickOption(e.target);
+          }
+
+          // Built-in selects don't propagate click events in their drop directly
+          // to the body, so we don't want to either.
+          e.stopPropagation();
+        },
+
+        mousemove(e) {
+
+          if (hasClass(e.target, 'select-option')) {
+            self.highlightOption(e.target);
+          }
+        }
+      },
+
+      document: {
+        click() {
+
+          if (!self.isOpen()) {
+            return;
+          }
+
+          // Clicking inside dropdown
+          if (event.target === self.drop ||
+              self.drop.contains(event.target)) {
+            return;
+          }
+
+          // Clicking target
+          if (event.target === self.target ||
+              self.target.contains(event.target)) {
+            return;
+          }
+
+          self.close();
+        }
+      }
+    };
+  }
+
   useNative() {
     const native = this.options.useNative;
     return native === true || (useNative() && native !== false);
@@ -171,27 +256,9 @@ class Select extends Evented {
 
     this.target.selectInstance = this;
 
-    this.target.addEventListener('click', () => {
-      if (!this.isOpen()) {
-        this.target.focus();
-      } else {
-        this.target.blur();
-      }
-    });
-
-    this.target.addEventListener('focus', () => {
-      addClass(this.target, 'select-target-focused');
-    });
-
-    this.target.addEventListener('blur', ({relatedTarget}) => {
-      if (this.isOpen()) {
-        if (relatedTarget && !this.drop.contains(relatedTarget)) {
-          this.close();
-        }
-      }
-
-      removeClass(this.target, 'select-target-focused');
-    });
+    this.target.addEventListener('click', this.evnts.target.click);
+    this.target.addEventListener('focus', this.evnts.target.focus);
+    this.target.addEventListener('blur', this.evnts.target.blur);
 
     this.select.parentNode.insertBefore(this.target, this.select.nextSibling);
   }
@@ -206,21 +273,8 @@ class Select extends Evented {
 
     document.body.appendChild(this.drop);
 
-    this.drop.addEventListener('click', (e) => {
-      if (hasClass(e.target, 'select-option')) {
-        this.pickOption(e.target);
-      }
-
-      // Built-in selects don't propagate click events in their drop directly
-      // to the body, so we don't want to either.
-      e.stopPropagation();
-    });
-
-    this.drop.addEventListener('mousemove', (e) => {
-      if (hasClass(e.target, 'select-option')) {
-        this.highlightOption(e.target);
-      }
-    });
+    this.drop.addEventListener('click', this.evnts.drop.click);
+    this.drop.addEventListener('mousemove', this.evnts.drop.mousemove);
 
     this.content = document.createElement('div');
     addClass(this.content, 'select-content');
@@ -303,30 +357,9 @@ class Select extends Evented {
   }
 
   bindClick() {
-    this.target.addEventListener(clickEvent, (e) => {
-      e.preventDefault();
-      this.toggle();
-    });
 
-    document.addEventListener(clickEvent, (event) => {
-      if (!this.isOpen()) {
-        return;
-      }
-
-      // Clicking inside dropdown
-      if (event.target === this.drop ||
-          this.drop.contains(event.target)) {
-        return;
-      }
-
-      // Clicking target
-      if (event.target === this.target ||
-          this.target.contains(event.target)) {
-        return;
-      }
-
-      this.close();
-    });
+    this.target.addEventListener(clickEvent, this.evnts.target.deviceClick);
+    document.addEventListener(clickEvent, this.evnts.document.click);
   }
 
   setupTether() {
@@ -531,6 +564,57 @@ class Select extends Evented {
 
     this.pickOption(options[0], false);
   }
+
+  init(options={}) {
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => Select.init(options));
+      return;
+    }
+
+    if (typeof options.selector === 'undefined') {
+      options.selector = 'select';
+    }
+
+    // this.cached = [];
+    const selectors = document.querySelectorAll(options.selector);
+    for (let i = 0; i < selectors.length; ++i) {
+      const el = selectors[i];
+      if (!el.selectInstance) {
+        const item = new Select(extend({el}, options));
+        // this.cached.push(item);
+      }
+    }
+  }
+
+  removeEvents() {
+
+    this.target.removeEventListener('click', this.evnts.target.click);
+    this.target.removeEventListener('focus', this.evnts.target.focus);
+    this.target.removeEventListener('blur', this.evnts.target.blur);
+    
+    this.drop.removeEventListener('click', this.evnts.drop.click);
+    this.drop.removeEventListener('mousemove', this.evnts.drop.mousemove);
+
+    this.target.removeEventListener(clickEvent, this.evnts.target.deviceClick);
+    document.removeEventListener(clickEvent, this.evnts.document.click);
+
+    this.select.removeEventListener('change', this.update);
+  }
+
+  destroy() {
+
+    this.removeEvents();
+
+    this.tether.destroy();
+
+    this.target.remove();
+    this.select.remove();
+    this.drop.remove();
+
+    delete this.tether;
+    delete this.observer;
+  }
 }
 
 Select.defaults = {
@@ -538,21 +622,25 @@ Select.defaults = {
   className: 'select-theme-default'
 };
 
-Select.init = (options={}) => {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => Select.init(options));
-    return;
-  }
+// Why not using the default class for init/destroy methods?
 
-  if (typeof options.selector === 'undefined') {
-    options.selector = 'select';
-  }
+// Select.init = (options={}) => {
+//   if (document.readyState === 'loading') {
+//     document.addEventListener('DOMContentLoaded', () => Select.init(options));
+//     return;
+//   }
 
-  const selectors = document.querySelectorAll(options.selector);
-  for (let i = 0; i < selectors.length; ++i) {
-    const el = selectors[i];
-    if (!el.selectInstance) {
-      new Select(extend({el}, options));
-    }
-  }
-};
+//   if (typeof options.selector === 'undefined') {
+//     options.selector = 'select';
+//   }
+
+//   const selectors = document.querySelectorAll(options.selector);
+//   for (let i = 0; i < selectors.length; ++i) {
+//     const el = selectors[i];
+//     if (!el.selectInstance) {
+//       new Select(extend({el}, options));
+//     }
+//   }
+// };
+
+// Select.destroy = () => {};
