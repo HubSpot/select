@@ -60,7 +60,7 @@ function getFocusedSelect() {
 var searchText = '';
 var searchTextTimeout = undefined;
 
-document.addEventListener('keypress', function (e) {
+function onDocumentKeyPress(e) {
   var select = getFocusedSelect();
   if (!select || e.charCode === 0) {
     return;
@@ -110,9 +110,9 @@ document.addEventListener('keypress', function (e) {
   }
 
   // No match at all, do nothing
-});
+}
 
-document.addEventListener('keydown', function (e) {
+function onDocumentKeyDown(e) {
   // We consider this independently of the keypress handler so we can intercept
   // keys that have built-in functions.
   var select = getFocusedSelect();
@@ -142,7 +142,7 @@ document.addEventListener('keydown', function (e) {
       select.open();
     }
   }
-});
+};
 
 var Select = (function (_Evented) {
   _inherits(Select, _Evented);
@@ -265,12 +265,14 @@ var Select = (function (_Evented) {
   }, {
     key: 'useNative',
     value: function useNative() {
+
       var native = this.options.useNative;
       return native === true || _useNative() && native !== false;
     }
   }, {
     key: 'setupTarget',
     value: function setupTarget() {
+
       this.target = document.createElement('a');
       this.target.href = 'javascript:;';
 
@@ -294,6 +296,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'setupDrop',
     value: function setupDrop() {
+
       this.drop = document.createElement('div');
       addClass(this.drop, 'select');
 
@@ -367,6 +370,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'close',
     value: function close() {
+
       removeClass(this.target, 'select-open');
 
       if (this.useNative()) {
@@ -382,6 +386,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'toggle',
     value: function toggle() {
+
       if (this.isOpen()) {
         this.close();
       } else {
@@ -391,6 +396,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'isOpen',
     value: function isOpen() {
+
       return hasClass(this.drop, 'select-open');
     }
   }, {
@@ -403,6 +409,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'setupTether',
     value: function setupTether() {
+
       this.tether = new Tether(extend({
         element: this.drop,
         target: this.target,
@@ -418,6 +425,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'renderTarget',
     value: function renderTarget() {
+
       this.target.innerHTML = '';
 
       var options = this.select.querySelectorAll('option');
@@ -434,6 +442,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'renderDrop',
     value: function renderDrop() {
+
       var optionList = document.createElement('ul');
       addClass(optionList, 'select-options');
 
@@ -459,12 +468,14 @@ var Select = (function (_Evented) {
   }, {
     key: 'update',
     value: function update() {
+
       this.renderDrop();
       this.renderTarget();
     }
   }, {
     key: 'setupSelect',
     value: function setupSelect() {
+
       this.select.selectInstance = this;
 
       addClass(this.select, 'select-select');
@@ -474,6 +485,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'bindMutationEvents',
     value: function bindMutationEvents() {
+
       if (typeof window.MutationObserver !== 'undefined') {
         this.observer = new MutationObserver(this.update);
         this.observer.observe(this.select, {
@@ -489,6 +501,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'findOptionsByPrefix',
     value: function findOptionsByPrefix(text) {
+
       var options = this.drop.querySelectorAll('.select-option');
 
       text = text.toLowerCase();
@@ -500,6 +513,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'findOptionsByValue',
     value: function findOptionsByValue(val) {
+
       var options = this.drop.querySelectorAll('.select-option');
 
       return Array.prototype.filter.call(options, function (option) {
@@ -509,6 +523,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'getChosen',
     value: function getChosen() {
+
       if (this.isOpen()) {
         return this.drop.querySelector('.select-option-highlight');
       }
@@ -517,6 +532,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'selectOption',
     value: function selectOption(option) {
+
       if (this.isOpen()) {
         this.highlightOption(option);
         this.scrollDropContentToOption(option);
@@ -527,11 +543,13 @@ var Select = (function (_Evented) {
   }, {
     key: 'resetSelection',
     value: function resetSelection() {
+
       this.selectOption(this.drop.querySelector('.select-option'));
     }
   }, {
     key: 'highlightOption',
     value: function highlightOption(option) {
+
       var highlighted = this.drop.querySelector('.select-option-highlight');
       if (highlighted) {
         removeClass(highlighted, 'select-option-highlight');
@@ -544,6 +562,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'moveHighlight',
     value: function moveHighlight(directionKeyCode) {
+
       var highlighted = this.drop.querySelector('.select-option-highlight');
       if (!highlighted) {
         this.highlightOption(this.drop.querySelector('.select-option'));
@@ -590,6 +609,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'selectHighlightedOption',
     value: function selectHighlightedOption() {
+
       this.pickOption(this.drop.querySelector('.select-option-highlight'));
     }
   }, {
@@ -612,6 +632,7 @@ var Select = (function (_Evented) {
   }, {
     key: 'triggerChange',
     value: function triggerChange() {
+
       var event = document.createEvent("HTMLEvents");
       event.initEvent("change", true, false);
       this.select.dispatchEvent(event);
@@ -645,6 +666,9 @@ var Select = (function (_Evented) {
         options.selector = 'select';
       }
 
+      document.addEventListener('keypress', onDocumentKeyPress);
+      document.addEventListener('keydown', onDocumentKeyDown);
+
       // this.cached = [];
       var selectors = document.querySelectorAll(options.selector);
       for (var i = 0; i < selectors.length; ++i) {
@@ -667,7 +691,10 @@ var Select = (function (_Evented) {
       this.drop.removeEventListener('mousemove', this.evnts.drop.mousemove);
 
       this.target.removeEventListener(clickEvent, this.evnts.target.deviceClick);
+
       document.removeEventListener(clickEvent, this.evnts.document.click);
+      document.removeEventListener('keypress', onDocumentKeyPress);
+      document.removeEventListener('keydown', onDocumentKeyDown);
 
       this.select.removeEventListener('change', this.update);
     }
@@ -680,7 +707,6 @@ var Select = (function (_Evented) {
       this.tether.destroy();
 
       this.target.remove();
-      this.select.remove();
       this.drop.remove();
 
       delete this.tether;

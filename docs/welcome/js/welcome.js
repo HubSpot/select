@@ -14,7 +14,7 @@
   };
 
   currentThemeClassName = void 0;
-
+  
   setupThemeSelect = function() {
     var $select, $showcase;
     $showcase = $('#themeShowcase');
@@ -35,11 +35,10 @@
 
   $(init);
   
-  // setTimeout(() => {
-
-  //   console.warn('destroy select');
-  //   selectHero.destroy();
-  //   select.destroy();
-  // }, 6000);
+  setTimeout(() => {
+    
+    // selectHero.destroy();
+    // select.destroy();
+  }, 6000);
 
 }).call(this);

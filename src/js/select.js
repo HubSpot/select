@@ -23,13 +23,13 @@ function useNative() {
   return touchDevice && (innerWidth <= 640 || innerHeight <= 640);
 }
 
-function isRepeatedChar (str) {
+function isRepeatedChar(str) {
   return Array.prototype.reduce.call(str, (a, b) => {
     return a === b ? b : false;
   });
 }
 
-function getFocusedSelect () {
+function getFocusedSelect() {
   const focusedTarget = document.querySelector('.select-target-focused');
   return focusedTarget ? focusedTarget.selectInstance : null;
 }
@@ -37,7 +37,7 @@ function getFocusedSelect () {
 let searchText = '';
 let searchTextTimeout;
 
-document.addEventListener('keypress', (e) => {
+function onDocumentKeyPress(e) {
   const select = getFocusedSelect();
   if (!select || e.charCode === 0) {
     return;
@@ -87,9 +87,9 @@ document.addEventListener('keypress', (e) => {
   }
 
   // No match at all, do nothing
-})
+}
 
-document.addEventListener('keydown', (e) => {
+function onDocumentKeyDown(e) {
   // We consider this independently of the keypress handler so we can intercept
   // keys that have built-in functions.
   const select = getFocusedSelect();
@@ -119,9 +119,10 @@ document.addEventListener('keydown', (e) => {
       select.open();
     }
   }
-});
+};
 
 class Select extends Evented {
+
   constructor(options) {
 
     super(options);
@@ -155,7 +156,7 @@ class Select extends Evented {
   createEventBounds() {
 
     const self = this;
-
+    
     this.evnts = {
       target: {
         
@@ -237,11 +238,13 @@ class Select extends Evented {
   }
 
   useNative() {
+
     const native = this.options.useNative;
     return native === true || (useNative() && native !== false);
   }
 
   setupTarget() {
+
     this.target = document.createElement('a');
     this.target.href = 'javascript:;';
 
@@ -264,6 +267,7 @@ class Select extends Evented {
   }
 
   setupDrop() {
+
     this.drop = document.createElement('div');
     addClass(this.drop, 'select');
 
@@ -282,6 +286,7 @@ class Select extends Evented {
   }
 
   open() {
+
     addClass(this.target, 'select-open');
 
     if (this.useNative()) {
@@ -331,6 +336,7 @@ class Select extends Evented {
   }
 
   close() {
+
     removeClass(this.target, 'select-open');
 
     if (this.useNative()) {
@@ -345,6 +351,7 @@ class Select extends Evented {
   }
 
   toggle() {
+
     if (this.isOpen()) {
       this.close();
     } else {
@@ -353,6 +360,7 @@ class Select extends Evented {
   }
 
   isOpen() {
+
     return hasClass(this.drop, 'select-open');
   }
 
@@ -363,6 +371,7 @@ class Select extends Evented {
   }
 
   setupTether() {
+
     this.tether = new Tether(extend({
       element: this.drop,
       target: this.target,
@@ -377,6 +386,7 @@ class Select extends Evented {
   }
 
   renderTarget() {
+
     this.target.innerHTML = '';
 
     const options = this.select.querySelectorAll('option');
@@ -392,6 +402,7 @@ class Select extends Evented {
   }
 
   renderDrop() {
+
     let optionList = document.createElement('ul');
     addClass(optionList, 'select-options');
 
@@ -416,11 +427,13 @@ class Select extends Evented {
   }
 
   update() {
+
     this.renderDrop();
     this.renderTarget();
   }
 
   setupSelect() {
+
     this.select.selectInstance = this;
 
     addClass(this.select, 'select-select');
@@ -429,6 +442,7 @@ class Select extends Evented {
   }
 
   bindMutationEvents() {
+
     if (typeof window.MutationObserver !== 'undefined') {
       this.observer = new MutationObserver(this.update);
       this.observer.observe(this.select, {
@@ -443,6 +457,7 @@ class Select extends Evented {
   }
 
   findOptionsByPrefix(text) {
+
     let options = this.drop.querySelectorAll('.select-option');
 
     text = text.toLowerCase();
@@ -453,6 +468,7 @@ class Select extends Evented {
   }
 
   findOptionsByValue(val) {
+
     let options = this.drop.querySelectorAll('.select-option');
 
     return Array.prototype.filter.call(options, (option) => {
@@ -461,6 +477,7 @@ class Select extends Evented {
   }
 
   getChosen() {
+
     if (this.isOpen()) {
       return this.drop.querySelector('.select-option-highlight');
     }
@@ -468,6 +485,7 @@ class Select extends Evented {
   }
 
   selectOption(option) {
+
     if (this.isOpen()) {
       this.highlightOption(option);
       this.scrollDropContentToOption(option);
@@ -477,10 +495,12 @@ class Select extends Evented {
   }
 
   resetSelection() {
+
     this.selectOption(this.drop.querySelector('.select-option'));
   }
 
   highlightOption(option) {
+
     let highlighted = this.drop.querySelector('.select-option-highlight');
     if (highlighted) {
       removeClass(highlighted, 'select-option-highlight');
@@ -492,6 +512,7 @@ class Select extends Evented {
   }
 
   moveHighlight(directionKeyCode) {
+
     const highlighted = this.drop.querySelector('.select-option-highlight');
     if (!highlighted) {
       this.highlightOption(this.drop.querySelector('.select-option'));
@@ -522,6 +543,7 @@ class Select extends Evented {
   }
 
   scrollDropContentToOption(option) {
+
     const {scrollHeight, clientHeight, scrollTop} = this.content;
     if (scrollHeight > clientHeight) {
       const contentBounds = getBounds(this.content);
@@ -532,10 +554,12 @@ class Select extends Evented {
   }
 
   selectHighlightedOption() {
+
     this.pickOption(this.drop.querySelector('.select-option-highlight'));
   }
 
   pickOption(option, close=true) {
+
     this.value = this.select.value = option.getAttribute('data-value');
     this.triggerChange();
 
@@ -548,6 +572,7 @@ class Select extends Evented {
   }
 
   triggerChange() {
+    
     let event = document.createEvent("HTMLEvents");
     event.initEvent("change", true, false);
     this.select.dispatchEvent(event);
@@ -576,6 +601,9 @@ class Select extends Evented {
       options.selector = 'select';
     }
 
+    document.addEventListener('keypress', onDocumentKeyPress);
+    document.addEventListener('keydown', onDocumentKeyDown);
+
     // this.cached = [];
     const selectors = document.querySelectorAll(options.selector);
     for (let i = 0; i < selectors.length; ++i) {
@@ -588,7 +616,7 @@ class Select extends Evented {
   }
 
   removeEvents() {
-
+    
     this.target.removeEventListener('click', this.evnts.target.click);
     this.target.removeEventListener('focus', this.evnts.target.focus);
     this.target.removeEventListener('blur', this.evnts.target.blur);
@@ -597,19 +625,21 @@ class Select extends Evented {
     this.drop.removeEventListener('mousemove', this.evnts.drop.mousemove);
 
     this.target.removeEventListener(clickEvent, this.evnts.target.deviceClick);
+    
     document.removeEventListener(clickEvent, this.evnts.document.click);
-
+    document.removeEventListener('keypress', onDocumentKeyPress);
+    document.removeEventListener('keydown', onDocumentKeyDown);
+    
     this.select.removeEventListener('change', this.update);
   }
-
+  
   destroy() {
 
     this.removeEvents();
 
     this.tether.destroy();
-
+    
     this.target.remove();
-    this.select.remove();
     this.drop.remove();
 
     delete this.tether;
