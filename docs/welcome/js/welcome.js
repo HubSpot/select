@@ -1,5 +1,5 @@
 (function() {
-  var currentThemeClassName, init, setupHeroSelect, setupThemeSelect;
+  var currentThemeClassName, init, setupHeroSelect, setupThemeSelect, select, selectHero;
 
   init = function() {
     setupHeroSelect();
@@ -7,16 +7,16 @@
   };
 
   setupHeroSelect = function() {
-    return new Select({
+    return selectHero = new Select({
       el: $('.hero-select')[0],
       alignToHighlighted: 'always'
     });
   };
 
   currentThemeClassName = void 0;
-
+  
   setupThemeSelect = function() {
-    var $select, $showcase, select;
+    var $select, $showcase;
     $showcase = $('#themeShowcase');
     $select = $('.themes-select');
     currentThemeClassName = $select.val();
@@ -34,5 +34,11 @@
   };
 
   $(init);
+  
+  setTimeout(() => {
+    
+    // selectHero.destroy();
+    // select.destroy();
+  }, 6000);
 
 }).call(this);
