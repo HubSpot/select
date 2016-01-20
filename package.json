@@ -32,6 +32,6 @@
     "gulp-wrap-umd": "^0.2.1"
   },
   "dependencies": {
-    "tether": "git://github.com/baptistebriel/tether"
+    "tether": "git://github.com/HubSpot/tether"
   }
 }
