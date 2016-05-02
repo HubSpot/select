@@ -17,7 +17,6 @@
   "license": "MIT",
   "main": "dist/js/select.js",
   "devDependencies": {
-    "bower": "^1.4.1",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
@@ -32,6 +31,7 @@
     "gulp-wrap-umd": "^0.2.1"
   },
   "dependencies": {
+    "bower": "^1.4.1",
     "tether": "~1.0.2"
   }
 }
