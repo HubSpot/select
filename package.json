@@ -10,9 +10,9 @@
     "Nicholas Hwang <nick.joosung.hwang@gmail.com>"
   ],
   "scripts": {
-    "install": "bower install",
-    "watch": "gulp watch",
-    "build": "gulp build"
+    "install": "./node_modules/.bin/bower install",
+    "watch": "./node_modules/.bin/gulp watch",
+    "build": "./node_modules/.bin/gulp build"
   },
   "license": "MIT",
   "main": "dist/js/select.js",
