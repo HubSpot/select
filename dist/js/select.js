@@ -292,7 +292,7 @@ var Select = (function (_Evented) {
       this.scrollDropContentToOption(selectedOption);
 
       var positionSelectStyle = function positionSelectStyle() {
-        if (hasClass(_this3.drop, 'tether-abutted-left') || hasClass(_this3.drop, 'tether-abutted-bottom')) {
+        if (hasClass(_this3.drop, 'select-abutted-left') || hasClass(_this3.drop, 'select-abutted-bottom')) {
           var dropBounds = getBounds(_this3.drop);
           var optionBounds = getBounds(selectedOption);
 

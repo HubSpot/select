@@ -254,8 +254,8 @@ class Select extends Evented {
     this.scrollDropContentToOption(selectedOption);
 
     const positionSelectStyle = () => {
-      if (hasClass(this.drop, 'tether-abutted-left') ||
-          hasClass(this.drop, 'tether-abutted-bottom')) {
+      if (hasClass(this.drop, 'select-abutted-left') ||
+          hasClass(this.drop, 'select-abutted-bottom')) {
         const dropBounds = getBounds(this.drop);
         const optionBounds = getBounds(selectedOption);
 
