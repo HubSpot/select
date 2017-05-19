@@ -15,9 +15,6 @@ const SPACE = 32;
 const UP = 38;
 const DOWN = 40;
 
-const touchDevice = 'ontouchstart' in document.documentElement;
-const clickEvent = touchDevice ? 'touchstart' : 'click';
-
 function useNative() {
   const {innerWidth, innerHeight} = window;
   return touchDevice && (innerWidth <= 640 || innerHeight <= 640);
@@ -303,12 +300,12 @@ class Select extends Evented {
   }
 
   bindClick() {
-    this.target.addEventListener(clickEvent, (e) => {
+    this.target.addEventListener('click', (e) => {
       e.preventDefault();
       this.toggle();
     });
 
-    document.addEventListener(clickEvent, (event) => {
+    document.addEventListener('click', (event) => {
       if (!this.isOpen()) {
         return;
       }
