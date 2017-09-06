@@ -504,6 +504,11 @@ class Select extends Evented {
 
   pickOption(option, close=true) {
     this.value = this.select.value = option.getAttribute('data-value');
+    if (this.value !== this.select.value) {
+        var val = this.value;
+        // Workaround for IE
+        Array.prototype.forEach.call(this.select.children, function(el){el.selected = (el.value == val.toString())});
+    }
     this.triggerChange();
 
     if (close) {
