@@ -1,4 +1,4 @@
-/*! tether-select 1.1.1 */
+/*! tether-select 1.1.2 */
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -572,6 +572,13 @@ var Select = (function (_Evented) {
       var close = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
       this.value = this.select.value = option.getAttribute('data-value');
+      if (this.value !== this.select.value) {
+        var val = this.value;
+        // Workaround for IE
+        Array.prototype.forEach.call(this.select.children, function (el) {
+          el.selected = el.value == val.toString();
+        });
+      }
       this.triggerChange();
 
       if (close) {
