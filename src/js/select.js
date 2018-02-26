@@ -14,6 +14,7 @@ const ESCAPE = 27;
 const SPACE = 32;
 const UP = 38;
 const DOWN = 40;
+const TAB = 9;
 
 const touchDevice = 'ontouchstart' in document.documentElement;
 const clickEvent = touchDevice ? 'touchstart' : 'click';
@@ -111,6 +112,7 @@ document.addEventListener('keydown', (e) => {
         select.selectHighlightedOption();
         break;
       case ESCAPE:
+      case TAB:
         select.close();
         select.target.focus();
     }
@@ -164,6 +166,9 @@ class Select extends Evented {
 
     const tabIndex = this.select.getAttribute('tabindex') || 0;
     this.target.setAttribute('tabindex', tabIndex);
+    this.target.setAttribute('aria-haspopup', true);
+    this.target.setAttribute('aria-expanded', false);
+    this.target.setAttribute('role', 'button');
 
     if (this.options.className) {
       addClass(this.target, this.options.className);
@@ -188,9 +193,9 @@ class Select extends Evented {
         if (relatedTarget && !this.drop.contains(relatedTarget)) {
           this.close();
         }
+      } else {
+        removeClass(this.target, 'select-target-focused');  
       }
-
-      removeClass(this.target, 'select-target-focused');
     });
 
     this.select.parentNode.insertBefore(this.target, this.select.nextSibling);
@@ -361,6 +366,7 @@ class Select extends Evented {
   renderDrop() {
     let optionList = document.createElement('ul');
     addClass(optionList, 'select-options');
+    optionList.setAttribute('role', 'listbox');
 
     const options = this.select.querySelectorAll('option');
     for (let i = 0; i < options.length; ++i) {
@@ -369,6 +375,8 @@ class Select extends Evented {
       addClass(option, 'select-option');
 
       option.setAttribute('data-value', el.value);
+      option.setAttribute('role', 'option');
+      option.setAttribute('tabindex', '0');
       option.innerHTML = el.innerHTML;
 
       if (el.selected) {
@@ -454,6 +462,7 @@ class Select extends Evented {
     }
 
     addClass(option, 'select-option-highlight');
+    option.focus();
 
     this.trigger('highlight', {option});
   }
