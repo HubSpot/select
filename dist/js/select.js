@@ -35,6 +35,7 @@ var ESCAPE = 27;
 var SPACE = 32;
 var UP = 38;
 var DOWN = 40;
+var TAB = 9;
 
 var touchDevice = ('ontouchstart' in document.documentElement);
 var clickEvent = touchDevice ? 'touchstart' : 'click';
@@ -134,6 +135,7 @@ document.addEventListener('keydown', function (e) {
         select.selectHighlightedOption();
         break;
       case ESCAPE:
+      case TAB:
         select.close();
         select.target.focus();
     }
@@ -194,6 +196,9 @@ var Select = (function (_Evented) {
 
       var tabIndex = this.select.getAttribute('tabindex') || 0;
       this.target.setAttribute('tabindex', tabIndex);
+      this.target.setAttribute('aria-haspopup', true);
+      this.target.setAttribute('aria-expanded', false);
+      this.target.setAttribute('role', 'button');
 
       if (this.options.className) {
         addClass(this.target, this.options.className);
@@ -220,9 +225,9 @@ var Select = (function (_Evented) {
           if (relatedTarget && !_this.drop.contains(relatedTarget)) {
             _this.close();
           }
+        } else {
+          removeClass(_this.target, 'select-target-focused');
         }
-
-        removeClass(_this.target, 'select-target-focused');
       });
 
       this.select.parentNode.insertBefore(this.target, this.select.nextSibling);
@@ -408,6 +413,7 @@ var Select = (function (_Evented) {
     value: function renderDrop() {
       var optionList = document.createElement('ul');
       addClass(optionList, 'select-options');
+      optionList.setAttribute('role', 'listbox');
 
       var options = this.select.querySelectorAll('option');
       for (var i = 0; i < options.length; ++i) {
@@ -416,6 +422,8 @@ var Select = (function (_Evented) {
         addClass(option, 'select-option');
 
         option.setAttribute('data-value', el.value);
+        option.setAttribute('role', 'option');
+        option.setAttribute('tabindex', '0');
         option.innerHTML = el.innerHTML;
 
         if (el.selected) {
@@ -510,6 +518,7 @@ var Select = (function (_Evented) {
       }
 
       addClass(option, 'select-option-highlight');
+      option.focus();
 
       this.trigger('highlight', { option: option });
     }
