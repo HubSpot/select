@@ -1,4 +1,4 @@
-/*! tether-select 1.1.1 */
+/*! tether-select 1.2.1 */
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -197,6 +197,11 @@ var Select = (function (_Evented) {
 
       if (this.options.className) {
         addClass(this.target, this.options.className);
+      }
+
+      if (this.select.disabled) {
+        addClass(this.target, 'select-target-disabled');
+        this.isDisabled = true;
       }
 
       this.target.selectInstance = this;
@@ -420,6 +425,10 @@ var Select = (function (_Evented) {
 
         if (el.selected) {
           addClass(option, 'select-option-selected');
+        }
+
+        if (el.disabled) {
+          addClass(option, 'select-option-disabled');
         }
 
         optionList.appendChild(option);
