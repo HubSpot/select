@@ -1,3 +1,6 @@
+## v1.2.1
+- Add classes for disabled select and option elements
+
 ## v1.0.0
 - Bump `Tether` to v1
 
