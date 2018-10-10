@@ -199,6 +199,11 @@ var Select = (function (_Evented) {
         addClass(this.target, this.options.className);
       }
 
+      if (this.select.disabled) {
+        addClass(this.target, 'select-target-disabled');
+        this.isDisabled = true;
+      }
+
       this.target.selectInstance = this;
 
       this.target.addEventListener('click', function () {
@@ -420,6 +425,10 @@ var Select = (function (_Evented) {
 
         if (el.selected) {
           addClass(option, 'select-option-selected');
+        }
+
+        if (el.disabled) {
+          addClass(option, 'select-option-disabled');
         }
 
         optionList.appendChild(option);
