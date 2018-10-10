@@ -1,4 +1,4 @@
-/*! tether-select 1.1.1 */
+/*! tether-select 1.2.1 */
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
