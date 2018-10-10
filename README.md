@@ -30,7 +30,9 @@ $ bower install tether-select
 ```javascript
 let selectInstance = new Select({
   el: document.querySelector('select.select-target'),
-  className: 'select-theme-default'
+  className: 'select-theme-default',
+  placeholder: 'Please select an option',
+  startEmpty: false
 })
 ```
 

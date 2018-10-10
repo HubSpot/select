@@ -1,4 +1,4 @@
-/*! tether-select 1.1.1 */
+/*! tether-select 1.2.1 */
 
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -160,6 +160,15 @@ var Select = (function (_Evented) {
 
     this.update = this.update.bind(this);
 
+    this.options.placeholder = this.select.getAttribute('data-placeholder') || this.options.placeholder;
+    this.options.startEmpty = this.select.getAttribute('data-start-empty') || this.options.startEmpty;
+
+    if (this.options.placeholder || this.options.startEmpty) {
+      this.value = '';
+    } else {
+      this.value = this.select.value;
+    }
+
     this.setupTarget();
     this.renderTarget();
 
@@ -172,8 +181,6 @@ var Select = (function (_Evented) {
     this.bindClick();
 
     this.bindMutationEvents();
-
-    this.value = this.select.value;
   }
 
   _createClass(Select, [{
@@ -392,13 +399,21 @@ var Select = (function (_Evented) {
     value: function renderTarget() {
       this.target.innerHTML = '';
 
-      var options = this.select.querySelectorAll('option');
-      for (var i = 0; i < options.length; ++i) {
-        var option = options[i];
-        if (option.selected) {
-          this.target.innerHTML = option.innerHTML;
-          break;
+      if (this.options.placeholder && !this.value) {
+        this.target.innerHTML = this.options.placeholder;
+        addClass(this.target, 'select-target-placeholder');
+      } else if (this.options.startEmpty && !this.value) {
+        this.target.innerHTML = '';
+      } else {
+        var options = this.select.querySelectorAll('option');
+        for (var i = 0; i < options.length; ++i) {
+          var option = options[i];
+          if (option.selected) {
+            this.target.innerHTML = option.innerHTML;
+            break;
+          }
         }
+        removeClass(this.target, 'select-target-placeholder');
       }
 
       this.target.appendChild(document.createElement('b'));
@@ -418,7 +433,7 @@ var Select = (function (_Evented) {
         option.setAttribute('data-value', el.value);
         option.innerHTML = el.innerHTML;
 
-        if (el.selected) {
+        if (el.selected && this.value) {
           addClass(option, 'select-option-selected');
         }
 
@@ -608,7 +623,9 @@ var Select = (function (_Evented) {
 
 Select.defaults = {
   alignToHighlighed: 'auto',
-  className: 'select-theme-default'
+  className: 'select-theme-default',
+  placeholder: false,
+  startEmpty: false
 };
 
 Select.init = function () {

@@ -1,3 +1,7 @@
+## v1.2.1
+- Add option for placeholder text
+- Add options for displaying the select element as empty initially
+
 ## v1.0.0
 - Bump `Tether` to v1
 

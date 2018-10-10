@@ -135,6 +135,15 @@ class Select extends Evented {
 
     this.update = this.update.bind(this);
 
+    this.options.placeholder = this.select.getAttribute('data-placeholder') || this.options.placeholder;
+    this.options.startEmpty = this.select.getAttribute('data-start-empty') || this.options.startEmpty;
+
+    if (this.options.placeholder || this.options.startEmpty) {
+      this.value = '';
+    } else {
+      this.value = this.select.value;
+    }
+
     this.setupTarget();
     this.renderTarget();
 
@@ -147,8 +156,6 @@ class Select extends Evented {
     this.bindClick();
 
     this.bindMutationEvents();
-
-    this.value = this.select.value;
   }
 
   useNative() {
@@ -346,13 +353,21 @@ class Select extends Evented {
   renderTarget() {
     this.target.innerHTML = '';
 
-    const options = this.select.querySelectorAll('option');
-    for (let i = 0; i < options.length; ++i) {
-      const option = options[i];
-      if (option.selected) {
-        this.target.innerHTML = option.innerHTML;
-        break;
+    if (this.options.placeholder && !this.value) {
+      this.target.innerHTML = this.options.placeholder;
+      addClass(this.target, 'select-target-placeholder');
+    } else if (this.options.startEmpty && !this.value) {
+      this.target.innerHTML = '';
+    } else {
+      const options = this.select.querySelectorAll('option');
+      for (let i = 0; i < options.length; ++i) {
+        const option = options[i];
+        if (option.selected) {
+          this.target.innerHTML = option.innerHTML;
+          break;
+        }
       }
+      removeClass(this.target, 'select-target-placeholder');
     }
 
     this.target.appendChild(document.createElement('b'));
@@ -371,7 +386,7 @@ class Select extends Evented {
       option.setAttribute('data-value', el.value);
       option.innerHTML = el.innerHTML;
 
-      if (el.selected) {
+      if (el.selected && this.value) {
         addClass(option, 'select-option-selected');
       }
 
@@ -535,7 +550,9 @@ class Select extends Evented {
 
 Select.defaults = {
   alignToHighlighed: 'auto',
-  className: 'select-theme-default'
+  className: 'select-theme-default',
+  placeholder: false,
+  startEmpty: false
 };
 
 Select.init = (options={}) => {
